@@ -1,35 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import ThemeSwitcher from './components/ThemeSwitcher';
+import LoginForm from './components/auth/LoginForm';
+import { useState } from 'react';
+import { FluentProvider, webLightTheme, webDarkTheme } from '@fluentui/react-components';
+import { Text } from "@fluentui/react-components";
 
-function App() {
-  const [count, setCount] = useState(0)
+
+const App: React.FC = () => {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <FluentProvider theme={isDarkTheme ? webDarkTheme : webLightTheme}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32, minHeight: '100vh', justifyContent: 'center' }}>
+        <ThemeSwitcher isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+        <Text as='h1' size={1000}>
+          <span className="font-kapakana">O</span>
+          <span className="font-katibeh">stentans</span>
+        </Text>
+        <LoginForm />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    </FluentProvider>
+  );
+};
 
-export default App
+export default App;
