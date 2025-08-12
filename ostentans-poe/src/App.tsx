@@ -10,7 +10,10 @@ const App: React.FC = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   return (
-    <FluentProvider theme={isDarkTheme ? webDarkTheme : webLightTheme}>
+    <FluentProvider theme={isDarkTheme ? {
+      ...webDarkTheme, colorNeutralBackground1: "#000029ff", colorNeutralForeground1: "#ffffffff"
+    } :
+      { ...webLightTheme, colorNeutralBackground1: "#FFFFFF", colorNeutralForeground1: "#000000" }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32, minHeight: '100vh', justifyContent: 'center' }}>
         <ThemeSwitcher isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
         <Text as='h1' size={1000}>
