@@ -1,0 +1,11 @@
+.form-submit-button {
+  background-color: black !important;
+  color: white !important;
+  border-radius: 7px;
+  width: 10vw;
+}
+
+.form-submit-button:hover {
+  background-color: rgb(75, 75, 75) !important;
+  color: white !important;
+}
