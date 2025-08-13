@@ -1,20 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Kapakana&family=Katibeh&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Kapakana&family=Katibeh&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto");
 
 .font-kapakana {
-  font-family: 'Kapakana', cursive;
+  font-family: "Kapakana", cursive;
   font-size: 10rem;
 }
 
 .font-katibeh {
-  font-family: 'Katibeh', serif;
-    font-size: 8rem;
+  font-family: "Katibeh", serif;
+  font-size: 8rem;
 }
-
 
 #root {
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  color: black;
 }
 
 .logo {
@@ -30,28 +35,4 @@
 
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
