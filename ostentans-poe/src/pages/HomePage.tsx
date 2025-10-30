@@ -1,7 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "../components/auth/LoginForm";
-import { Text, Button } from "@fluentui/react-components";
-import { ArrowDown12Regular } from "@fluentui/react-icons";
+import { Text, Button, Tooltip } from "@fluentui/react-components";
+import {
+  ArrowDown12Regular,
+  QuestionCircle12Regular,
+} from "@fluentui/react-icons";
 import "../App.css";
 
 const HomePage = () => {
@@ -43,7 +46,17 @@ const HomePage = () => {
           Register
         </Button>
 
-        <Link to="/">Try a demo</Link>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <Link to="/">Try a demo</Link>
+          <Tooltip
+            content="Try out the application without registering. Features are limited in demo mode."
+            relationship="description"
+          >
+            <QuestionCircle12Regular
+              style={{ cursor: "pointer", color: "#666" }}
+            />
+          </Tooltip>
+        </div>
       </div>
     </div>
   );
