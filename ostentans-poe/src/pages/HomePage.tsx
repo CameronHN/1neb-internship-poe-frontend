@@ -20,7 +20,7 @@ const HomePage = () => {
         justifyContent: "center",
       }}
     >
-      <Text as="h1" size={1000} style={{ color: "black" }}>
+      <Text as="h1" size={1000}>
         <span className="font-kapakana">O</span>
         <span className="font-katibeh">stentans</span>
       </Text>
@@ -47,7 +47,9 @@ const HomePage = () => {
         </Button>
 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <Link to="/">Try a demo</Link>
+          <Text className="text-size-400">
+            <Link to="/">Try a demo</Link>
+          </Text>
           <Tooltip
             content="Try out the application without registering. Features are limited in demo mode."
             relationship="description"

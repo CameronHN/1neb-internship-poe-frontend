@@ -19,7 +19,26 @@
 
 body {
   font-family: "Roboto", sans-serif;
+}
+
+.light-theme {
   color: black;
+}
+
+.light-theme a {
+  color: black;
+}
+
+.dark-theme {
+  color: white;
+}
+
+.dark-theme a {
+  color: white;
+}
+
+.text-size-400 {
+  font-size: 1rem;
 }
 
 .logo {
