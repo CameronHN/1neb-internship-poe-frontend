@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 const RegisterPage = () => (
   <div
     style={{
+      minHeight: "100vh",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
       gap: 16,
+      justifyContent: "center",
     }}
   >
     <h1>Register</h1>
