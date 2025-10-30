@@ -40,7 +40,10 @@ const App: React.FC = () => {
 
   return (
     <FluentProvider theme={isDarkTheme ? webDarkTheme : webLightTheme}>
-      <div style={!isDarkTheme ? lightThemeBg : darkThemeBg}>
+      <div
+        style={!isDarkTheme ? lightThemeBg : darkThemeBg}
+        className={isDarkTheme ? "dark-theme" : "light-theme"}
+      >
         <div style={themeSwitcherWrapper}>
           <ThemeSwitcher
             isDarkTheme={isDarkTheme}
