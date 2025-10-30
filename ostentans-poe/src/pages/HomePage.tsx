@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "../components/auth/LoginForm";
 import { Text, Button, Tooltip } from "@fluentui/react-components";
+import { StyledTitle1 } from "../components/StyledTitle";
+import { usePageTitle } from "../hooks/usePageTitle";
 import {
   ArrowDown12Regular,
   QuestionCircle12Regular,
@@ -9,6 +11,7 @@ import "../App.css";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  usePageTitle({ title: "Home" });
   return (
     <div
       style={{
@@ -20,11 +23,9 @@ const HomePage = () => {
         justifyContent: "center",
       }}
     >
-      <Text as="h1" size={1000}>
-        <span className="font-kapakana">O</span>
-        <span className="font-katibeh">stentans</span>
-      </Text>
+      <StyledTitle1 text="Ostentans" />
 
+      {/* Login Form */}
       <LoginForm />
 
       <div
