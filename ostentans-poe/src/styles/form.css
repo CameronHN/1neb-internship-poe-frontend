@@ -8,6 +8,7 @@
 .form-input-field {
   border-radius: 7px;
   width: 20vw;
+  background-color: white !important;
 }
 
 .register-form-submit-button {
