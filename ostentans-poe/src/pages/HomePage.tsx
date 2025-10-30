@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "../components/auth/LoginForm";
 import { Text, Button } from "@fluentui/react-components";
 import { ArrowDown12Regular } from "@fluentui/react-icons";
 import "../App.css";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -32,6 +33,7 @@ const HomePage = () => {
         }}
       >
         <Button
+          onClick={() => navigate("/register")}
           type="submit"
           appearance="primary"
           className="form-submit-button"
