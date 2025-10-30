@@ -21,3 +21,8 @@
   background-color: rgb(75, 75, 75) !important;
   color: white !important;
 }
+
+.register-form-submit-button:hover {
+  background-color: rgb(75, 75, 75) !important;
+  color: white !important;
+}
