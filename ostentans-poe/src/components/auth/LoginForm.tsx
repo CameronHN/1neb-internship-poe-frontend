@@ -20,13 +20,15 @@ const LoginForm: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         gap: 12,
-        width: "15vw",
+        width: "300px",
+        alignItems: "center",
       }}
     >
       <Label htmlFor="email" size="large">
         Email:
       </Label>
       <Input
+        className="form-input-field"
         id="email"
         type="email"
         value={email}
@@ -38,6 +40,7 @@ const LoginForm: React.FC = () => {
         Password:
       </Label>
       <Input
+        className="form-input-field"
         id="password"
         type="password"
         value={password}
