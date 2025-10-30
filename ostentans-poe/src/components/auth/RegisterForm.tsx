@@ -84,9 +84,9 @@ const RegisterForm: React.FC = () => {
       <Button
         type="submit"
         appearance="primary"
-        className="form-submit-button"
+        className="register-form-submit-button"
         icon={<ArrowRight12Regular />}
-        style={{ alignSelf: "flex-start", marginTop: 8 }}
+        style={{ alignSelf: "center", marginTop: 8 }}
       >
         Let's move on
       </Button>
