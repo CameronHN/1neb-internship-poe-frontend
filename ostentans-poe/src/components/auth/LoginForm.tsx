@@ -19,7 +19,7 @@ const LoginForm: React.FC = () => {
       style={{
         display: "flex",
         flexDirection: "column",
-        gap: 12,
+        gap: 16,
         width: "300px",
         alignItems: "center",
       }}
