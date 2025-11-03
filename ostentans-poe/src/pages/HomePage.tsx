@@ -49,7 +49,7 @@ const HomePage = () => {
 
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <Text className="text-size-400">
-            <Link to="/">Try a demo</Link>
+            <Link to="/demo">Try a demo</Link>
           </Text>
           <Tooltip
             content="Try out the application without registering. Features are limited in demo mode."
