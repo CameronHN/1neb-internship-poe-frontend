@@ -19,10 +19,10 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
       shape="circular"
       size="large"
       style={{
-        width: 48,
-        height: 48,
-        minWidth: 48,
-        minHeight: 48,
+        width: 30,
+        height: 30,
+        minWidth: 30,
+        minHeight: 30,
         padding: 0,
         display: "flex",
         alignItems: "center",
