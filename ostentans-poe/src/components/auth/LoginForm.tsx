@@ -4,7 +4,7 @@ import {
   Input,
   Label,
   Checkbox,
-  Text,
+  MessageBar,
 } from "@fluentui/react-components";
 import { ArrowRight12Regular } from "@fluentui/react-icons";
 import { useAuth } from "../../contexts/AuthContext";
@@ -28,10 +28,9 @@ const LoginForm: React.FC = () => {
 
     try {
       await login(email, password, rememberMe);
-      navigate("/test"); // Redirect after successful login
+      navigate("/builder"); // Redirect after successful login
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
-      // TODO: Add messagebar for error display
     } finally {
       setIsLoading(false);
     }
@@ -49,9 +48,9 @@ const LoginForm: React.FC = () => {
       }}
     >
       {error && (
-        <Text style={{ color: "red", fontSize: "14px", textAlign: "center" }}>
+        <MessageBar intent="error" style={{ width: "100%" }}>
           {error}
-        </Text>
+        </MessageBar>
       )}
 
       <Label htmlFor="email" size="large">
