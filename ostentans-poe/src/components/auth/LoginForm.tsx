@@ -1,16 +1,40 @@
 import { useState } from "react";
-import { Button, Input, Label } from "@fluentui/react-components";
+import {
+  Button,
+  Input,
+  Label,
+  Checkbox,
+  Text,
+} from "@fluentui/react-components";
 import { ArrowRight12Regular } from "@fluentui/react-icons";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 import "../../styles/form.css";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    alert(`Email: ${email}\nPassword: ${password}`);
+    setError("");
+    setIsLoading(true);
+
+    try {
+      await login(email, password, rememberMe);
+      navigate("/test"); // Redirect after successful login
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed");
+      // TODO: Add messagebar for error display
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -20,10 +44,16 @@ const LoginForm: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         gap: 16,
-        width: "300px",
+        width: "30vw",
         alignItems: "center",
       }}
     >
+      {error && (
+        <Text style={{ color: "red", fontSize: "14px", textAlign: "center" }}>
+          {error}
+        </Text>
+      )}
+
       <Label htmlFor="email" size="large">
         Email:
       </Label>
@@ -35,6 +65,7 @@ const LoginForm: React.FC = () => {
         appearance="filled-lighter"
         onChange={(_, data) => setEmail(data.value)}
         required
+        disabled={isLoading}
       />
       <Label htmlFor="password" size="large">
         Password:
@@ -47,6 +78,16 @@ const LoginForm: React.FC = () => {
         appearance="filled-lighter"
         onChange={(_, data) => setPassword(data.value)}
         required
+        disabled={isLoading}
+      />
+
+      <Checkbox
+        label="Remember me"
+        className="text-size-400"
+        style={{}}
+        checked={rememberMe}
+        onChange={(_, data) => setRememberMe(data.checked === true)}
+        disabled={isLoading}
       />
 
       <Button
@@ -55,8 +96,9 @@ const LoginForm: React.FC = () => {
         className="form-submit-button"
         icon={<ArrowRight12Regular />}
         style={{ alignSelf: "center", marginTop: 8 }}
+        disabled={isLoading}
       >
-        Login
+        {isLoading ? "Logging in..." : "Login"}
       </Button>
     </form>
   );

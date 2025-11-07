@@ -1,26 +1,77 @@
-import { Button, Input, Label } from "@fluentui/react-components";
-import { ArrowRight12Regular } from "@fluentui/react-icons";
+import { Input, Label, Text } from "@fluentui/react-components";
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import CustomProceedButton from "../CustomProceedButton";
 
 const RegisterForm: React.FC = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { register } = useAuth();
+  const navigate = useNavigate();
+
+  const handleChange = (field: string, value: string) => {
+    setFormData({
+      ...formData,
+      [field]: value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await register(formData);
+      navigate("/onboarding"); // Redirect after successful registration
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Registration failed");
+      // TODO: Add messagebar for error display
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <form
+      onSubmit={handleSubmit}
       style={{
         display: "flex",
         flexDirection: "column",
         gap: 16,
-        width: "30vw",
+        width: "100%",
+        maxWidth: "600px",
+        minWidth: "280px",
+        margin: "0 auto",
+        padding: "0 16px",
       }}
     >
+      {error && (
+        <Text style={{ color: "red", fontSize: "14px", textAlign: "center" }}>
+          {error}
+        </Text>
+      )}
+
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
           gap: 16,
         }}
       >
@@ -29,12 +80,14 @@ const RegisterForm: React.FC = () => {
             First Name:
           </Label>
           <Input
+            className="form-input-field"
             id="first-name"
             type="text"
-            value={firstName}
+            value={formData.firstName}
             appearance="filled-lighter"
-            onChange={(_, data) => setFirstName(data.value)}
+            onChange={(_, data) => handleChange("firstName", data.value)}
             required
+            disabled={isLoading}
           />
         </div>
 
@@ -43,12 +96,14 @@ const RegisterForm: React.FC = () => {
             Last Name:
           </Label>
           <Input
+            className="form-input-field"
             id="last-name"
             type="text"
-            value={lastName}
+            value={formData.lastName}
             appearance="filled-lighter"
-            onChange={(_, data) => setLastName(data.value)}
+            onChange={(_, data) => handleChange("lastName", data.value)}
             required
+            disabled={isLoading}
           />
         </div>
 
@@ -57,12 +112,14 @@ const RegisterForm: React.FC = () => {
             Email:
           </Label>
           <Input
+            className="form-input-field"
             id="email"
             type="email"
-            value={email}
+            value={formData.email}
             appearance="filled-lighter"
-            onChange={(_, data) => setEmail(data.value)}
+            onChange={(_, data) => handleChange("email", data.value)}
             required
+            disabled={isLoading}
           />
         </div>
 
@@ -71,25 +128,56 @@ const RegisterForm: React.FC = () => {
             Contact Number:
           </Label>
           <Input
+            className="form-input-field"
             id="contact-number"
             type="tel"
-            value={contactNumber}
+            value={formData.phone}
             appearance="filled-lighter"
-            onChange={(_, data) => setContactNumber(data.value)}
+            onChange={(_, data) => handleChange("phone", data.value)}
             required
+            disabled={isLoading}
+          />
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <Label htmlFor="password" size="large">
+            Password:
+          </Label>
+          <Input
+            className="form-input-field"
+            id="password"
+            type="password"
+            value={formData.password}
+            appearance="filled-lighter"
+            onChange={(_, data) => handleChange("password", data.value)}
+            required
+            disabled={isLoading}
+          />
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <Label htmlFor="confirm-password" size="large">
+            Confirm Password:
+          </Label>
+          <Input
+            className="form-input-field"
+            id="confirm-password"
+            type="password"
+            value={formData.confirmPassword}
+            appearance="filled-lighter"
+            onChange={(_, data) => handleChange("confirmPassword", data.value)}
+            required
+            disabled={isLoading}
           />
         </div>
       </div>
-
-      <Button
+      <CustomProceedButton
         type="submit"
-        appearance="primary"
+        isLoading={isLoading}
         className="register-form-submit-button"
-        icon={<ArrowRight12Regular />}
-        style={{ alignSelf: "center", marginTop: 8 }}
       >
-        Let's move on
-      </Button>
+        {isLoading ? "Registering..." : "Let's move on"}
+      </CustomProceedButton>
     </form>
   );
 };
