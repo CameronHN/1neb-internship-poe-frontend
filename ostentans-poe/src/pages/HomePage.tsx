@@ -8,6 +8,7 @@ import {
   QuestionCircle12Regular,
 } from "@fluentui/react-icons";
 import "../App.css";
+import { tooltipStyling } from "../styles/constants/iconStyling";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -55,9 +56,7 @@ const HomePage = () => {
             content="Try out the application without registering. Features are limited in demo mode."
             relationship="description"
           >
-            <QuestionCircle12Regular
-              style={{ cursor: "pointer", color: "#666", marginLeft: "4px" }}
-            />
+            <QuestionCircle12Regular style={tooltipStyling} />
           </Tooltip>
         </div>
       </div>
