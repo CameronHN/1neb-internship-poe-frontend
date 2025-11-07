@@ -39,8 +39,29 @@ class AuthService {
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Registration failed');
+            let errorMessage = 'Registration failed';
+
+            try {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const error = await response.json();
+                    errorMessage = error.message || errorMessage;
+                } else {
+                    // Handle non-JSON responses
+                    const textResponse = await response.text();
+                    if (textResponse && textResponse.trim()) {
+                        errorMessage = textResponse.length > 200
+                            ? `Server error (${response.status}): ${response.statusText}`
+                            : textResponse;
+                    } else {
+                        errorMessage = `Server error (${response.status}): ${response.statusText}`;
+                    }
+                }
+            } catch {
+                errorMessage = `Server error (${response.status}): ${response.statusText}`;
+            }
+
+            throw new Error(errorMessage);
         }
 
         return response.json();
@@ -57,8 +78,29 @@ class AuthService {
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Login failed');
+            let errorMessage = 'Login failed';
+
+            try {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const error = await response.json();
+                    errorMessage = error.message || errorMessage;
+                } else {
+                    // Handle non-JSON responses
+                    const textResponse = await response.text();
+                    if (textResponse && textResponse.trim()) {
+                        errorMessage = textResponse.length > 200
+                            ? `Server error (${response.status}): ${response.statusText}`
+                            : textResponse;
+                    } else {
+                        errorMessage = `Server error (${response.status}): ${response.statusText}`;
+                    }
+                }
+            } catch {
+                errorMessage = `Server error (${response.status}): ${response.statusText}`;
+            }
+
+            throw new Error(errorMessage);
         }
 
         return response.json();
