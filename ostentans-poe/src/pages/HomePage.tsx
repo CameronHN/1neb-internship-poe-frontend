@@ -56,7 +56,7 @@ const HomePage = () => {
             relationship="description"
           >
             <QuestionCircle12Regular
-              style={{ cursor: "pointer", color: "#666" }}
+              style={{ cursor: "pointer", color: "#666", marginLeft: "4px" }}
             />
           </Tooltip>
         </div>
