@@ -7,7 +7,7 @@ import {
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import ThemeSwitcher from "./components/ThemeSwitcher";
+import { StickyHeader } from "./components/StickyHeader";
 import { useState } from "react";
 import { ResumeBuilderPage } from "./pages/ResumeBuilderPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
@@ -28,7 +28,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
 const lightThemeBg = {
   minHeight: "100vh",
   minWidth: "100vw",
-  background: "linear-gradient(  #0B486B 0%, #FFBCFB 50%, #F56217 100%)",
+  background: "linear-gradient( #FFBCFB 10%, #F56217 100%)",
   display: "flex",
   flexDirection: "column" as const,
   position: "relative" as const,
@@ -43,11 +43,56 @@ const darkThemeBg = {
   position: "relative" as const,
 };
 
-const themeSwitcherWrapper = {
-  position: "absolute" as const,
-  top: 24,
-  right: 32,
-  zIndex: 100,
+const mainContentStyle = {
+  flex: 1,
+  display: "flex",
+  flexDirection: "column" as const,
+};
+
+const AppContent: React.FC<{
+  isDarkTheme: boolean;
+  setIsDarkTheme: (isDark: boolean) => void;
+}> = ({ isDarkTheme, setIsDarkTheme }) => {
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <div
+      style={!isDarkTheme ? lightThemeBg : darkThemeBg}
+      className={isDarkTheme ? "dark-theme" : "light-theme"}
+    >
+      <StickyHeader
+        isDarkTheme={isDarkTheme}
+        setIsDarkTheme={setIsDarkTheme}
+        showNavigation={isAuthenticated}
+      />
+
+      <div style={mainContentStyle}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/demo" element={<DemoPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
+          <Route
+            path="/builder"
+            element={
+              <ProtectedRoute>
+                <ResumeBuilderPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/saved"
+            element={
+              <ProtectedRoute>
+                <ResumeBuilderPage />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
+    </div>
+  );
 };
 
 const App: React.FC = () => {
@@ -56,34 +101,12 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <FluentProvider theme={isDarkTheme ? webDarkTheme : webLightTheme}>
-        <div
-          style={!isDarkTheme ? lightThemeBg : darkThemeBg}
-          className={isDarkTheme ? "dark-theme" : "light-theme"}
-        >
-          <div style={themeSwitcherWrapper}>
-            <ThemeSwitcher
-              isDarkTheme={isDarkTheme}
-              setIsDarkTheme={setIsDarkTheme}
-            />
-          </div>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/demo" element={<DemoPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-
-              <Route
-                path="/builder"
-                element={
-                  <ProtectedRoute>
-                    <ResumeBuilderPage />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </BrowserRouter>
-        </div>
+        <BrowserRouter>
+          <AppContent
+            isDarkTheme={isDarkTheme}
+            setIsDarkTheme={setIsDarkTheme}
+          />
+        </BrowserRouter>
       </FluentProvider>
     </AuthProvider>
   );
