@@ -1,5 +1,5 @@
 import React from "react";
-import { Text } from "@fluentui/react-components";
+import { Button, Text } from "@fluentui/react-components";
 import { DeleteConfirmationMenu } from "./DeleteConfirmationMenu";
 import type { SavedResumeItem } from "../types/savedResumeTypes";
 import { deleteButtonStyle } from "../styles/constants/buttonStyling";
@@ -47,13 +47,17 @@ export const SavedResume: React.FC<SavedResumeProps> = ({
           {formatDate(resume.createdAt)}
         </Text>
       </div>
-      <DeleteConfirmationMenu
-        isEnabled={true}
-        buttonStyle={deleteButtonStyle(true)}
-        onConfirmDelete={handleDelete}
-        onUndo={() => {}}
-        buttonText="Delete"
-      />
+      <div style={{ display: "flex", gap: "8px" }}>
+        <Button size="small">Open</Button>
+        {/* // TODO: Implement Open functionality */}
+        <DeleteConfirmationMenu
+          isEnabled={true}
+          buttonStyle={deleteButtonStyle(true)}
+          onConfirmDelete={handleDelete}
+          onUndo={() => {}}
+          buttonText="Delete"
+        />
+      </div>
     </div>
   );
 };
