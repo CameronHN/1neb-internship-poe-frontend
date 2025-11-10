@@ -443,9 +443,9 @@ export const ResumeBuilderPage = () => {
   };
 
   return (
-    <div style={{ padding: "5rem 2rem", maxWidth: "60vw", margin: "0 auto" }}>
+    <div style={{ padding: "4rem 2rem", maxWidth: "60vw", margin: "0 auto" }}>
       <div style={{ marginBottom: "32px", textAlign: "center" }}>
-        <Title2>Create Your Resume</Title2>
+        <Title2>Resume Builder</Title2>
       </div>
 
       {resumeData && (
@@ -1108,7 +1108,7 @@ export const ResumeBuilderPage = () => {
 
       {/* Save button */}
       <div style={{ marginTop: "32px", textAlign: "center" }}>
-        <Subtitle2>Liked what you see?</Subtitle2>
+        <Subtitle2>Liked what you saw?</Subtitle2>
       </div>
       <div style={{ marginTop: "3px", textAlign: "center" }}>
         <Button
