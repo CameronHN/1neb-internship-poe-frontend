@@ -178,7 +178,7 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
                       icon={<item.icon />}
                       style={{
                         fontWeight: isActive ? "bold" : "normal",
-                        fontStyle: isActive ? "italic" : "normal",
+                        fontStyle: isActive ? "bold" : "normal",
                         color: isDarkTheme
                           ? isActive
                             ? "#ffffff"
@@ -236,7 +236,7 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
                   style={{
                     ...mobileMenuItemStyle,
                     fontWeight: isActive ? "bold" : "normal",
-                    fontStyle: isActive ? "italic" : "normal",
+                    fontStyle: isActive ? "bold" : "normal",
                   }}
                   onClick={() => {
                     if (item.action) {
