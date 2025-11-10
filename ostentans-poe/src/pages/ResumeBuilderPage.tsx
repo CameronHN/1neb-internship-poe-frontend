@@ -17,6 +17,8 @@ import {
   AccordionPanel,
   List,
   ListItem,
+  Input,
+  Label,
 } from "@fluentui/react-components";
 import { useState, useEffect } from "react";
 import usePageTitle from "../hooks/usePageTitle";
@@ -28,7 +30,9 @@ import { professionalSummaryService } from "../services/professionalSummaryServi
 import { skillService } from "../services/skillService";
 import { titleService } from "../services/titleService";
 import { socialMediaService } from "../services/socialMediaService";
+import { savedResumeService } from "../services/savedResumeService";
 import { DeleteOverlay } from "../components/DeleteOverlay";
+import { SaveOverlay } from "../components/SaveOverlay";
 import { DeleteConfirmationMenu } from "../components/DeleteConfirmationMenu";
 import { QuestionCircle12Regular } from "@fluentui/react-icons";
 import { deleteButtonStyle } from "../styles/constants/buttonStyling";
@@ -46,12 +50,15 @@ export const ResumeBuilderPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [resumeGeneratedSuccessfully, setResumeGeneratedSuccessfully] =
-    useState<boolean>(false);
+  const [showSaveNameInput, setShowSaveNameInput] = useState<boolean>(false);
+  const [savedResumeName, setSavedResumeName] = useState<string>("");
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [deleteSuccess, setDeleteSuccess] = useState<boolean>(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [currentDeleteType, setCurrentDeleteType] = useState<string>("");
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   // Load resume data when component mounts
   useEffect(() => {
@@ -87,11 +94,6 @@ export const ResumeBuilderPage = () => {
 
       return newSet;
     });
-
-    // Reset generation success state when selections change
-    setResumeGeneratedSuccessfully(false);
-
-    // Clear any existing messages when selections change
     if (message) {
       setMessage(null);
     }
@@ -142,7 +144,6 @@ export const ResumeBuilderPage = () => {
 
     setIsGenerating(true);
     setMessage(null);
-    setResumeGeneratedSuccessfully(false); // Reset success state when starting generation
 
     try {
       // Build the request data with resource IDs
@@ -262,7 +263,6 @@ export const ResumeBuilderPage = () => {
       window.URL.revokeObjectURL(url);
 
       setMessage(`Resume downloaded successfully as ${filename}!`);
-      setResumeGeneratedSuccessfully(true);
     } catch (err) {
       setMessage(
         err instanceof Error ? err.message : "Failed to generate resume"
@@ -439,6 +439,134 @@ export const ResumeBuilderPage = () => {
       resumeData?.socials?.forEach((_: any, index: number) => {
         handleCheckboxChange(`social_${index}`, allSelected);
       });
+    }
+  };
+
+  const handleSaveResume = async () => {
+    if (!savedResumeName.trim()) {
+      setSaveError("Please enter a name for your resume");
+      return;
+    }
+
+    if (selectedIds.size === 0) {
+      setSaveError("Please select at least one item to save");
+      return;
+    }
+
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      // Build the save data structure based on selected items
+      const selectedData = {
+        titleIds: Array.from(selectedIds)
+          .filter((id) => id.startsWith("title_"))
+          .map((id) => {
+            const index = parseInt(id.split("_")[1]);
+            return resumeData?.title?.[index];
+          })
+          .filter(Boolean),
+        summaryIds: Array.from(selectedIds)
+          .filter((id) => id.startsWith("summary_"))
+          .map((id) => {
+            const index = parseInt(id.split("_")[1]);
+            return resumeData?.summaries?.[index];
+          })
+          .filter(Boolean),
+        skillIds: Array.from(selectedIds)
+          .filter((id) => id.startsWith("skill_"))
+          .map((id) => {
+            const index = parseInt(id.split("_")[1]);
+            return resumeData?.skills?.[index];
+          })
+          .filter(Boolean),
+        experienceIds: Array.from(selectedIds)
+          .filter((id) => id.startsWith("experience_"))
+          .map((id) => {
+            const index = parseInt(id.split("_")[1]);
+            return resumeData?.experience?.[index];
+          })
+          .filter(Boolean),
+        educationIds: Array.from(selectedIds)
+          .filter((id) => id.startsWith("education_"))
+          .map((id) => {
+            const index = parseInt(id.split("_")[1]);
+            return resumeData?.education?.[index];
+          })
+          .filter(Boolean),
+        certificationIds: Array.from(selectedIds)
+          .filter((id) => id.startsWith("certification_"))
+          .map((id) => {
+            const index = parseInt(id.split("_")[1]);
+            return resumeData?.certification?.[index];
+          })
+          .filter(Boolean),
+        socialIds: Array.from(selectedIds)
+          .filter((id) => id.startsWith("social_"))
+          .map((id) => {
+            const index = parseInt(id.split("_")[1]);
+            return resumeData?.socials?.[index];
+          })
+          .filter(Boolean),
+      };
+
+      // Construct the resume data for saving
+      const saveResumeData = {
+        savedResumeName: savedResumeName.trim(),
+        resumeData: {
+          name: resumeData.name,
+          title: selectedData.titleIds[0]?.title || "",
+          email: resumeData.email,
+          phoneNumber: resumeData.phoneNumber,
+          summary: selectedData.summaryIds[0]?.summary || "",
+          skills: selectedData.skillIds.map((skill: any) => ({
+            skill: skill.skill,
+            skillLevel: skill.skillLevel,
+          })),
+          socials: selectedData.socialIds.map((social: any) => ({
+            socialMediaUrl: social.socialMediaUrl,
+          })),
+          experience: selectedData.experienceIds.map((exp: any) => ({
+            company: exp.company,
+            jobTitle: exp.jobTitle,
+            startDate: exp.startDate,
+            endDate: exp.endDate,
+            responsibilities: exp.responsibilities,
+          })),
+          education: selectedData.educationIds.map((edu: any) => ({
+            institution: edu.institution,
+            qualification: edu.qualification,
+            startDate: edu.startDate,
+            endDate: edu.endDate,
+            major: edu.major,
+            achievement: edu.achievement,
+          })),
+          certification: selectedData.certificationIds.map((cert: any) => ({
+            name: cert.name,
+            organisation: cert.organisation,
+            credentialUrl: cert.credentialUrl || "",
+            issuedDate: cert.issuedDate,
+            expirationDate: cert.expirationDate,
+          })),
+        },
+        templateType: "classic",
+      };
+
+      await savedResumeService.saveResume(saveResumeData);
+
+      setSaveSuccess(true);
+      // Show success for 2 seconds, then reset the form
+      setTimeout(() => {
+        setSaveSuccess(false);
+        setIsSaving(false);
+        setShowSaveNameInput(false);
+        setSavedResumeName("");
+      }, 2000);
+    } catch (err) {
+      setIsSaving(false);
+      setSaveError(
+        err instanceof Error ? err.message : "Failed to save resume"
+      );
     }
   };
 
@@ -1092,7 +1220,18 @@ export const ResumeBuilderPage = () => {
           appearance="primary"
           size="large"
           onClick={handleGenerateResume}
-          disabled={isGenerating || selectedIds.size === 0}
+          disabled={
+            isGenerating ||
+            selectedIds.size === 0 ||
+            Array.from(selectedIds).filter((id) => id.startsWith("social_"))
+              .length > 2 ||
+            Array.from(selectedIds).filter((id) => id.startsWith("summary_"))
+              .length > 1 ||
+            Array.from(selectedIds).filter((id) => id.startsWith("title_"))
+              .length > 1 ||
+            Array.from(selectedIds).filter((id) => id.startsWith("education_"))
+              .length > 3
+          }
           style={{ padding: "12px 32px" }}
         >
           {isGenerating ? (
@@ -1119,28 +1258,40 @@ export const ResumeBuilderPage = () => {
             <QuestionCircle12Regular style={tooltipStyling} />
           </Tooltip>
         </Subtitle2>
-      </div>
-      <div style={{ marginTop: "3px", textAlign: "center" }}>
-        <Button
-          appearance="primary"
-          size="large"
-          onClick={handleGenerateResume}
-          disabled={
-            isGenerating ||
-            selectedIds.size === 0 ||
-            !resumeGeneratedSuccessfully
-          }
-          style={{ padding: "12px 32px" }}
-        >
-          {isGenerating ? (
-            <>
-              <Spinner size="tiny" style={{ marginRight: "8px" }} />
-              Saving...
-            </>
-          ) : (
-            `Save Resume`
-          )}
-        </Button>
+        {/* Save Resume Name Input */}
+        {showSaveNameInput && (
+          <div
+            style={{
+              marginTop: "16px",
+              maxWidth: "20vw",
+              margin: "16px auto 0",
+            }}
+          >
+            <Label htmlFor="savedResumeName">Saved Resume Name:</Label>
+            <Input
+              id="savedResumeName"
+              value={savedResumeName}
+              onChange={(_, data) => setSavedResumeName(data.value)}
+              placeholder="Enter a name for your saved resume"
+              style={{ marginTop: "8px", width: "100%" }}
+            />
+            <Button
+              appearance="primary"
+              style={{ marginTop: "8px", width: "100%" }}
+              onClick={handleSaveResume}
+              disabled={isSaving || !savedResumeName.trim()}
+            >
+              {isSaving ? (
+                <>
+                  <Spinner size="tiny" style={{ marginRight: "8px" }} />
+                  Saving...
+                </>
+              ) : (
+                "Save"
+              )}
+            </Button>
+          </div>
+        )}
       </div>
 
       <DeleteOverlay
@@ -1149,6 +1300,13 @@ export const ResumeBuilderPage = () => {
         deleteError={deleteError}
         itemType={currentDeleteType}
         onCloseError={() => setDeleteError(null)}
+      />
+
+      <SaveOverlay
+        isSaving={isSaving}
+        saveSuccess={saveSuccess}
+        saveError={saveError}
+        onCloseError={() => setSaveError(null)}
       />
     </div>
   );

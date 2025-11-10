@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage";
 import { StickyHeader } from "./components/StickyHeader";
 import { useState } from "react";
 import { ResumeBuilderPage } from "./pages/ResumeBuilderPage";
+import { SavedResumesPage } from "./pages/SavedResumesPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { DemoPage } from "./pages/DemoPage";
 
@@ -85,7 +86,7 @@ const AppContent: React.FC<{
             path="/saved"
             element={
               <ProtectedRoute>
-                <ResumeBuilderPage />
+                <SavedResumesPage />
               </ProtectedRoute>
             }
           />
