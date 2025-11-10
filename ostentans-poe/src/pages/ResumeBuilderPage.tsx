@@ -1108,7 +1108,17 @@ export const ResumeBuilderPage = () => {
 
       {/* Save button */}
       <div style={{ marginTop: "32px", textAlign: "center" }}>
-        <Subtitle2>Liked what you saw?</Subtitle2>
+        <Subtitle2>
+          Liked what you saw?
+          <Tooltip
+            content={`Saving the resume allows you to access it later from your saved resumes. 
+            This is a snapshot of the information and can't be edited after saving. 
+            Information also can't be removed as future changes to it won't reflect here.`}
+            relationship="description"
+          >
+            <QuestionCircle12Regular style={tooltipStyling} />
+          </Tooltip>
+        </Subtitle2>
       </div>
       <div style={{ marginTop: "3px", textAlign: "center" }}>
         <Button
