@@ -13,6 +13,13 @@ import { ResumeBuilderPage } from "./pages/ResumeBuilderPage";
 import { SavedResumesPage } from "./pages/SavedResumesPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { DemoPage } from "./pages/DemoPage";
+import AddSkillPage from "./pages/AddSkillPage";
+import AddSocialMediaPage from "./pages/AddSocialMediaPage";
+import AddResumeTitlePage from "./pages/AddResumeTitlePage";
+import AddProfessionalSummaryPage from "./pages/AddProfessionalSummaryPage";
+import AddWorkExperiencePage from "./pages/AddWorkExperiencePage";
+import AddEducationPage from "./pages/AddEducationPage";
+import AddCertificationPage from "./pages/AddCertificationPage";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -87,6 +94,62 @@ const AppContent: React.FC<{
             element={
               <ProtectedRoute>
                 <SavedResumesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-skills"
+            element={
+              <ProtectedRoute>
+                <AddSkillPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-socials"
+            element={
+              <ProtectedRoute>
+                <AddSocialMediaPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-titles"
+            element={
+              <ProtectedRoute>
+                <AddResumeTitlePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-summaries"
+            element={
+              <ProtectedRoute>
+                <AddProfessionalSummaryPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-experiences"
+            element={
+              <ProtectedRoute>
+                <AddWorkExperiencePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-educations"
+            element={
+              <ProtectedRoute>
+                <AddEducationPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-certifications"
+            element={
+              <ProtectedRoute>
+                <AddCertificationPage />
               </ProtectedRoute>
             }
           />

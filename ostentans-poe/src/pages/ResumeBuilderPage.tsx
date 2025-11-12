@@ -38,6 +38,7 @@ import { QuestionCircle12Regular } from "@fluentui/react-icons";
 import { deleteButtonStyle } from "../styles/constants/buttonStyling";
 import { subInformationStyle } from "../styles/constants/textStyling";
 import { tooltipStyling } from "../styles/constants/iconStyling";
+import { useNavigate } from "react-router-dom";
 
 const cardHeaderStyle = { display: "flex", gap: "8px" };
 
@@ -59,6 +60,7 @@ export const ResumeBuilderPage = () => {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   // Load resume data when component mounts
   useEffect(() => {
@@ -626,7 +628,7 @@ export const ResumeBuilderPage = () => {
                   <div style={cardHeaderStyle}>
                     <Button
                       size="small"
-                      onClick={() => handleSectionToggle("socials", true)}
+                      onClick={() => navigate("/add-socials")}
                     >
                       Add
                     </Button>
@@ -689,7 +691,7 @@ export const ResumeBuilderPage = () => {
                   <div style={cardHeaderStyle}>
                     <Button
                       size="small"
-                      onClick={() => handleSectionToggle("title", true)}
+                      onClick={() => navigate("/add-titles")}
                     >
                       Add
                     </Button>
@@ -754,7 +756,7 @@ export const ResumeBuilderPage = () => {
                   <div style={cardHeaderStyle}>
                     <Button
                       size="small"
-                      onClick={() => handleSectionToggle("summaries", true)}
+                      onClick={() => navigate("/add-summaries")}
                     >
                       Add
                     </Button>
@@ -833,7 +835,7 @@ export const ResumeBuilderPage = () => {
                   <div style={cardHeaderStyle}>
                     <Button
                       size="small"
-                      onClick={() => handleSectionToggle("skills", true)}
+                      onClick={() => navigate("/add-skills")}
                     >
                       Add
                     </Button>
@@ -896,7 +898,7 @@ export const ResumeBuilderPage = () => {
                   <div style={cardHeaderStyle}>
                     <Button
                       size="small"
-                      onClick={() => handleSectionToggle("experience", true)}
+                      onClick={() => navigate("/add-experiences")}
                     >
                       Add
                     </Button>
@@ -1044,7 +1046,7 @@ export const ResumeBuilderPage = () => {
                   <div style={cardHeaderStyle}>
                     <Button
                       size="small"
-                      onClick={() => handleSectionToggle("education", true)}
+                      onClick={() => navigate("/add-educations")}
                     >
                       Add
                     </Button>
@@ -1134,7 +1136,7 @@ export const ResumeBuilderPage = () => {
                   <div style={cardHeaderStyle}>
                     <Button
                       size="small"
-                      onClick={() => handleSectionToggle("certification", true)}
+                      onClick={() => navigate("/add-certifications")}
                     >
                       Add
                     </Button>
