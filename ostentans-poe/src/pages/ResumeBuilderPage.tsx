@@ -631,26 +631,30 @@ export const ResumeBuilderPage = () => {
                     >
                       Add
                     </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("socials", true)}
-                    >
-                      Select All
-                    </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("socials", false)}
-                    >
-                      Clear All
-                    </Button>
-                    <DeleteConfirmationMenu
-                      isEnabled={hasSelectedItemsInSection("social_")}
-                      buttonStyle={deleteButtonStyle(
-                        hasSelectedItemsInSection("social_")
-                      )}
-                      onConfirmDelete={handleDeleteSocialMedia}
-                      onUndo={handleUndoSelection}
-                    />
+                    {resumeData.socials.length > 0 && (
+                      <>
+                        <Button
+                          size="small"
+                          onClick={() => handleSectionToggle("socials", true)}
+                        >
+                          Select All
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() => handleSectionToggle("socials", false)}
+                        >
+                          Clear All
+                        </Button>
+                        <DeleteConfirmationMenu
+                          isEnabled={hasSelectedItemsInSection("social_")}
+                          buttonStyle={deleteButtonStyle(
+                            hasSelectedItemsInSection("social_")
+                          )}
+                          onConfirmDelete={handleDeleteSocialMedia}
+                          onUndo={handleUndoSelection}
+                        />
+                      </>
+                    )}
                   </div>
                 }
               />
@@ -695,26 +699,30 @@ export const ResumeBuilderPage = () => {
                     >
                       Add
                     </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("title", true)}
-                    >
-                      Select All
-                    </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("title", false)}
-                    >
-                      Clear All
-                    </Button>
-                    <DeleteConfirmationMenu
-                      isEnabled={hasSelectedItemsInSection("title_")}
-                      buttonStyle={deleteButtonStyle(
-                        hasSelectedItemsInSection("title_")
-                      )}
-                      onConfirmDelete={handleDeleteTitles}
-                      onUndo={handleUndoSelection}
-                    />
+                    {resumeData.title.length > 0 && (
+                      <>
+                        <Button
+                          size="small"
+                          onClick={() => handleSectionToggle("title", true)}
+                        >
+                          Select All
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() => handleSectionToggle("title", false)}
+                        >
+                          Clear All
+                        </Button>
+                        <DeleteConfirmationMenu
+                          isEnabled={hasSelectedItemsInSection("title_")}
+                          buttonStyle={deleteButtonStyle(
+                            hasSelectedItemsInSection("title_")
+                          )}
+                          onConfirmDelete={handleDeleteTitles}
+                          onUndo={handleUndoSelection}
+                        />
+                      </>
+                    )}
                   </div>
                 }
               />
@@ -759,26 +767,32 @@ export const ResumeBuilderPage = () => {
                     >
                       Add
                     </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("summaries", true)}
-                    >
-                      Select All
-                    </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("summaries", false)}
-                    >
-                      Clear All
-                    </Button>
-                    <DeleteConfirmationMenu
-                      isEnabled={hasSelectedItemsInSection("summary_")}
-                      buttonStyle={deleteButtonStyle(
-                        hasSelectedItemsInSection("summary_")
-                      )}
-                      onConfirmDelete={handleDeleteSummaries}
-                      onUndo={handleUndoSelection}
-                    />
+                    {resumeData.summaries.length > 0 && (
+                      <>
+                        <Button
+                          size="small"
+                          onClick={() => handleSectionToggle("summaries", true)}
+                        >
+                          Select All
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() =>
+                            handleSectionToggle("summaries", false)
+                          }
+                        >
+                          Clear All
+                        </Button>
+                        <DeleteConfirmationMenu
+                          isEnabled={hasSelectedItemsInSection("summary_")}
+                          buttonStyle={deleteButtonStyle(
+                            hasSelectedItemsInSection("summary_")
+                          )}
+                          onConfirmDelete={handleDeleteSummaries}
+                          onUndo={handleUndoSelection}
+                        />
+                      </>
+                    )}
                   </div>
                 }
               />
@@ -836,26 +850,30 @@ export const ResumeBuilderPage = () => {
                     >
                       Add
                     </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("skills", true)}
-                    >
-                      Select All
-                    </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("skills", false)}
-                    >
-                      Clear All
-                    </Button>
-                    <DeleteConfirmationMenu
-                      isEnabled={hasSelectedItemsInSection("skill_")}
-                      buttonStyle={deleteButtonStyle(
-                        hasSelectedItemsInSection("skill_")
-                      )}
-                      onConfirmDelete={handleDeleteSkills}
-                      onUndo={handleUndoSelection}
-                    />
+                    {resumeData.skills.length > 0 && (
+                      <>
+                        <Button
+                          size="small"
+                          onClick={() => handleSectionToggle("skills", true)}
+                        >
+                          Select All
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() => handleSectionToggle("skills", false)}
+                        >
+                          Clear All
+                        </Button>
+                        <DeleteConfirmationMenu
+                          isEnabled={hasSelectedItemsInSection("skill_")}
+                          buttonStyle={deleteButtonStyle(
+                            hasSelectedItemsInSection("skill_")
+                          )}
+                          onConfirmDelete={handleDeleteSkills}
+                          onUndo={handleUndoSelection}
+                        />
+                      </>
+                    )}
                   </div>
                 }
               />
@@ -899,26 +917,34 @@ export const ResumeBuilderPage = () => {
                     >
                       Add
                     </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("experience", true)}
-                    >
-                      Select All
-                    </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("experience", false)}
-                    >
-                      Clear All
-                    </Button>
-                    <DeleteConfirmationMenu
-                      isEnabled={hasSelectedItemsInSection("experience_")}
-                      buttonStyle={deleteButtonStyle(
-                        hasSelectedItemsInSection("experience_")
-                      )}
-                      onConfirmDelete={handleDeleteExperience}
-                      onUndo={handleUndoSelection}
-                    />
+                    {resumeData.experience.length > 0 && (
+                      <>
+                        <Button
+                          size="small"
+                          onClick={() =>
+                            handleSectionToggle("experience", true)
+                          }
+                        >
+                          Select All
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() =>
+                            handleSectionToggle("experience", false)
+                          }
+                        >
+                          Clear All
+                        </Button>
+                        <DeleteConfirmationMenu
+                          isEnabled={hasSelectedItemsInSection("experience_")}
+                          buttonStyle={deleteButtonStyle(
+                            hasSelectedItemsInSection("experience_")
+                          )}
+                          onConfirmDelete={handleDeleteExperience}
+                          onUndo={handleUndoSelection}
+                        />
+                      </>
+                    )}
                   </div>
                 }
               />
@@ -1039,26 +1065,32 @@ export const ResumeBuilderPage = () => {
                     >
                       Add
                     </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("education", true)}
-                    >
-                      Select All
-                    </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("education", false)}
-                    >
-                      Clear All
-                    </Button>
-                    <DeleteConfirmationMenu
-                      isEnabled={hasSelectedItemsInSection("education_")}
-                      buttonStyle={deleteButtonStyle(
-                        hasSelectedItemsInSection("education_")
-                      )}
-                      onConfirmDelete={handleDeleteEducation}
-                      onUndo={handleUndoSelection}
-                    />
+                    {resumeData.education.length > 0 && (
+                      <>
+                        <Button
+                          size="small"
+                          onClick={() => handleSectionToggle("education", true)}
+                        >
+                          Select All
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() =>
+                            handleSectionToggle("education", false)
+                          }
+                        >
+                          Clear All
+                        </Button>
+                        <DeleteConfirmationMenu
+                          isEnabled={hasSelectedItemsInSection("education_")}
+                          buttonStyle={deleteButtonStyle(
+                            hasSelectedItemsInSection("education_")
+                          )}
+                          onConfirmDelete={handleDeleteEducation}
+                          onUndo={handleUndoSelection}
+                        />
+                      </>
+                    )}
                   </div>
                 }
               />
@@ -1127,28 +1159,36 @@ export const ResumeBuilderPage = () => {
                     >
                       Add
                     </Button>
-                    <Button
-                      size="small"
-                      onClick={() => handleSectionToggle("certification", true)}
-                    >
-                      Select All
-                    </Button>
-                    <Button
-                      size="small"
-                      onClick={() =>
-                        handleSectionToggle("certification", false)
-                      }
-                    >
-                      Clear All
-                    </Button>
-                    <DeleteConfirmationMenu
-                      isEnabled={hasSelectedItemsInSection("certification_")}
-                      buttonStyle={deleteButtonStyle(
-                        hasSelectedItemsInSection("certification_")
-                      )}
-                      onConfirmDelete={handleDeleteCertifications}
-                      onUndo={handleUndoSelection}
-                    />
+                    {resumeData.certification.length > 0 && (
+                      <>
+                        <Button
+                          size="small"
+                          onClick={() =>
+                            handleSectionToggle("certification", true)
+                          }
+                        >
+                          Select All
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() =>
+                            handleSectionToggle("certification", false)
+                          }
+                        >
+                          Clear All
+                        </Button>
+                        <DeleteConfirmationMenu
+                          isEnabled={hasSelectedItemsInSection(
+                            "certification_"
+                          )}
+                          buttonStyle={deleteButtonStyle(
+                            hasSelectedItemsInSection("certification_")
+                          )}
+                          onConfirmDelete={handleDeleteCertifications}
+                          onUndo={handleUndoSelection}
+                        />
+                      </>
+                    )}
                   </div>
                 }
               />
