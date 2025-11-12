@@ -10,7 +10,7 @@ import {
   SignOut20Regular,
 } from "@fluentui/react-icons";
 import { useAuth } from "../contexts/AuthContext";
-import ThemeSwitcher from "./ThemeSwitcher";
+import { ThemeSwitcherButton } from "./ThemeSwitcherButton";
 
 interface StickyHeaderProps {
   isDarkTheme: boolean;
@@ -105,7 +105,6 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
   const logoStyle = {
     fontSize: "24px",
     fontWeight: "700",
-    color: isDarkTheme ? "#ffffff" : "#0B486B",
     cursor: "default",
     userSelect: "none" as const,
     marginRight: "24px",
@@ -145,7 +144,6 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
       isDarkTheme ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)"
     }`,
     cursor: "pointer",
-    color: isDarkTheme ? "#ffffff" : "#000000",
   };
 
   return (
@@ -179,13 +177,6 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
                       style={{
                         fontWeight: isActive ? "bold" : "normal",
                         fontStyle: isActive ? "bold" : "normal",
-                        color: isDarkTheme
-                          ? isActive
-                            ? "#ffffff"
-                            : "rgba(255, 255, 255, 0.8)"
-                          : isActive
-                          ? "#0B486B"
-                          : "rgba(11, 72, 107, 0.8)",
                       }}
                     >
                       {item.label}
@@ -195,7 +186,7 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
               </div>
             )}
 
-            <ThemeSwitcher
+            <ThemeSwitcherButton
               isDarkTheme={isDarkTheme}
               setIsDarkTheme={setIsDarkTheme}
             />
@@ -204,7 +195,7 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
 
         {isMobile && (
           <div style={mobileNavStyle}>
-            <ThemeSwitcher
+            <ThemeSwitcherButton
               isDarkTheme={isDarkTheme}
               setIsDarkTheme={setIsDarkTheme}
             />

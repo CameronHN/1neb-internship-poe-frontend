@@ -9,7 +9,7 @@ type ThemeSwitcherProps = {
   setIsDarkTheme: (val: boolean) => void;
 };
 
-const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
+export const ThemeSwitcherButton: React.FC<ThemeSwitcherProps> = ({
   isDarkTheme,
   setIsDarkTheme,
 }) => {
@@ -38,5 +38,3 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     />
   );
 };
-
-export default ThemeSwitcher;
