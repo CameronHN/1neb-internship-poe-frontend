@@ -31,8 +31,8 @@ import { skillService } from "../services/skillService";
 import { titleService } from "../services/titleService";
 import { socialMediaService } from "../services/socialMediaService";
 import { savedResumeService } from "../services/savedResumeService";
-import { DeleteOverlay } from "../components/DeleteOverlay";
-import { SaveOverlay } from "../components/SaveOverlay";
+import { DeleteOverlay } from "../components/Overlays/DeleteOverlay";
+import { SaveOverlay } from "../components/Overlays/SaveOverlay";
 import { DeleteConfirmationMenu } from "../components/DeleteConfirmationMenu";
 import { QuestionCircle12Regular } from "@fluentui/react-icons";
 import { deleteButtonStyle } from "../styles/constants/buttonStyling";
@@ -659,26 +659,34 @@ export const ResumeBuilderPage = () => {
                   </div>
                 }
               />
-              <CardPreview style={{ padding: "16px" }}>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                    gap: "12px",
-                  }}
-                >
-                  {resumeData.socials.map((social: any, index: number) => (
-                    <Checkbox
-                      key={social.id}
-                      label={social.socialMediaUrl}
-                      checked={selectedIds.has(`social_${index}`)}
-                      onChange={(_, data) =>
-                        handleCheckboxChange(`social_${index}`, !!data.checked)
-                      }
-                    />
-                  ))}
-                </div>
-              </CardPreview>
+              {resumeData.socials.length > 0 && (
+                <>
+                  <CardPreview style={{ padding: "16px" }}>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(300px, 1fr))",
+                        gap: "12px",
+                      }}
+                    >
+                      {resumeData.socials.map((social: any, index: number) => (
+                        <Checkbox
+                          key={social.id}
+                          label={social.socialMediaUrl}
+                          checked={selectedIds.has(`social_${index}`)}
+                          onChange={(_, data) =>
+                            handleCheckboxChange(
+                              `social_${index}`,
+                              !!data.checked
+                            )
+                          }
+                        />
+                      ))}
+                    </div>
+                  </CardPreview>
+                </>
+              )}
             </Card>
           )}
 
@@ -722,26 +730,33 @@ export const ResumeBuilderPage = () => {
                   </div>
                 }
               />
-              <CardPreview style={{ padding: "16px" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "12px",
-                  }}
-                >
-                  {resumeData.title.map((titleObj: any, index: number) => (
-                    <Checkbox
-                      key={titleObj.id}
-                      label={titleObj.title}
-                      checked={selectedIds.has(`title_${index}`)}
-                      onChange={(_, data) =>
-                        handleCheckboxChange(`title_${index}`, !!data.checked)
-                      }
-                    />
-                  ))}
-                </div>
-              </CardPreview>
+              {resumeData.title.length > 0 && (
+                <>
+                  <CardPreview style={{ padding: "16px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "12px",
+                      }}
+                    >
+                      {resumeData.title.map((titleObj: any, index: number) => (
+                        <Checkbox
+                          key={titleObj.id}
+                          label={titleObj.title}
+                          checked={selectedIds.has(`title_${index}`)}
+                          onChange={(_, data) =>
+                            handleCheckboxChange(
+                              `title_${index}`,
+                              !!data.checked
+                            )
+                          }
+                        />
+                      ))}
+                    </div>
+                  </CardPreview>
+                </>
+              )}
             </Card>
           )}
 
@@ -789,40 +804,47 @@ export const ResumeBuilderPage = () => {
                   </div>
                 }
               />
-              <CardPreview style={{ padding: "16px" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "16px",
-                  }}
-                >
-                  {resumeData.summaries.map(
-                    (summaryObj: any, index: number) => (
-                      <div key={summaryObj.id}>
-                        <Checkbox
-                          label={
-                            <div>
-                              <div
-                                style={{ fontSize: "13px", lineHeight: "1.4" }}
-                              >
-                                {summaryObj.summary}
-                              </div>
-                            </div>
-                          }
-                          checked={selectedIds.has(`summary_${index}`)}
-                          onChange={(_, data) =>
-                            handleCheckboxChange(
-                              `summary_${index}`,
-                              !!data.checked
-                            )
-                          }
-                        />
-                      </div>
-                    )
-                  )}
-                </div>
-              </CardPreview>
+              {resumeData.summaries.length > 0 && (
+                <>
+                  <CardPreview style={{ padding: "16px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "16px",
+                      }}
+                    >
+                      {resumeData.summaries.map(
+                        (summaryObj: any, index: number) => (
+                          <div key={summaryObj.id}>
+                            <Checkbox
+                              label={
+                                <div>
+                                  <div
+                                    style={{
+                                      fontSize: "13px",
+                                      lineHeight: "1.4",
+                                    }}
+                                  >
+                                    {summaryObj.summary}
+                                  </div>
+                                </div>
+                              }
+                              checked={selectedIds.has(`summary_${index}`)}
+                              onChange={(_, data) =>
+                                handleCheckboxChange(
+                                  `summary_${index}`,
+                                  !!data.checked
+                                )
+                              }
+                            />
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </CardPreview>
+                </>
+              )}
             </Card>
           )}
 
@@ -866,26 +888,34 @@ export const ResumeBuilderPage = () => {
                   </div>
                 }
               />
-              <CardPreview style={{ padding: "16px" }}>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                    gap: "12px",
-                  }}
-                >
-                  {resumeData.skills.map((skill: any, index: number) => (
-                    <Checkbox
-                      key={skill.id}
-                      label={`${skill.skill} (${skill.skillLevel})`}
-                      checked={selectedIds.has(`skill_${index}`)}
-                      onChange={(_, data) =>
-                        handleCheckboxChange(`skill_${index}`, !!data.checked)
-                      }
-                    />
-                  ))}
-                </div>
-              </CardPreview>
+              {resumeData.skills.length > 0 && (
+                <>
+                  <CardPreview style={{ padding: "16px" }}>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(300px, 1fr))",
+                        gap: "12px",
+                      }}
+                    >
+                      {resumeData.skills.map((skill: any, index: number) => (
+                        <Checkbox
+                          key={skill.id}
+                          label={`${skill.skill} (${skill.skillLevel})`}
+                          checked={selectedIds.has(`skill_${index}`)}
+                          onChange={(_, data) =>
+                            handleCheckboxChange(
+                              `skill_${index}`,
+                              !!data.checked
+                            )
+                          }
+                        />
+                      ))}
+                    </div>
+                  </CardPreview>
+                </>
+              )}
             </Card>
           )}
 
@@ -933,96 +963,100 @@ export const ResumeBuilderPage = () => {
                   </div>
                 }
               />
-              <CardPreview style={{ padding: "16px" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "16px",
-                  }}
-                >
-                  {resumeData.experience.map((exp: any, index: number) => (
+              {resumeData.experience.length > 0 && (
+                <>
+                  <CardPreview style={{ padding: "16px" }}>
                     <div
-                      key={exp.id}
                       style={{
-                        border: "1px solid #e1e1e1",
-                        borderRadius: "8px",
-                        padding: "12px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "16px",
                       }}
                     >
-                      <Checkbox
-                        label={
-                          <div style={{ width: "100%" }}>
-                            <div style={{ fontWeight: "600" }}>
-                              {exp.jobTitle} at {exp.company}
-                            </div>
-                            <div style={subInformationStyle}>
-                              {exp.startDate} - {exp.endDate}
-                            </div>
-                            <div style={{ marginTop: "8px" }}>
-                              <Accordion multiple collapsible>
-                                <AccordionItem
-                                  value={`responsibilities-${index}`}
-                                >
-                                  <AccordionHeader
-                                    size="small"
-                                    style={subInformationStyle}
-                                  >
-                                    {exp.responsibilities.length}{" "}
-                                    responsibilities
-                                  </AccordionHeader>
-                                  <AccordionPanel>
-                                    <List
-                                      style={{
-                                        margin: 0,
-                                        paddingLeft: "20px",
-                                        ...subInformationStyle,
-                                      }}
+                      {resumeData.experience.map((exp: any, index: number) => (
+                        <div
+                          key={exp.id}
+                          style={{
+                            border: "1px solid #e1e1e1",
+                            borderRadius: "8px",
+                            padding: "12px",
+                          }}
+                        >
+                          <Checkbox
+                            label={
+                              <div style={{ width: "100%" }}>
+                                <div style={{ fontWeight: "600" }}>
+                                  {exp.jobTitle} at {exp.company}
+                                </div>
+                                <div style={subInformationStyle}>
+                                  {exp.startDate} - {exp.endDate}
+                                </div>
+                                <div style={{ marginTop: "8px" }}>
+                                  <Accordion multiple collapsible>
+                                    <AccordionItem
+                                      value={`responsibilities-${index}`}
                                     >
-                                      {exp.responsibilities.map(
-                                        (
-                                          responsibility: string,
-                                          respIndex: number
-                                        ) => (
-                                          <ListItem
-                                            key={respIndex}
-                                            style={{
-                                              marginBottom: "4px",
-                                              fontSize: "12px",
-                                              position: "relative",
-                                            }}
-                                          >
-                                            <span
-                                              style={{
-                                                position: "absolute",
-                                                left: "-12px",
-                                              }}
-                                            >
-                                              •
-                                            </span>
-                                            {responsibility}
-                                          </ListItem>
-                                        )
-                                      )}
-                                    </List>
-                                  </AccordionPanel>
-                                </AccordionItem>
-                              </Accordion>
-                            </div>
-                          </div>
-                        }
-                        checked={selectedIds.has(`experience_${index}`)}
-                        onChange={(_, data) =>
-                          handleCheckboxChange(
-                            `experience_${index}`,
-                            !!data.checked
-                          )
-                        }
-                      />
+                                      <AccordionHeader
+                                        size="small"
+                                        style={subInformationStyle}
+                                      >
+                                        {exp.responsibilities.length}{" "}
+                                        responsibilities
+                                      </AccordionHeader>
+                                      <AccordionPanel>
+                                        <List
+                                          style={{
+                                            margin: 0,
+                                            paddingLeft: "20px",
+                                            ...subInformationStyle,
+                                          }}
+                                        >
+                                          {exp.responsibilities.map(
+                                            (
+                                              responsibility: string,
+                                              respIndex: number
+                                            ) => (
+                                              <ListItem
+                                                key={respIndex}
+                                                style={{
+                                                  marginBottom: "4px",
+                                                  fontSize: "12px",
+                                                  position: "relative",
+                                                }}
+                                              >
+                                                <span
+                                                  style={{
+                                                    position: "absolute",
+                                                    left: "-12px",
+                                                  }}
+                                                >
+                                                  •
+                                                </span>
+                                                {responsibility}
+                                              </ListItem>
+                                            )
+                                          )}
+                                        </List>
+                                      </AccordionPanel>
+                                    </AccordionItem>
+                                  </Accordion>
+                                </div>
+                              </div>
+                            }
+                            checked={selectedIds.has(`experience_${index}`)}
+                            onChange={(_, data) =>
+                              handleCheckboxChange(
+                                `experience_${index}`,
+                                !!data.checked
+                              )
+                            }
+                          />
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </CardPreview>
+                  </CardPreview>
+                </>
+              )}
             </Card>
           )}
 
@@ -1079,51 +1113,57 @@ export const ResumeBuilderPage = () => {
                   </div>
                 }
               />
-              <CardPreview style={{ padding: "16px" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "16px",
-                  }}
-                >
-                  {resumeData.education.map((edu: any, index: number) => (
+              {resumeData.education.length > 0 && (
+                <>
+                  <CardPreview style={{ padding: "16px" }}>
                     <div
-                      key={edu.id}
                       style={{
-                        border: "1px solid #e1e1e1",
-                        borderRadius: "8px",
-                        padding: "12px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "16px",
                       }}
                     >
-                      <Checkbox
-                        label={
-                          <div>
-                            <div style={{ fontWeight: "600" }}>
-                              {edu.qualification}
-                            </div>
-                            <div style={subInformationStyle}>
-                              {edu.institution} • {edu.startDate} -{" "}
-                              {edu.endDate}
-                            </div>
-                            <div style={{ fontSize: "12px", color: "#666" }}>
-                              Major: {edu.major} • Achievement:{" "}
-                              {edu.achievement}
-                            </div>
-                          </div>
-                        }
-                        checked={selectedIds.has(`education_${index}`)}
-                        onChange={(_, data) =>
-                          handleCheckboxChange(
-                            `education_${index}`,
-                            !!data.checked
-                          )
-                        }
-                      />
+                      {resumeData.education.map((edu: any, index: number) => (
+                        <div
+                          key={edu.id}
+                          style={{
+                            border: "1px solid #e1e1e1",
+                            borderRadius: "8px",
+                            padding: "12px",
+                          }}
+                        >
+                          <Checkbox
+                            label={
+                              <div>
+                                <div style={{ fontWeight: "600" }}>
+                                  {edu.qualification}
+                                </div>
+                                <div style={subInformationStyle}>
+                                  {edu.institution} • {edu.startDate} -{" "}
+                                  {edu.endDate}
+                                </div>
+                                <div
+                                  style={{ fontSize: "12px", color: "#666" }}
+                                >
+                                  Major: {edu.major} • Achievement:{" "}
+                                  {edu.achievement}
+                                </div>
+                              </div>
+                            }
+                            checked={selectedIds.has(`education_${index}`)}
+                            onChange={(_, data) =>
+                              handleCheckboxChange(
+                                `education_${index}`,
+                                !!data.checked
+                              )
+                            }
+                          />
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </CardPreview>
+                  </CardPreview>
+                </>
+              )}
             </Card>
           )}
 
@@ -1173,47 +1213,60 @@ export const ResumeBuilderPage = () => {
                   </div>
                 }
               />
-              <CardPreview style={{ padding: "16px" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "16px",
-                  }}
-                >
-                  {resumeData.certification.map((cert: any, index: number) => (
+              {resumeData.certification.length > 0 && (
+                <>
+                  <CardPreview style={{ padding: "16px" }}>
                     <div
-                      key={cert.id}
                       style={{
-                        border: "1px solid #e1e1e1",
-                        borderRadius: "8px",
-                        padding: "12px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "16px",
                       }}
                     >
-                      <Checkbox
-                        label={
-                          <div>
-                            <div style={{ fontWeight: "600" }}>{cert.name}</div>
-                            <div style={subInformationStyle}>
-                              {cert.organisation} • Issued: {cert.issuedDate}
-                            </div>
-                            <div style={{ fontSize: "12px", color: "#666" }}>
-                              Expires: {cert.expirationDate}
-                            </div>
+                      {resumeData.certification.map(
+                        (cert: any, index: number) => (
+                          <div
+                            key={cert.id}
+                            style={{
+                              border: "1px solid #e1e1e1",
+                              borderRadius: "8px",
+                              padding: "12px",
+                            }}
+                          >
+                            <Checkbox
+                              label={
+                                <div>
+                                  <div style={{ fontWeight: "600" }}>
+                                    {cert.name}
+                                  </div>
+                                  <div style={subInformationStyle}>
+                                    {cert.organisation} • Issued:{" "}
+                                    {cert.issuedDate}
+                                  </div>
+                                  <div
+                                    style={{ fontSize: "12px", color: "#666" }}
+                                  >
+                                    Expires: {cert.expirationDate}
+                                  </div>
+                                </div>
+                              }
+                              checked={selectedIds.has(
+                                `certification_${index}`
+                              )}
+                              onChange={(_, data) =>
+                                handleCheckboxChange(
+                                  `certification_${index}`,
+                                  !!data.checked
+                                )
+                              }
+                            />
                           </div>
-                        }
-                        checked={selectedIds.has(`certification_${index}`)}
-                        onChange={(_, data) =>
-                          handleCheckboxChange(
-                            `certification_${index}`,
-                            !!data.checked
-                          )
-                        }
-                      />
+                        )
+                      )}
                     </div>
-                  ))}
-                </div>
-              </CardPreview>
+                  </CardPreview>
+                </>
+              )}
             </Card>
           )}
         </div>
@@ -1327,6 +1380,7 @@ export const ResumeBuilderPage = () => {
         isSaving={isSaving}
         saveSuccess={saveSuccess}
         saveError={saveError}
+        typeSaved={"Resume"}
         onCloseError={() => setSaveError(null)}
       />
     </div>
