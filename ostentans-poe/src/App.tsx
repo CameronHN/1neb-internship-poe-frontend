@@ -34,8 +34,8 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
 };
 
 const lightThemeBg = {
-  minHeight: "100%",
-  minWidth: "100%",
+  minHeight: "100vh",
+  minWidth: "100vw",
   background: "linear-gradient( #FFBCFB 10%, #F56217 100%)",
   display: "flex",
   flexDirection: "column" as const,
@@ -43,8 +43,8 @@ const lightThemeBg = {
 };
 
 const darkThemeBg = {
-  minHeight: "100%",
-  minWidth: "100%",
+  minHeight: "100vh",
+  minWidth: "100vw",
   background: "#062638ff",
   display: "flex",
   flexDirection: "column" as const,
