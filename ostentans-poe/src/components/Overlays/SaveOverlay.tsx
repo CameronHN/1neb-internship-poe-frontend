@@ -6,6 +6,7 @@ interface SaveOverlayProps {
   isSaving: boolean;
   saveSuccess: boolean;
   saveError: string | null;
+  typeSaved: string | null;
   onCloseError: () => void;
 }
 
@@ -13,6 +14,7 @@ export const SaveOverlay: React.FC<SaveOverlayProps> = ({
   isSaving,
   saveSuccess,
   saveError,
+  typeSaved = "Object",
   onCloseError,
 }) => {
   if (!isSaving && !saveSuccess && !saveError) {
@@ -52,7 +54,7 @@ export const SaveOverlay: React.FC<SaveOverlayProps> = ({
             {isSaving && !saveSuccess && (
               <>
                 <Spinner size="extra-large" />
-                <Text size={500}>Saving resume...</Text>
+                <Text size={500}>Saving {typeSaved}...</Text>
               </>
             )}
             {saveSuccess && (
@@ -60,7 +62,7 @@ export const SaveOverlay: React.FC<SaveOverlayProps> = ({
                 <CheckmarkCircle24Filled
                   style={{ color: "#107c10", fontSize: "48px" }}
                 />
-                <Text size={500}>Resume saved successfully!</Text>
+                <Text size={500}>{typeSaved} saved successfully!</Text>
               </>
             )}
           </div>
