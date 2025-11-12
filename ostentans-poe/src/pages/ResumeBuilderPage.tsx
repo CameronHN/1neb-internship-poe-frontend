@@ -607,7 +607,7 @@ export const ResumeBuilderPage = () => {
             </CardPreview>
           </Card>
           {/* Social Media Section */}
-          {resumeData.socials && resumeData.socials.length > 0 && (
+          {resumeData.socials && (
             <Card>
               <CardHeader
                 header={
@@ -678,7 +678,7 @@ export const ResumeBuilderPage = () => {
           )}
 
           {/* Titles Section */}
-          {resumeData.title && resumeData.title.length > 0 && (
+          {resumeData.title && (
             <Card>
               <CardHeader
                 header={
@@ -742,7 +742,7 @@ export const ResumeBuilderPage = () => {
           )}
 
           {/* Summaries Section */}
-          {resumeData.summaries && resumeData.summaries.length > 0 && (
+          {resumeData.summaries && (
             <Card>
               <CardHeader
                 header={
@@ -820,7 +820,7 @@ export const ResumeBuilderPage = () => {
           )}
 
           {/* Skills Section */}
-          {resumeData.skills && resumeData.skills.length > 0 && (
+          {resumeData.skills && (
             <Card>
               <CardHeader
                 header={
@@ -883,7 +883,7 @@ export const ResumeBuilderPage = () => {
           )}
 
           {/* Experience Section */}
-          {resumeData.experience && resumeData.experience.length > 0 && (
+          {resumeData.experience && (
             <Card>
               <CardHeader
                 header={
@@ -1016,7 +1016,7 @@ export const ResumeBuilderPage = () => {
           )}
 
           {/* Education Section */}
-          {resumeData.education && resumeData.education.length > 0 && (
+          {resumeData.education && (
             <Card>
               <CardHeader
                 header={
@@ -1111,7 +1111,7 @@ export const ResumeBuilderPage = () => {
           )}
 
           {/* Certifications Section */}
-          {resumeData.certification && resumeData.certification.length > 0 && (
+          {resumeData.certification && (
             <Card>
               <CardHeader
                 header={
