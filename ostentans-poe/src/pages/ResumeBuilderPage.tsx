@@ -612,8 +612,7 @@ export const ResumeBuilderPage = () => {
               <CardHeader
                 header={
                   <Subtitle1>
-                    Social Media ({resumeData.socials.length} available - Max 2
-                    allowed)
+                    Social Media - Select up to 2
                     <Tooltip
                       content="It's recommended to have up to 2 social media links so to not overwhelm the resume."
                       relationship="description"
@@ -685,12 +684,7 @@ export const ResumeBuilderPage = () => {
           {resumeData.title && (
             <Card>
               <CardHeader
-                header={
-                  <Subtitle1>
-                    Resume Titles ({resumeData.title.length} available - select
-                    1)
-                  </Subtitle1>
-                }
+                header={<Subtitle1>Resume Titles - Select 1</Subtitle1>}
                 action={
                   <div style={cardHeaderStyle}>
                     <Button
@@ -754,10 +748,7 @@ export const ResumeBuilderPage = () => {
             <Card>
               <CardHeader
                 header={
-                  <Subtitle1>
-                    Professional Summaries ({resumeData.summaries.length}{" "}
-                    available - select 1)
-                  </Subtitle1>
+                  <Subtitle1>Professional Summaries - Select 1</Subtitle1>
                 }
                 action={
                   <div style={cardHeaderStyle}>
@@ -837,11 +828,7 @@ export const ResumeBuilderPage = () => {
           {resumeData.skills && (
             <Card>
               <CardHeader
-                header={
-                  <Subtitle1>
-                    Skills ({resumeData.skills.length} available)
-                  </Subtitle1>
-                }
+                header={<Subtitle1>Skills</Subtitle1>}
                 action={
                   <div style={cardHeaderStyle}>
                     <Button
@@ -904,11 +891,7 @@ export const ResumeBuilderPage = () => {
           {resumeData.experience && (
             <Card>
               <CardHeader
-                header={
-                  <Subtitle1>
-                    Work Experience ({resumeData.experience.length} available)
-                  </Subtitle1>
-                }
+                header={<Subtitle1>Work Experience</Subtitle1>}
                 action={
                   <div style={cardHeaderStyle}>
                     <Button
@@ -1047,7 +1030,7 @@ export const ResumeBuilderPage = () => {
               <CardHeader
                 header={
                   <Subtitle1>
-                    Education ({resumeData.education.length} available - max 3)
+                    Education - Select up to 3
                     <Tooltip
                       content="It's recommended to have up to 3 releveant education entries so to not overwhelm the resume."
                       relationship="description"
@@ -1146,11 +1129,7 @@ export const ResumeBuilderPage = () => {
           {resumeData.certification && (
             <Card>
               <CardHeader
-                header={
-                  <Subtitle1>
-                    Certifications ({resumeData.certification.length} available)
-                  </Subtitle1>
-                }
+                header={<Subtitle1>Certifications</Subtitle1>}
                 action={
                   <div style={cardHeaderStyle}>
                     <Button
