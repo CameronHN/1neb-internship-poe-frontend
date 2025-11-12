@@ -27,6 +27,35 @@ class TitleService {
             throw new Error("Failed to delete titles");
         }
     }
+
+    /**
+     * Add multiple resume title entries
+     * @param titles Array of resume titles to add
+     * @returns Promise<void>
+     */
+    async addTitles(titles: string[]): Promise<void> {
+        if (!titles || titles.length === 0) {
+            throw new Error("No titles provided");
+        }
+
+        const titleData = titles.map(url => ({ title: url }));
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Title/add`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(titleData),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to add resume title entries");
+        }
+    }
 }
 
 export const titleService = new TitleService();
