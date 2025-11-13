@@ -1,12 +1,22 @@
 import { Title2 } from "@fluentui/react-components";
 import React from "react";
+import { AddEducationForm } from "../components/Education/AddEducationForm";
 
 const AddEducationPage: React.FC = () => {
   return (
-    <div style={{ padding: "4rem 2rem", maxWidth: "60vw", margin: "0 auto" }}>
+    <div
+      style={{
+        padding: "4rem 2rem",
+        minWidth: "60vw",
+        maxWidth: "90vw",
+        margin: "0 auto",
+      }}
+    >
+      {" "}
       <div style={{ marginBottom: "32px", textAlign: "center" }}>
         <Title2>Add Education</Title2>
       </div>
+      <AddEducationForm />
     </div>
   );
 };

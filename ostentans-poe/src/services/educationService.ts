@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import type { Education } from "../types/educationTypes";
 
 class EducationService {
     /**
@@ -25,6 +26,38 @@ class EducationService {
 
         if (!response.ok) {
             throw new Error("Failed to delete education entries");
+        }
+    }
+
+    async addEducations(educations: Education[]): Promise<void> {
+        if (!educations || educations.length === 0) {
+            throw new Error("No educations provided");
+        }
+
+        // Transform educations to the expected API format
+        const eduData = educations.map(education => ({
+            qualification: education.qualification,
+            institutionName: education.institutionName,
+            startDate: education.startDate,
+            endDate: education.endDate,
+            major: education.major,
+            achievement: education.achievement
+        }));
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Education/add`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(eduData),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to add educations");
         }
     }
 }
