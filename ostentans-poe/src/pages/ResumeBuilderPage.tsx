@@ -1240,13 +1240,15 @@ export const ResumeBuilderPage = () => {
                                     {cert.name}
                                   </div>
                                   <div style={subInformationStyle}>
-                                    {cert.organisation} • Issued:{" "}
-                                    {cert.issuedDate}
+                                    {cert.organisation}
                                   </div>
                                   <div
                                     style={{ fontSize: "12px", color: "#666" }}
                                   >
-                                    Expires: {cert.expirationDate}
+                                    {cert.issuedDate &&
+                                      `Issued: ${cert.issuedDate} `}
+                                    {cert.expirationDate &&
+                                      `| Expires: ${cert.expirationDate}`}
                                   </div>
                                 </div>
                               }
