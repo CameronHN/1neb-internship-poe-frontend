@@ -11,9 +11,9 @@ export const AddCertificationForm: React.FC = () => {
     {
       certificationName: "",
       issuingOrganisation: "",
-      credentialUrl: "",
-      issuedDate: "",
-      expiryDate: "",
+      credentialUrl: null,
+      issuedDate: null,
+      expiryDate: null,
     },
   ]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
