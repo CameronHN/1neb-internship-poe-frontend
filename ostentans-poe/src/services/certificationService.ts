@@ -1,5 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
-import type { Certification } from "../types/certificationTypes";
+import type { AddCertification, Certification } from "../types/certificationTypes";
 
 class CertificationService {
     /**
@@ -29,7 +29,7 @@ class CertificationService {
         }
     }
 
-    async addCertifications(certifications: Certification[]): Promise<void> {
+    async addCertifications(certifications: AddCertification[]): Promise<void> {
         if (!certifications || certifications.length === 0) {
             throw new Error("No certifications provided");
         }
@@ -57,6 +57,51 @@ class CertificationService {
 
         if (!response.ok) {
             throw new Error("Failed to add certifications");
+        }
+    }
+
+    async getCertificationById(id: string): Promise<Certification> {
+        if (!id) {
+            throw new Error("No certification ID provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Certification/${id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch certification");
+        }
+
+        return await response.json();
+    }
+
+    async updateCertification(certification: Certification): Promise<void> {
+        if (!certification) {
+            throw new Error("No certification provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Certification/patch`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(certification),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to update certification");
         }
     }
 }
