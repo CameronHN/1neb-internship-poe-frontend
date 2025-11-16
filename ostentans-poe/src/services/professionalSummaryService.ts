@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import type { Summary } from "../types/professionalSummaryTypes";
 
 class ProfessionalSummaryService {
     /**
@@ -54,6 +55,51 @@ class ProfessionalSummaryService {
 
         if (!response.ok) {
             throw new Error("Failed to add professional summary entries");
+        }
+    }
+
+    async getSummaryById(id: string): Promise<string> {
+        if (!id) {
+            throw new Error("No summary ID provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/ProfessionalSummary/${id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch summary");
+        }
+
+        return await response.text();
+    }
+
+    async updateSummary(summary: Summary): Promise<void> {
+        if (!summary) {
+            throw new Error("No summary provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/ProfessionalSummary/patch`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(summary),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to update summary");
         }
     }
 }
