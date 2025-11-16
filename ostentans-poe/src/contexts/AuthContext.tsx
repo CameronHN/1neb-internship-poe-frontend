@@ -72,7 +72,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const fetchUserDetails = async (userId: string): Promise<User> => {
     try {
       const response = await fetch(`${API_URLS.API_BASE}/User?id=${userId}`, {
-        credentials: "include",
+        credentials: 'include',
+        method: "GET",
       });
 
       if (!response.ok) {
@@ -105,7 +106,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       try {
         const response = await fetch(`${API_URLS.API_BASE}/auth/me`, {
-          credentials: "include",
+          credentials: 'include',
+          method: 'GET',
         });
 
         if (response.ok) {
