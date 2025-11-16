@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import type { ResumeTitle } from "../types/resumeTitleTypes";
 
 class TitleService {
     /**
@@ -54,6 +55,51 @@ class TitleService {
 
         if (!response.ok) {
             throw new Error("Failed to add resume title entries");
+        }
+    }
+
+    async getTitleById(id: string): Promise<string> {
+        if (!id) {
+            throw new Error("No title ID provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Title/${id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch title");
+        }
+
+        return await response.text();
+    }
+
+    async updateTitle(title: ResumeTitle): Promise<void> {
+        if (!title) {
+            throw new Error("No title provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Title/patch`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(title),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to update title");
         }
     }
 }
