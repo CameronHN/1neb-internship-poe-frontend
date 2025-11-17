@@ -7,11 +7,13 @@ import { deleteButtonStyle } from "../styles/constants/buttonStyling";
 interface SavedResumeProps {
   resume: SavedResumeItem;
   onDelete: (id: string) => void;
+  onOpen: (id: string) => void;
 }
 
 export const SavedResume: React.FC<SavedResumeProps> = ({
   resume,
   onDelete,
+  onOpen,
 }) => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-GB", {
@@ -23,6 +25,10 @@ export const SavedResume: React.FC<SavedResumeProps> = ({
 
   const handleDelete = () => {
     onDelete(resume.id);
+  };
+
+  const handleOpen = () => {
+    onOpen(resume.id);
   };
 
   return (
@@ -48,8 +54,9 @@ export const SavedResume: React.FC<SavedResumeProps> = ({
         </Text>
       </div>
       <div style={{ display: "flex", gap: "8px" }}>
-        <Button size="small">Open</Button>
-        {/* // TODO: Implement Open functionality */}
+        <Button size="small" onClick={handleOpen}>
+          Open
+        </Button>
         <DeleteConfirmationMenu
           isEnabled={true}
           buttonStyle={deleteButtonStyle(true)}

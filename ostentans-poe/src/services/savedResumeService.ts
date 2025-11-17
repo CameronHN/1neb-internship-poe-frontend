@@ -51,6 +51,23 @@ class SavedResumeService {
             throw new Error(error.message || 'Failed to save resume');
         }
     }
+
+    async getSavedResumeById(resumeId: string): Promise<Blob> {
+        const response = await fetch(`${this.baseUrl}/SavedResume/${resumeId}/pdf`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            const error = await response.json().catch(() => ({ message: 'Failed to fetch saved resume' }));
+            throw new Error(error.message || 'Failed to fetch saved resume');
+        }
+
+        return response.blob();
+    }
 }
 
 export const savedResumeService = new SavedResumeService();
