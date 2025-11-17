@@ -34,7 +34,7 @@ import { savedResumeService } from "../services/savedResumeService";
 import { DeleteOverlay } from "../components/Overlays/DeleteOverlay";
 import { SaveOverlay } from "../components/Overlays/SaveOverlay";
 import { DeleteConfirmationMenu } from "../components/DeleteConfirmationMenu";
-import { QuestionCircle12Regular } from "@fluentui/react-icons";
+import { EditRegular, QuestionCircle12Regular } from "@fluentui/react-icons";
 import { deleteButtonStyle } from "../styles/constants/buttonStyling";
 import { subInformationStyle } from "../styles/constants/textStyling";
 import { tooltipStyling } from "../styles/constants/iconStyling";
@@ -671,17 +671,31 @@ export const ResumeBuilderPage = () => {
                       }}
                     >
                       {resumeData.socials.map((social: any, index: number) => (
-                        <Checkbox
+                        <div
                           key={social.id}
-                          label={social.socialMediaUrl}
-                          checked={selectedIds.has(`social_${index}`)}
-                          onChange={(_, data) =>
-                            handleCheckboxChange(
-                              `social_${index}`,
-                              !!data.checked
-                            )
-                          }
-                        />
+                          style={{
+                            display: "flex",
+                            alignItems: "first baseline",
+                            gap: "4px",
+                          }}
+                        >
+                          <Checkbox
+                            label={social.socialMediaUrl}
+                            checked={selectedIds.has(`social_${index}`)}
+                            onChange={(_, data) =>
+                              handleCheckboxChange(
+                                `social_${index}`,
+                                !!data.checked
+                              )
+                            }
+                          />
+                          <EditRegular
+                            cursor="pointer"
+                            onClick={() =>
+                              navigate(`/update-social/${social.id}`)
+                            }
+                          />
+                        </div>
                       ))}
                     </div>
                   </CardPreview>
@@ -741,17 +755,32 @@ export const ResumeBuilderPage = () => {
                       }}
                     >
                       {resumeData.title.map((titleObj: any, index: number) => (
-                        <Checkbox
+                        <div
                           key={titleObj.id}
-                          label={titleObj.title}
-                          checked={selectedIds.has(`title_${index}`)}
-                          onChange={(_, data) =>
-                            handleCheckboxChange(
-                              `title_${index}`,
-                              !!data.checked
-                            )
-                          }
-                        />
+                          style={{
+                            display: "flex",
+                            alignItems: "first baseline",
+                            gap: "4px",
+                          }}
+                        >
+                          <Checkbox
+                            key={titleObj.id}
+                            label={titleObj.title}
+                            checked={selectedIds.has(`title_${index}`)}
+                            onChange={(_, data) =>
+                              handleCheckboxChange(
+                                `title_${index}`,
+                                !!data.checked
+                              )
+                            }
+                          />
+                          <EditRegular
+                            cursor="pointer"
+                            onClick={() =>
+                              navigate(`/update-title/${titleObj.id}`)
+                            }
+                          />
+                        </div>
                       ))}
                     </div>
                   </CardPreview>
@@ -817,27 +846,41 @@ export const ResumeBuilderPage = () => {
                       {resumeData.summaries.map(
                         (summaryObj: any, index: number) => (
                           <div key={summaryObj.id}>
-                            <Checkbox
-                              label={
-                                <div>
-                                  <div
-                                    style={{
-                                      fontSize: "13px",
-                                      lineHeight: "1.4",
-                                    }}
-                                  >
-                                    {summaryObj.summary}
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "first baseline",
+                                gap: "4px",
+                              }}
+                            >
+                              <Checkbox
+                                label={
+                                  <div>
+                                    <div
+                                      style={{
+                                        fontSize: "13px",
+                                        lineHeight: "1.4",
+                                      }}
+                                    >
+                                      {summaryObj.summary}
+                                    </div>
                                   </div>
-                                </div>
-                              }
-                              checked={selectedIds.has(`summary_${index}`)}
-                              onChange={(_, data) =>
-                                handleCheckboxChange(
-                                  `summary_${index}`,
-                                  !!data.checked
-                                )
-                              }
-                            />
+                                }
+                                checked={selectedIds.has(`summary_${index}`)}
+                                onChange={(_, data) =>
+                                  handleCheckboxChange(
+                                    `summary_${index}`,
+                                    !!data.checked
+                                  )
+                                }
+                              />
+                              <EditRegular
+                                cursor="pointer"
+                                onClick={() =>
+                                  navigate(`/update-summary/${summaryObj.id}`)
+                                }
+                              />
+                            </div>
                           </div>
                         )
                       )}
@@ -900,17 +943,27 @@ export const ResumeBuilderPage = () => {
                       }}
                     >
                       {resumeData.skills.map((skill: any, index: number) => (
-                        <Checkbox
+                        <div
                           key={skill.id}
-                          label={`${skill.skill} (${skill.skillLevel})`}
-                          checked={selectedIds.has(`skill_${index}`)}
-                          onChange={(_, data) =>
-                            handleCheckboxChange(
-                              `skill_${index}`,
-                              !!data.checked
-                            )
-                          }
-                        />
+                          style={{
+                            display: "flex",
+                            alignItems: "first baseline",
+                            gap: "4px",
+                          }}
+                        >
+                          <Checkbox
+                            label={`${skill.skill} (${skill.skillLevel})`}
+                            checked={selectedIds.has(`skill_${index}`)}
+                            onChange={(_, data) =>
+                              handleCheckboxChange(
+                                `skill_${index}`,
+                                !!data.checked
+                              )
+                            }
+                          />
+                          {/* TODO: Add functionality */}
+                          <EditRegular cursor="pointer" />
+                        </div>
                       ))}
                     </div>
                   </CardPreview>
@@ -982,75 +1035,85 @@ export const ResumeBuilderPage = () => {
                             padding: "12px",
                           }}
                         >
-                          <Checkbox
-                            label={
-                              <div style={{ width: "100%" }}>
-                                <div style={{ fontWeight: "600" }}>
-                                  {exp.jobTitle} at {exp.company}
-                                </div>
-                                <div style={subInformationStyle}>
-                                  {exp.startDate} - {exp.endDate}
-                                </div>
-                                <div style={{ marginTop: "8px" }}>
-                                  <Accordion multiple collapsible>
-                                    <AccordionItem
-                                      value={`responsibilities-${index}`}
-                                    >
-                                      <AccordionHeader
-                                        size="small"
-                                        style={subInformationStyle}
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "first baseline",
+                              gap: "4px",
+                            }}
+                          >
+                            <Checkbox
+                              label={
+                                <div style={{ width: "100%" }}>
+                                  <div style={{ fontWeight: "600" }}>
+                                    {exp.jobTitle} at {exp.company}
+                                  </div>
+                                  <div style={subInformationStyle}>
+                                    {exp.startDate} - {exp.endDate}
+                                  </div>
+                                  <div style={{ marginTop: "8px" }}>
+                                    <Accordion multiple collapsible>
+                                      <AccordionItem
+                                        value={`responsibilities-${index}`}
                                       >
-                                        {exp.responsibilities.length}{" "}
-                                        responsibilities
-                                      </AccordionHeader>
-                                      <AccordionPanel>
-                                        <List
-                                          style={{
-                                            margin: 0,
-                                            paddingLeft: "20px",
-                                            ...subInformationStyle,
-                                          }}
+                                        <AccordionHeader
+                                          size="small"
+                                          style={subInformationStyle}
                                         >
-                                          {exp.responsibilities.map(
-                                            (
-                                              responsibility: string,
-                                              respIndex: number
-                                            ) => (
-                                              <ListItem
-                                                key={respIndex}
-                                                style={{
-                                                  marginBottom: "4px",
-                                                  fontSize: "12px",
-                                                  position: "relative",
-                                                }}
-                                              >
-                                                <span
+                                          {exp.responsibilities.length}{" "}
+                                          responsibilities
+                                        </AccordionHeader>
+                                        <AccordionPanel>
+                                          <List
+                                            style={{
+                                              margin: 0,
+                                              paddingLeft: "20px",
+                                              ...subInformationStyle,
+                                            }}
+                                          >
+                                            {exp.responsibilities.map(
+                                              (
+                                                responsibility: string,
+                                                respIndex: number
+                                              ) => (
+                                                <ListItem
+                                                  key={respIndex}
                                                   style={{
-                                                    position: "absolute",
-                                                    left: "-12px",
+                                                    marginBottom: "4px",
+                                                    fontSize: "12px",
+                                                    position: "relative",
                                                   }}
                                                 >
-                                                  •
-                                                </span>
-                                                {responsibility}
-                                              </ListItem>
-                                            )
-                                          )}
-                                        </List>
-                                      </AccordionPanel>
-                                    </AccordionItem>
-                                  </Accordion>
+                                                  <span
+                                                    style={{
+                                                      position: "absolute",
+                                                      left: "-12px",
+                                                    }}
+                                                  >
+                                                    •
+                                                  </span>
+                                                  {responsibility}
+                                                </ListItem>
+                                              )
+                                            )}
+                                          </List>
+                                        </AccordionPanel>
+                                      </AccordionItem>
+                                    </Accordion>
+                                  </div>
                                 </div>
-                              </div>
-                            }
-                            checked={selectedIds.has(`experience_${index}`)}
-                            onChange={(_, data) =>
-                              handleCheckboxChange(
-                                `experience_${index}`,
-                                !!data.checked
-                              )
-                            }
-                          />
+                              }
+                              checked={selectedIds.has(`experience_${index}`)}
+                              onChange={(_, data) =>
+                                handleCheckboxChange(
+                                  `experience_${index}`,
+                                  !!data.checked
+                                )
+                              }
+                            />
+                            {/* TODO: Add functionality */}
+                            <EditRegular cursor="pointer" />
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -1132,32 +1195,42 @@ export const ResumeBuilderPage = () => {
                             padding: "12px",
                           }}
                         >
-                          <Checkbox
-                            label={
-                              <div>
-                                <div style={{ fontWeight: "600" }}>
-                                  {edu.qualification}
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "first baseline",
+                              gap: "4px",
+                            }}
+                          >
+                            <Checkbox
+                              label={
+                                <div>
+                                  <div style={{ fontWeight: "600" }}>
+                                    {edu.qualification}
+                                  </div>
+                                  <div style={subInformationStyle}>
+                                    {edu.institution} • {edu.startDate} -{" "}
+                                    {edu.endDate}
+                                  </div>
+                                  <div
+                                    style={{ fontSize: "12px", color: "#666" }}
+                                  >
+                                    Major: {edu.major} • Achievement:{" "}
+                                    {edu.achievement}
+                                  </div>
                                 </div>
-                                <div style={subInformationStyle}>
-                                  {edu.institution} • {edu.startDate} -{" "}
-                                  {edu.endDate}
-                                </div>
-                                <div
-                                  style={{ fontSize: "12px", color: "#666" }}
-                                >
-                                  Major: {edu.major} • Achievement:{" "}
-                                  {edu.achievement}
-                                </div>
-                              </div>
-                            }
-                            checked={selectedIds.has(`education_${index}`)}
-                            onChange={(_, data) =>
-                              handleCheckboxChange(
-                                `education_${index}`,
-                                !!data.checked
-                              )
-                            }
-                          />
+                              }
+                              checked={selectedIds.has(`education_${index}`)}
+                              onChange={(_, data) =>
+                                handleCheckboxChange(
+                                  `education_${index}`,
+                                  !!data.checked
+                                )
+                              }
+                            />
+                            {/* TODO: Add functionality */}
+                            <EditRegular cursor="pointer" />
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -1233,35 +1306,52 @@ export const ResumeBuilderPage = () => {
                               padding: "12px",
                             }}
                           >
-                            <Checkbox
-                              label={
-                                <div>
-                                  <div style={{ fontWeight: "600" }}>
-                                    {cert.name}
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "first baseline",
+                                gap: "4px",
+                              }}
+                            >
+                              <Checkbox
+                                label={
+                                  <div>
+                                    <div style={{ fontWeight: "600" }}>
+                                      {cert.name}
+                                    </div>
+                                    <div style={subInformationStyle}>
+                                      {cert.organisation}
+                                    </div>
+                                    <div
+                                      style={{
+                                        fontSize: "12px",
+                                        color: "#666",
+                                      }}
+                                    >
+                                      {cert.issuedDate &&
+                                        `Issued: ${cert.issuedDate} `}
+                                      {cert.expirationDate &&
+                                        `| Expires: ${cert.expirationDate}`}
+                                    </div>
                                   </div>
-                                  <div style={subInformationStyle}>
-                                    {cert.organisation}
-                                  </div>
-                                  <div
-                                    style={{ fontSize: "12px", color: "#666" }}
-                                  >
-                                    {cert.issuedDate &&
-                                      `Issued: ${cert.issuedDate} `}
-                                    {cert.expirationDate &&
-                                      `| Expires: ${cert.expirationDate}`}
-                                  </div>
-                                </div>
-                              }
-                              checked={selectedIds.has(
-                                `certification_${index}`
-                              )}
-                              onChange={(_, data) =>
-                                handleCheckboxChange(
-                                  `certification_${index}`,
-                                  !!data.checked
-                                )
-                              }
-                            />
+                                }
+                                checked={selectedIds.has(
+                                  `certification_${index}`
+                                )}
+                                onChange={(_, data) =>
+                                  handleCheckboxChange(
+                                    `certification_${index}`,
+                                    !!data.checked
+                                  )
+                                }
+                              />
+                              <EditRegular
+                                cursor="pointer"
+                                onClick={() =>
+                                  navigate(`/update-certification/${cert.id}`)
+                                }
+                              />
+                            </div>
                           </div>
                         )
                       )}
