@@ -4,6 +4,7 @@ import { SavedResume } from "../components/SavedResume";
 import { savedResumeService } from "../services/savedResumeService";
 import type { SavedResumeItem } from "../types/savedResumeTypes";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { downloadBlob } from "../helpers/fileHelpers";
 
 export const SavedResumesPage: React.FC = () => {
   usePageTitle({ title: "Saved Resumes" });
@@ -38,6 +39,19 @@ export const SavedResumesPage: React.FC = () => {
       setResumes((prev) => prev.filter((resume) => resume.id !== id));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to delete resume");
+    }
+  };
+
+  const handleOpen = async (id: string) => {
+    try {
+      const blob = await savedResumeService.getSavedResumeById(id);
+
+      const resume = resumes.find((r) => r.id === id);
+      const filename = resume ? `${resume.name}.pdf` : `resume.pdf`;
+
+      await downloadBlob(blob, filename);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to open resume");
     }
   };
 
@@ -96,6 +110,7 @@ export const SavedResumesPage: React.FC = () => {
               key={resume.id}
               resume={resume}
               onDelete={handleDelete}
+              onOpen={() => handleOpen(resume.id)}
             />
           ))
         )}

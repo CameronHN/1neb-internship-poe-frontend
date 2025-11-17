@@ -39,6 +39,7 @@ import { deleteButtonStyle } from "../styles/constants/buttonStyling";
 import { subInformationStyle } from "../styles/constants/textStyling";
 import { tooltipStyling } from "../styles/constants/iconStyling";
 import { useNavigate } from "react-router-dom";
+import { downloadBlob } from "../helpers/fileHelpers";
 
 const cardHeaderStyle = { display: "flex", gap: "8px" };
 
@@ -252,17 +253,8 @@ export const ResumeBuilderPage = () => {
       const blob = await resumeApiService.generateResume(requestData);
 
       // Handle file download
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-
       const filename = "resume.pdf";
-
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      await downloadBlob(blob, filename);
 
       setMessage(`Resume downloaded successfully as ${filename}!`);
     } catch (err) {
@@ -1412,7 +1404,12 @@ export const ResumeBuilderPage = () => {
       </div>
 
       {/* Save button */}
-      <div style={{ marginTop: "32px", textAlign: "center" }}>
+      <div
+        style={{
+          marginTop: "32px",
+          textAlign: "center",
+        }}
+      >
         <Subtitle2>
           Liked what you saw?
           <Tooltip
@@ -1424,8 +1421,9 @@ export const ResumeBuilderPage = () => {
             <QuestionCircle12Regular style={tooltipStyling} />
           </Tooltip>
         </Subtitle2>
+
         {/* Save Resume Name Input */}
-        {showSaveNameInput && (
+        {!showSaveNameInput && (
           <div
             style={{
               marginTop: "16px",
