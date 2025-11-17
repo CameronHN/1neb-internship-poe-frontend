@@ -6,15 +6,8 @@ import React, {
   type ReactNode,
 } from "react";
 import { authService } from "../services/authService";
-import { API_URLS } from "../constants/apiConstants";
-
-interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-}
+import type { User } from "../types/userTypes";
+import { userService } from "../services/userService";
 
 interface AuthError {
   message: string;
@@ -71,16 +64,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Helper function to fetch user details
   const fetchUserDetails = async (userId: string): Promise<User> => {
     try {
-      const response = await fetch(`${API_URLS.API_BASE}/User?id=${userId}`, {
-        credentials: 'include',
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch user details");
-      }
-
-      const userData = await response.json();
+      const userData = await userService.getUserById(userId);
 
       return {
         id: userId,
@@ -90,7 +74,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         phoneNumber: userData.phoneNumber,
       };
     } catch (error) {
-      console.error("Error fetching user details:", error);
       throw error;
     }
   };
@@ -105,19 +88,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoading(true);
 
       try {
-        const response = await fetch(`${API_URLS.API_BASE}/auth/me`, {
-          credentials: 'include',
-          method: 'GET',
-        });
-
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else if (response.status === 401) {
-          setUser(null);
-        } else {
-          throw new Error("Failed to check authentication status");
-        }
+        const userData = await authService.checkAuth();
+        setUser(userData);
       } catch (error) {
         setUser(null);
       }

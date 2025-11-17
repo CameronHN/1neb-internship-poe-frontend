@@ -1,4 +1,5 @@
 import { API_URLS } from '../constants/apiConstants';
+import type { User } from '../types/userTypes';
 
 interface RegisterRequest {
     firstName: string;
@@ -135,6 +136,19 @@ class AuthService {
         }
 
         return response.json();
+    }
+
+    async checkAuth(): Promise<User> {
+        const response = await fetch(`${API_URLS.API_BASE}/auth/me`, {
+            credentials: "include",
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error("Unauthenticated. Please log in again.");
+        }
+
+        return await response.json();
     }
 }
 
