@@ -1,7 +1,7 @@
 import React from "react";
 import { Title2 } from "@fluentui/react-components";
-import usePageTitle from "../hooks/usePageTitle";
-import UpdateCertificationForm from "../components/Certification/UpdateCertificationForm";
+import usePageTitle from "../../hooks/usePageTitle";
+import UpdateCertificationForm from "../../components/Certification/UpdateCertificationForm";
 
 export const UpdateCertificationPage: React.FC = () => {
   usePageTitle({ title: "Update Certification" });

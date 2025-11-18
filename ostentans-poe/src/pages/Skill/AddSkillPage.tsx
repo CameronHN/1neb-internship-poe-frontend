@@ -1,10 +1,10 @@
 import { Title2 } from "@fluentui/react-components";
 import React from "react";
-import { AddSkillForm } from "../components/Skill/AddSkillForm";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { AddSkillForm } from "../../components/Skill/AddSkillForm";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 const AddSkillPage: React.FC = () => {
-    usePageTitle({ title: "Add Skills" });
+  usePageTitle({ title: "Add Skills" });
 
   return (
     <div

@@ -1,11 +1,11 @@
-import LoginForm from "../components/auth/LoginForm";
+import LoginForm from "../../components/auth/LoginForm";
 import { Link } from "react-router-dom";
-import { StyledTitle3 } from "../components/StyledTitle";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { StyledTitle3 } from "../../components/StyledTitle";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 const LoginPage = () => {
   usePageTitle({ title: "Login" });
-  
+
   return (
     <div
       style={{

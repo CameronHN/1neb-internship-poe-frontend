@@ -1,7 +1,7 @@
 import { Title2 } from "@fluentui/react-components";
 import React from "react";
-import { AddSocialMediaForm } from "../components/SocialMedia/AddSocialMediaForm";
-import usePageTitle from "../hooks/usePageTitle";
+import { AddSocialMediaForm } from "../../components/SocialMedia/AddSocialMediaForm";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const AddSocialMediaPage: React.FC = () => {
   usePageTitle({ title: "Add Social Media" });

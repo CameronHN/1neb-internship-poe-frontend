@@ -1,7 +1,7 @@
 import { Title2 } from "@fluentui/react-components";
 import React from "react";
-import { AddWorkExperienceForm } from "../components/Experience/AddWorkExperienceForm";
-import usePageTitle from "../hooks/usePageTitle";
+import { AddWorkExperienceForm } from "../../components/Experience/AddWorkExperienceForm";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const AddWorkExperiencePage: React.FC = () => {
   usePageTitle({ title: "Add Work Experience" });

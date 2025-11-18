@@ -4,26 +4,26 @@ import {
   webLightTheme,
   webDarkTheme,
 } from "@fluentui/react-components";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/Entry/HomePage";
+import LoginPage from "./pages/Entry/LoginPage";
+import RegisterPage from "./pages/Entry/RegisterPage";
 import { StickyHeader } from "./components/StickyHeader";
 import { useState } from "react";
-import { ResumeBuilderPage } from "./pages/ResumeBuilderPage";
-import { SavedResumesPage } from "./pages/SavedResumesPage";
+import { ResumeBuilderPage } from "./pages/Builder/ResumeBuilderPage";
+import { SavedResumesPage } from "./pages/SavedResume/SavedResumesPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { DemoPage } from "./pages/DemoPage";
-import AddSkillPage from "./pages/AddSkillPage";
-import AddSocialMediaPage from "./pages/AddSocialMediaPage";
-import AddResumeTitlePage from "./pages/AddResumeTitlePage";
-import AddProfessionalSummaryPage from "./pages/AddProfessionalSummaryPage";
-import AddWorkExperiencePage from "./pages/AddWorkExperiencePage";
-import AddEducationPage from "./pages/AddEducationPage";
-import AddCertificationPage from "./pages/AddCertificationPage";
-import { UpdateCertificationPage } from "./pages/UpdateCertificationPage";
-import { UpdateSocialMediaPage } from "./pages/UpdateSocialMediaPage";
-import { UpdateProfessionalSummaryPage } from "./pages/UpdateProfessionalSummaryPage";
-import { UpdateResumeTitlePage } from "./pages/UpdateResumeTitlePage";
+import { DemoPage } from "./pages/Demo/DemoPage";
+import AddSkillPage from "./pages/Skill/AddSkillPage";
+import AddSocialMediaPage from "./pages/SocialMedia/AddSocialMediaPage";
+import AddResumeTitlePage from "./pages/ResumeTitle/AddResumeTitlePage";
+import AddProfessionalSummaryPage from "./pages/ProfessionalSummary/AddProfessionalSummaryPage";
+import AddWorkExperiencePage from "./pages/WorkExperience/AddWorkExperiencePage";
+import AddEducationPage from "./pages/Education/AddEducationPage";
+import AddCertificationPage from "./pages/Certification/AddCertificationPage";
+import { UpdateCertificationPage } from "./pages/Certification/UpdateCertificationPage";
+import { UpdateSocialMediaPage } from "./pages/SocialMedia/UpdateSocialMediaPage";
+import { UpdateProfessionalSummaryPage } from "./pages/ProfessionalSummary/UpdateProfessionalSummaryPage";
+import { UpdateResumeTitlePage } from "./pages/ResumeTitle/UpdateResumeTitlePage";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -169,10 +169,7 @@ const AppContent: React.FC<{
             path="/update-summary/:id"
             element={<UpdateProfessionalSummaryPage />}
           />
-          <Route
-            path="/update-title/:id"
-            element={<UpdateResumeTitlePage />}
-          />
+          <Route path="/update-title/:id" element={<UpdateResumeTitlePage />} />
         </Routes>
       </div>
     </div>

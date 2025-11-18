@@ -1,7 +1,7 @@
 import { Title2 } from "@fluentui/react-components";
 import React from "react";
-import { AddEducationForm } from "../components/Education/AddEducationForm";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { AddEducationForm } from "../../components/Education/AddEducationForm";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 const AddEducationPage: React.FC = () => {
   usePageTitle({ title: "Add Education" });

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Text, Spinner, MessageBar, Title2 } from "@fluentui/react-components";
-import { SavedResume } from "../components/SavedResume";
-import { savedResumeService } from "../services/savedResumeService";
-import type { SavedResumeItem } from "../types/savedResumeTypes";
-import { usePageTitle } from "../hooks/usePageTitle";
-import { downloadBlob } from "../helpers/fileHelpers";
+import { SavedResume } from "../../components/SavedResume";
+import { savedResumeService } from "../../services/savedResumeService";
+import type { SavedResumeItem } from "../../types/savedResumeTypes";
+import { usePageTitle } from "../../hooks/usePageTitle";
+import { downloadBlob } from "../../helpers/fileHelpers";
 
 export const SavedResumesPage: React.FC = () => {
   usePageTitle({ title: "Saved Resumes" });

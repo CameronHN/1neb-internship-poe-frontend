@@ -1,16 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import LoginForm from "../components/auth/LoginForm";
+import LoginForm from "../../components/auth/LoginForm";
 import { Text, Button, Tooltip } from "@fluentui/react-components";
-import { StyledTitle1 } from "../components/StyledTitle";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { StyledTitle1 } from "../../components/StyledTitle";
+import { usePageTitle } from "../../hooks/usePageTitle";
 import {
   ArrowDown12Regular,
   QuestionCircle12Regular,
 } from "@fluentui/react-icons";
-import "../App.css";
-import { tooltipStyling } from "../styles/constants/iconStyling";
+import "../../App.css";
+import { tooltipStyling } from "../../styles/constants/iconStyling";
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   usePageTitle({ title: "Home" });

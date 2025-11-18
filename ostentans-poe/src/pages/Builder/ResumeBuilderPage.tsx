@@ -21,25 +21,25 @@ import {
   Label,
 } from "@fluentui/react-components";
 import { useState, useEffect } from "react";
-import usePageTitle from "../hooks/usePageTitle";
-import { resumeApiService } from "../services/resumeApiService";
-import { certificationService } from "../services/certificationService";
-import { educationService } from "../services/educationService";
-import { experienceService } from "../services/experienceService";
-import { professionalSummaryService } from "../services/professionalSummaryService";
-import { skillService } from "../services/skillService";
-import { titleService } from "../services/titleService";
-import { socialMediaService } from "../services/socialMediaService";
-import { savedResumeService } from "../services/savedResumeService";
-import { DeleteOverlay } from "../components/Overlays/DeleteOverlay";
-import { SaveOverlay } from "../components/Overlays/SaveOverlay";
-import { DeleteConfirmationMenu } from "../components/DeleteConfirmationMenu";
+import usePageTitle from "../../hooks/usePageTitle";
+import { resumeApiService } from "../../services/resumeApiService";
+import { certificationService } from "../../services/certificationService";
+import { educationService } from "../../services/educationService";
+import { experienceService } from "../../services/experienceService";
+import { professionalSummaryService } from "../../services/professionalSummaryService";
+import { skillService } from "../../services/skillService";
+import { titleService } from "../../services/titleService";
+import { socialMediaService } from "../../services/socialMediaService";
+import { savedResumeService } from "../../services/savedResumeService";
+import { DeleteOverlay } from "../../components/Overlays/DeleteOverlay";
+import { SaveOverlay } from "../../components/Overlays/SaveOverlay";
+import { DeleteConfirmationMenu } from "../../components/DeleteConfirmationMenu";
 import { EditRegular, QuestionCircle12Regular } from "@fluentui/react-icons";
-import { deleteButtonStyle } from "../styles/constants/buttonStyling";
-import { subInformationStyle } from "../styles/constants/textStyling";
-import { tooltipStyling } from "../styles/constants/iconStyling";
+import { deleteButtonStyle } from "../../styles/constants/buttonStyling";
+import { subInformationStyle } from "../../styles/constants/textStyling";
+import { tooltipStyling } from "../../styles/constants/iconStyling";
 import { useNavigate } from "react-router-dom";
-import { downloadBlob } from "../helpers/fileHelpers";
+import { downloadBlob } from "../../helpers/fileHelpers";
 
 const cardHeaderStyle = { display: "flex", gap: "8px" };
 

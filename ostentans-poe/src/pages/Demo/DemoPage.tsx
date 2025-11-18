@@ -9,9 +9,9 @@ import {
   MessageBar,
 } from "@fluentui/react-components";
 import { useState } from "react";
-import { usePageTitle } from "../hooks/usePageTitle";
+import { usePageTitle } from "../../hooks/usePageTitle";
 import { ArrowDownload24Regular } from "@fluentui/react-icons";
-import { API_URLS } from "../constants/apiConstants";
+import { API_URLS } from "../../constants/apiConstants";
 
 const BASE_URL: string = API_URLS.API_BASE;
 
