@@ -1,4 +1,4 @@
-import { Input, Label, Text } from "@fluentui/react-components";
+import { Input, Label, MessageBar } from "@fluentui/react-components";
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -39,10 +39,9 @@ const RegisterForm: React.FC = () => {
 
     try {
       await register(formData);
-      navigate("/onboarding"); // Redirect after successful registration
+      navigate("/builder"); // Redirect after successful registration
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
-      // TODO: Add messagebar for error display
     } finally {
       setIsLoading(false);
     }
@@ -63,9 +62,9 @@ const RegisterForm: React.FC = () => {
       }}
     >
       {error && (
-        <Text style={{ color: "red", fontSize: "14px", textAlign: "center" }}>
+        <MessageBar intent="error" style={{ width: "100%" }}>
           {error}
-        </Text>
+        </MessageBar>
       )}
 
       <div
