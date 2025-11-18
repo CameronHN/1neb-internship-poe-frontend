@@ -41,7 +41,6 @@ export const SaveOverlay: React.FC<SaveOverlayProps> = ({
         >
           <div
             style={{
-              backgroundColor: "white",
               padding: "40px",
               borderRadius: "8px",
               display: "flex",
@@ -54,7 +53,7 @@ export const SaveOverlay: React.FC<SaveOverlayProps> = ({
             {isSaving && !saveSuccess && (
               <>
                 <Spinner size="extra-large" />
-                <Text size={500}>Saving {typeSaved}...</Text>
+                <Text size={600}>Saving {typeSaved}...</Text>
               </>
             )}
             {saveSuccess && (
@@ -62,7 +61,7 @@ export const SaveOverlay: React.FC<SaveOverlayProps> = ({
                 <CheckmarkCircle24Filled
                   style={{ color: "#107c10", fontSize: "48px" }}
                 />
-                <Text size={500}>{typeSaved} saved successfully!</Text>
+                <Text size={600}>{typeSaved} saved successfully!</Text>
               </>
             )}
           </div>
