@@ -2,7 +2,7 @@ import { Input, Label, MessageBar } from "@fluentui/react-components";
 import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import CustomProceedButton from "../CustomProceedButton";
+import CustomProceedButton from "../Shared/CustomProceedButton";
 
 const RegisterForm: React.FC = () => {
   const [formData, setFormData] = useState({

@@ -1,6 +1,6 @@
 import RegisterForm from "../../components/auth/RegisterForm";
 import { Link } from "react-router-dom";
-import { StyledTitle3 } from "../../components/StyledTitle";
+import { StyledTitle3 } from "../../components/Shared/StyledTitle";
 import { usePageTitle } from "../../hooks/usePageTitle";
 
 const RegisterPage = () => {

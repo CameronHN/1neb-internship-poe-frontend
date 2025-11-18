@@ -9,7 +9,7 @@ import {
   PersonAccounts20Regular,
   SignOut20Regular,
 } from "@fluentui/react-icons";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import { ThemeSwitcherButton } from "./ThemeSwitcherButton";
 
 interface StickyHeaderProps {

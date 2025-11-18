@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "../../components/auth/LoginForm";
 import { Text, Button, Tooltip } from "@fluentui/react-components";
-import { StyledTitle1 } from "../../components/StyledTitle";
+import { StyledTitle1 } from "../../components/Shared/StyledTitle";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import {
   ArrowDown12Regular,

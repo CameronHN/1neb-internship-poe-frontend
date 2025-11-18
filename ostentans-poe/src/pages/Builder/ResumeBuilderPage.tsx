@@ -33,7 +33,7 @@ import { socialMediaService } from "../../services/socialMediaService";
 import { savedResumeService } from "../../services/savedResumeService";
 import { DeleteOverlay } from "../../components/Overlays/DeleteOverlay";
 import { SaveOverlay } from "../../components/Overlays/SaveOverlay";
-import { DeleteConfirmationMenu } from "../../components/DeleteConfirmationMenu";
+import { DeleteConfirmationMenu } from "../../components/Shared/DeleteConfirmationMenu";
 import { EditRegular, QuestionCircle12Regular } from "@fluentui/react-icons";
 import { deleteButtonStyle } from "../../styles/constants/buttonStyling";
 import { subInformationStyle } from "../../styles/constants/textStyling";

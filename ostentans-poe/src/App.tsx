@@ -7,7 +7,7 @@ import {
 import HomePage from "./pages/Entry/HomePage";
 import LoginPage from "./pages/Entry/LoginPage";
 import RegisterPage from "./pages/Entry/RegisterPage";
-import { StickyHeader } from "./components/StickyHeader";
+import { StickyHeader } from "./components/Shared/StickyHeader";
 import { useState } from "react";
 import { ResumeBuilderPage } from "./pages/Builder/ResumeBuilderPage";
 import { SavedResumesPage } from "./pages/SavedResume/SavedResumesPage";

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Text } from "@fluentui/react-components";
-import { DeleteConfirmationMenu } from "./DeleteConfirmationMenu";
+import { DeleteConfirmationMenu } from "./Shared/DeleteConfirmationMenu";
 import type { SavedResumeItem } from "../types/savedResumeTypes";
 import { deleteButtonStyle } from "../styles/constants/buttonStyling";
 
