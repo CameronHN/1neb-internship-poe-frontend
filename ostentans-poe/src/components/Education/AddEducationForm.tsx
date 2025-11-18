@@ -4,10 +4,10 @@ import { AddSquareRegular, DismissSquareRegular } from "@fluentui/react-icons";
 import { useNavigate } from "react-router-dom";
 import { educationService } from "../../services/educationService";
 import { SaveOverlay } from "../Overlays/SaveOverlay";
-import type { Education } from "../../types/educationTypes";
+import type { AddEducation } from "../../types/educationTypes";
 
 export const AddEducationForm: React.FC = () => {
-  const [fields, setFields] = useState<Education[]>([
+  const [fields, setFields] = useState<AddEducation[]>([
     {
       institutionName: "",
       qualification: "",
@@ -23,7 +23,7 @@ export const AddEducationForm: React.FC = () => {
   const navigate = useNavigate();
 
   const addField = () => {
-    const newField: Education = {
+    const newField: AddEducation = {
       institutionName: "",
       qualification: "",
       startDate: "",

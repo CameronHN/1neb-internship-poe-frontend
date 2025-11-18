@@ -1,5 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
-import type { Skill } from "../types/skillTypes";
+import type { AddSkill, Skill } from "../types/skillTypes";
 
 class SkillService {
     /**
@@ -29,7 +29,7 @@ class SkillService {
         }
     }
 
-    async addSkills(skills: Skill[]): Promise<void> {
+    async addSkills(skills: AddSkill[]): Promise<void> {
         if (!skills || skills.length === 0) {
             throw new Error("No skills provided");
         }
@@ -54,6 +54,51 @@ class SkillService {
 
         if (!response.ok) {
             throw new Error("Failed to add skills");
+        }
+    }
+
+    async getSkillById(id: string): Promise<Skill> {
+        if (!id) {
+            throw new Error("No skill ID provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Skill/${id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch skill");
+        }
+
+        return await response.json();
+    }
+
+    async updateSkill(skill: Skill): Promise<void> {
+        if (!skill) {
+            throw new Error("No skill provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Skill/patch`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(skill),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to update skill");
         }
     }
 }

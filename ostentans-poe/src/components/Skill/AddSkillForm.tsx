@@ -3,11 +3,11 @@ import { Input, Button } from "@fluentui/react-components";
 import { AddSquareRegular, DismissSquareRegular } from "@fluentui/react-icons";
 import { useNavigate } from "react-router-dom";
 import { skillService } from "../../services/skillService";
-import type { Skill } from "../../types/skillTypes";
+import type { AddSkill } from "../../types/skillTypes";
 import { SaveOverlay } from "../Overlays/SaveOverlay";
 
 export const AddSkillForm: React.FC = () => {
-  const [fields, setFields] = useState<Skill[]>([
+  const [fields, setFields] = useState<AddSkill[]>([
     { skill: "", proficiencyLevel: "" },
   ]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -16,7 +16,7 @@ export const AddSkillForm: React.FC = () => {
   const navigate = useNavigate();
 
   const addField = () => {
-    const newField: Skill = {
+    const newField: AddSkill = {
       skill: "",
       proficiencyLevel: "",
     };

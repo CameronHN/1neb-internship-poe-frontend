@@ -14,11 +14,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import { experienceService } from "../../services/experienceService";
 import { SaveOverlay } from "../Overlays/SaveOverlay";
-import type { Experience } from "../../types/experienceTypes";
+import type { AddExperience } from "../../types/experienceTypes";
 import { tooltipStyling } from "../../styles/constants/iconStyling";
 
 export const AddWorkExperienceForm: React.FC = () => {
-  const [fields, setFields] = useState<Experience[]>([
+  const [fields, setFields] = useState<AddExperience[]>([
     {
       jobTitle: "",
       companyName: "",
@@ -39,7 +39,7 @@ export const AddWorkExperienceForm: React.FC = () => {
   const navigate = useNavigate();
 
   const addField = () => {
-    const newField: Experience = {
+    const newField: AddExperience = {
       jobTitle: "",
       companyName: "",
       startDate: "",

@@ -1,5 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
-import type { Education } from "../types/educationTypes";
+import type { AddEducation, Education } from "../types/educationTypes";
 
 class EducationService {
     /**
@@ -29,7 +29,7 @@ class EducationService {
         }
     }
 
-    async addEducations(educations: Education[]): Promise<void> {
+    async addEducations(educations: AddEducation[]): Promise<void> {
         if (!educations || educations.length === 0) {
             throw new Error("No educations provided");
         }
@@ -58,6 +58,51 @@ class EducationService {
 
         if (!response.ok) {
             throw new Error("Failed to add educations");
+        }
+    }
+
+    async getEducationById(id: string): Promise<Education> {
+        if (!id) {
+            throw new Error("No education ID provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Education/${id}`,
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch education");
+        }
+
+        return await response.json();
+    }
+
+    async updateEducation(education: Education): Promise<void> {
+        if (!education) {
+            throw new Error("No education provided");
+        }
+
+        const response = await fetch(
+            `${API_URLS.API_BASE}/Education/patch`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(education),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to update education");
         }
     }
 }
