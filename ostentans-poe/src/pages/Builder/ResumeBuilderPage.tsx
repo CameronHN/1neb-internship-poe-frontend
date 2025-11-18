@@ -953,8 +953,12 @@ export const ResumeBuilderPage = () => {
                               )
                             }
                           />
-                          {/* TODO: Add functionality */}
-                          <EditRegular cursor="pointer" />
+                          <EditRegular
+                            cursor="pointer"
+                            onClick={() =>
+                              navigate(`/update-skill/${skill.id}`)
+                            }
+                          />
                         </div>
                       ))}
                     </div>

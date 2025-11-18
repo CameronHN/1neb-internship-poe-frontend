@@ -5,6 +5,6 @@ export interface AddSkill {
 
 export interface Skill {
     id: string;
-    skill: string;
+    skillName: string;
     proficiencyLevel: string;
 }

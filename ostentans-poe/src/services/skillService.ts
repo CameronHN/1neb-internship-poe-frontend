@@ -85,6 +85,13 @@ class SkillService {
             throw new Error("No skill provided");
         }
 
+        // Transform skills to the expected API format
+        const skillData = ({
+            id: skill.id,
+            skill: skill.skillName,
+            proficiencyLevel: skill.proficiencyLevel
+        });
+
         const response = await fetch(
             `${API_URLS.API_BASE}/Skill/patch`,
             {
@@ -93,7 +100,7 @@ class SkillService {
                     "Content-Type": "application/json",
                 },
                 credentials: "include",
-                body: JSON.stringify(skill),
+                body: JSON.stringify(skillData),
             }
         );
 
