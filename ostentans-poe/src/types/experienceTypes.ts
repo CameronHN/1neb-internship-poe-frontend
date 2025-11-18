@@ -1,6 +1,3 @@
-interface AddResponsibilities {
-    responsibility: string;
-}
 export interface AddExperience {
     jobTitle: string;
     companyName: string;
@@ -9,8 +6,7 @@ export interface AddExperience {
     responsibilities: AddResponsibilities[];
 }
 
-interface Responsibilities {
-    id: string;
+interface AddResponsibilities {
     responsibility: string;
 }
 
@@ -21,4 +17,17 @@ export interface Experience {
     startDate: string;
     endDate: string;
     responsibilities: Responsibilities[];
+}
+
+export interface UpdateExperience {
+    id: string;
+    jobTitle: string;
+    companyName: string;
+    startDate: string;
+    endDate: string;
+    responsibilities: Responsibilities[];
+}
+interface Responsibilities {
+    id: string;
+    responsibility: string;
 }

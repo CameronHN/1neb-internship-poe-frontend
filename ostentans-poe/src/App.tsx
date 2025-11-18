@@ -25,6 +25,7 @@ import { UpdateSocialMediaPage } from "./pages/SocialMedia/UpdateSocialMediaPage
 import { UpdateProfessionalSummaryPage } from "./pages/ProfessionalSummary/UpdateProfessionalSummaryPage";
 import { UpdateResumeTitlePage } from "./pages/ResumeTitle/UpdateResumeTitlePage";
 import { UpdateSkillPage } from "./pages/Skill/UpdateSkillPage";
+import { UpdateWorkExperiencePage } from "./pages/WorkExperience/UpdateWorkExperiencePage";
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -172,6 +173,10 @@ const AppContent: React.FC<{
           />
           <Route path="/update-title/:id" element={<UpdateResumeTitlePage />} />
           <Route path="/update-skill/:id" element={<UpdateSkillPage />} />
+          <Route
+            path="/update-experience/:id"
+            element={<UpdateWorkExperiencePage />}
+          />
         </Routes>
       </div>
     </div>

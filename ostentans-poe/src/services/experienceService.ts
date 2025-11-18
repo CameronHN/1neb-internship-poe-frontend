@@ -1,5 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
-import type { AddExperience, Experience } from "../types/experienceTypes";
+import type { AddExperience, Experience, UpdateExperience } from "../types/experienceTypes";
 
 class ExperienceService {
     /**
@@ -83,7 +83,7 @@ class ExperienceService {
         return await response.json();
     }
 
-    async updateExperience(experience: Experience): Promise<void> {
+    async updateExperience(experience: UpdateExperience): Promise<void> {
         if (!experience) {
             throw new Error("No experience provided");
         }
