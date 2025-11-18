@@ -12,7 +12,9 @@ import { tooltipStyling } from "../styles/constants/iconStyling";
 
 const HomePage = () => {
   const navigate = useNavigate();
+
   usePageTitle({ title: "Home" });
+
   return (
     <div
       style={{
