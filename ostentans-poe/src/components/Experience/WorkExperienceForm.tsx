@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Input,
   Button,
@@ -59,26 +59,7 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
   >([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (mode === "update" && experienceId) {
-      loadExperienceData();
-    } else if (mode === "update" && initialData) {
-      setOriginalResponsibilities(initialData.responsibilities);
-      setFields([
-        {
-          jobTitle: initialData.jobTitle,
-          companyName: initialData.companyName,
-          startDate: formatDateForInput(initialData.startDate),
-          endDate: formatDateForInput(initialData.endDate),
-          responsibilities: initialData.responsibilities.map((r) => ({
-            responsibility: r.responsibility,
-          })),
-        },
-      ]);
-    }
-  }, [mode, experienceId, initialData]);
-
-  const loadExperienceData = async () => {
+  const loadExperienceData = useCallback(async () => {
     if (!experienceId) return;
 
     setIsLoading(true);
@@ -105,7 +86,26 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [experienceId]);
+
+  useEffect(() => {
+    if (mode === "update" && experienceId) {
+      loadExperienceData();
+    } else if (mode === "update" && initialData) {
+      setOriginalResponsibilities(initialData.responsibilities);
+      setFields([
+        {
+          jobTitle: initialData.jobTitle,
+          companyName: initialData.companyName,
+          startDate: formatDateForInput(initialData.startDate),
+          endDate: formatDateForInput(initialData.endDate),
+          responsibilities: initialData.responsibilities.map((r) => ({
+            responsibility: r.responsibility,
+          })),
+        },
+      ]);
+    }
+  }, [mode, experienceId, initialData, loadExperienceData]);
 
   const addField = () => {
     if (mode === "update") return;

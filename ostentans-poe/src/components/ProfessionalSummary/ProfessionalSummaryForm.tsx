@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button, Textarea } from "@fluentui/react-components";
 import { AddSquareRegular, DismissSquareRegular } from "@fluentui/react-icons";
 import { useNavigate } from "react-router-dom";
@@ -30,16 +30,7 @@ export const ProfessionalSummaryForm: React.FC<ProfessionalSummaryProps> = ({
   const [saveError, setSaveError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Load data for update mode
-  useEffect(() => {
-    if (mode === "update" && summaryId) {
-      loadSummaryData();
-    } else if (mode === "update" && initialData) {
-      setFields([{ summary: initialData.summary }]);
-    }
-  }, [mode, summaryId, initialData]);
-
-  const loadSummaryData = async () => {
+  const loadSummaryData = useCallback(async () => {
     if (!summaryId) return;
 
     setIsLoading(true);
@@ -57,7 +48,16 @@ export const ProfessionalSummaryForm: React.FC<ProfessionalSummaryProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [summaryId]);
+
+  // Load data for update mode
+  useEffect(() => {
+    if (mode === "update" && summaryId) {
+      loadSummaryData();
+    } else if (mode === "update" && initialData) {
+      setFields([{ summary: initialData.summary }]);
+    }
+  }, [mode, summaryId, initialData, loadSummaryData]);
 
   const addField = () => {
     if (mode === "update") return;

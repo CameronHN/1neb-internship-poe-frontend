@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Input, Button } from "@fluentui/react-components";
 import { AddSquareRegular, DismissSquareRegular } from "@fluentui/react-icons";
 import { useNavigate } from "react-router-dom";
@@ -32,17 +32,7 @@ export const SocialMediaForm: React.FC<SocialMediaProps> = ({
   const [saveError, setSaveError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Load data for update mode
-  useEffect(() => {
-    if (mode === "update" && contactId) {
-      loadContactData();
-    } else if (mode === "update" && initialData) {
-      // Use provided initial data
-      setFields([{ contactUrl: initialData.contactUrl }]);
-    }
-  }, [mode, contactId, initialData]);
-
-  const loadContactData = async () => {
+  const loadContactData = useCallback(async () => {
     if (!contactId) return;
 
     setIsLoading(true);
@@ -56,7 +46,17 @@ export const SocialMediaForm: React.FC<SocialMediaProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [contactId]);
+
+  // Load data for update mode
+  useEffect(() => {
+    if (mode === "update" && contactId) {
+      loadContactData();
+    } else if (mode === "update" && initialData) {
+      // Use provided initial data
+      setFields([{ contactUrl: initialData.contactUrl }]);
+    }
+  }, [mode, contactId, initialData, loadContactData]);
 
   const addField = () => {
     if (mode === "update") return;

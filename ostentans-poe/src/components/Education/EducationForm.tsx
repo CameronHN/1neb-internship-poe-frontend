@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Input, Button, Label } from "@fluentui/react-components";
 import { AddSquareRegular, DismissSquareRegular } from "@fluentui/react-icons";
 import { useNavigate } from "react-router-dom";
@@ -36,24 +36,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({
   const [saveError, setSaveError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (mode === "update" && educationId) {
-      loadEducationData();
-    } else if (mode === "update" && initialData) {
-      setFields([
-        {
-          institutionName: initialData.institutionName,
-          qualification: initialData.qualification,
-          startDate: formatDateForInput(initialData.startDate),
-          endDate: formatDateForInput(initialData.endDate),
-          major: initialData.major,
-          achievement: initialData.achievement,
-        },
-      ]);
-    }
-  }, [mode, educationId, initialData]);
-
-  const loadEducationData = async () => {
+  const loadEducationData = useCallback(async () => {
     if (!educationId) return;
 
     setIsLoading(true);
@@ -76,7 +59,24 @@ export const EducationForm: React.FC<EducationFormProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [educationId]);
+
+  useEffect(() => {
+    if (mode === "update" && educationId) {
+      loadEducationData();
+    } else if (mode === "update" && initialData) {
+      setFields([
+        {
+          institutionName: initialData.institutionName,
+          qualification: initialData.qualification,
+          startDate: formatDateForInput(initialData.startDate),
+          endDate: formatDateForInput(initialData.endDate),
+          major: initialData.major,
+          achievement: initialData.achievement,
+        },
+      ]);
+    }
+  }, [mode, educationId, initialData, loadEducationData]);
 
   const addField = () => {
     if (mode === "update") return;

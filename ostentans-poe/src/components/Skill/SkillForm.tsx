@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Input, Button } from "@fluentui/react-components";
 import { AddSquareRegular, DismissSquareRegular } from "@fluentui/react-icons";
 import { useNavigate } from "react-router-dom";
@@ -28,20 +28,7 @@ export const SkillForm: React.FC<SkillProps> = ({
   const [saveError, setSaveError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (mode === "update" && skillId) {
-      loadSkillData();
-    } else if (mode === "update" && initialData) {
-      setFields([
-        {
-          skill: initialData.skillName,
-          proficiencyLevel: initialData.proficiencyLevel,
-        },
-      ]);
-    }
-  }, [mode, skillId, initialData]);
-
-  const loadSkillData = async () => {
+  const loadSkillData = useCallback(async () => {
     if (!skillId) return;
 
     setIsLoading(true);
@@ -58,7 +45,20 @@ export const SkillForm: React.FC<SkillProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [skillId]);
+
+  useEffect(() => {
+    if (mode === "update" && skillId) {
+      loadSkillData();
+    } else if (mode === "update" && initialData) {
+      setFields([
+        {
+          skill: initialData.skillName,
+          proficiencyLevel: initialData.proficiencyLevel,
+        },
+      ]);
+    }
+  }, [mode, skillId, initialData, loadSkillData]);
 
   const addField = () => {
     if (mode === "update") return;

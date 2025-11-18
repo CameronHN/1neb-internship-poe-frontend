@@ -13,8 +13,8 @@ const RegisterForm: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { register } = useAuth();
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Input, Button, Label } from "@fluentui/react-components";
 import { AddSquareRegular, DismissSquareRegular } from "@fluentui/react-icons";
 import { useNavigate } from "react-router-dom";
@@ -37,24 +37,7 @@ export const CertificationForm: React.FC<CertificationFormProps> = ({
   const [saveError, setSaveError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Load data for update mode
-  useEffect(() => {
-    if (mode === "update" && certificationId) {
-      loadCertificationData();
-    } else if (mode === "update" && initialData) {
-      setFields([
-        {
-          certificationName: initialData.certificationName,
-          issuingOrganisation: initialData.issuingOrganisation,
-          credentialUrl: initialData.credentialUrl,
-          issuedDate: initialData.issuedDate,
-          expiryDate: initialData.expiryDate,
-        },
-      ]);
-    }
-  }, [mode, certificationId, initialData]);
-
-  const loadCertificationData = async () => {
+  const loadCertificationData = useCallback(async () => {
     if (!certificationId) return;
 
     setIsLoading(true);
@@ -78,7 +61,24 @@ export const CertificationForm: React.FC<CertificationFormProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [certificationId]);
+
+  // Load data for update mode
+  useEffect(() => {
+    if (mode === "update" && certificationId) {
+      loadCertificationData();
+    } else if (mode === "update" && initialData) {
+      setFields([
+        {
+          certificationName: initialData.certificationName,
+          issuingOrganisation: initialData.issuingOrganisation,
+          credentialUrl: initialData.credentialUrl,
+          issuedDate: initialData.issuedDate,
+          expiryDate: initialData.expiryDate,
+        },
+      ]);
+    }
+  }, [mode, certificationId, initialData, loadCertificationData]);
 
   const addField = () => {
     if (mode === "update") return;

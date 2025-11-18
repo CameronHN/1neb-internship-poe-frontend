@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Input, Button } from "@fluentui/react-components";
 import { AddSquareRegular, DismissSquareRegular } from "@fluentui/react-icons";
 import { useNavigate } from "react-router-dom";
@@ -30,15 +30,7 @@ export const ResumeTitleForm: React.FC<ResumeTitleProps> = ({
   const [saveError, setSaveError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (mode === "update" && titleId) {
-      loadTitleData();
-    } else if (mode === "update" && initialData) {
-      setFields([{ value: initialData.title }]);
-    }
-  }, [mode, titleId, initialData]);
-
-  const loadTitleData = async () => {
+  const loadTitleData = useCallback(async () => {
     if (!titleId) return;
 
     setIsLoading(true);
@@ -52,7 +44,15 @@ export const ResumeTitleForm: React.FC<ResumeTitleProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [titleId]);
+
+  useEffect(() => {
+    if (mode === "update" && titleId) {
+      loadTitleData();
+    } else if (mode === "update" && initialData) {
+      setFields([{ value: initialData.title }]);
+    }
+  }, [mode, titleId, initialData, loadTitleData]);
 
   const addField = () => {
     if (mode === "update") return;
