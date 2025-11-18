@@ -1,5 +1,5 @@
 import { Title1, Title2, Title3 } from "@fluentui/react-components";
-import "../App.css";
+import "../../App.css";
 
 interface StyledTitleProps {
   text: string;
