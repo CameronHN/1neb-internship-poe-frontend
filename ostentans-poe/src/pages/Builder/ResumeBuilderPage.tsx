@@ -36,10 +36,14 @@ import { SaveOverlay } from "../../components/Overlays/SaveOverlay";
 import { DeleteConfirmationMenu } from "../../components/Shared/DeleteConfirmationMenu";
 import { EditRegular, QuestionCircle12Regular } from "@fluentui/react-icons";
 import { deleteButtonStyle } from "../../styles/constants/buttonStyling";
-import { subInformationStyle } from "../../styles/constants/textStyling";
+import {
+  pageTitleStyle,
+  subInformationStyle,
+} from "../../styles/constants/textStyling";
 import { tooltipStyling } from "../../styles/constants/iconStyling";
 import { useNavigate } from "react-router-dom";
 import { downloadBlob } from "../../helpers/fileHelpers";
+import { resumeContainer } from "../../styles/constants/pageStyling";
 
 const cardHeaderStyle = { display: "flex", gap: "8px" };
 
@@ -565,8 +569,8 @@ export const ResumeBuilderPage = () => {
   };
 
   return (
-    <div style={{ padding: "4rem 2rem", maxWidth: "60vw", margin: "0 auto" }}>
-      <div style={{ marginBottom: "32px", textAlign: "center" }}>
+    <div style={resumeContainer}>
+      <div style={pageTitleStyle}>
         <Title2>Resume Builder</Title2>
       </div>
 
@@ -944,7 +948,9 @@ export const ResumeBuilderPage = () => {
                           }}
                         >
                           <Checkbox
-                            label={`${skill.skill} (${skill.skillLevel})`}
+                            label={`${skill.skill} ${
+                              skill.skillLevel ? `(${skill.skillLevel})` : ""
+                            }`}
                             checked={selectedIds.has(`skill_${index}`)}
                             onChange={(_, data) =>
                               handleCheckboxChange(
@@ -1042,7 +1048,8 @@ export const ResumeBuilderPage = () => {
                               label={
                                 <div style={{ width: "100%" }}>
                                   <div style={{ fontWeight: "600" }}>
-                                    {exp.jobTitle} at {exp.company}
+                                    {exp.jobTitle}
+                                    {exp.company && ` at ${exp.company}`}
                                   </div>
                                   <div style={subInformationStyle}>
                                     {exp.startDate} - {exp.endDate}
@@ -1215,8 +1222,10 @@ export const ResumeBuilderPage = () => {
                                   <div
                                     style={{ fontSize: "12px", color: "#666" }}
                                   >
-                                    Major: {edu.major} • Achievement:{" "}
-                                    {edu.achievement}
+                                    {edu.major && `Major: ${edu.major}`}{" "}
+                                    {edu.major && edu.achievement && "•"}{" "}
+                                    {edu.achievement &&
+                                      ` Achievement: ${edu.achievement}`}
                                   </div>
                                 </div>
                               }

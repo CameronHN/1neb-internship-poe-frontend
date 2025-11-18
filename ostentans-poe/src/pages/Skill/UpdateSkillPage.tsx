@@ -2,20 +2,15 @@ import React from "react";
 import { Title2 } from "@fluentui/react-components";
 import usePageTitle from "../../hooks/usePageTitle";
 import UpdateSkillForm from "../../components/Skill/UpdateSkillForm";
+import { narrowFormContainer } from "../../styles/constants/pageStyling";
+import { pageTitleStyle } from "../../styles/constants/textStyling";
 
 export const UpdateSkillPage: React.FC = () => {
   usePageTitle({ title: "Update Skill" });
 
   return (
-    <div
-      style={{
-        padding: "4rem 2rem",
-        maxWidth: "80vw",
-        minWidth: "35vw",
-        margin: "0 auto",
-      }}
-    >
-      <div style={{ marginBottom: "32px", textAlign: "center" }}>
+    <div style={narrowFormContainer}>
+      <div style={pageTitleStyle}>
         <Title2>Update Skill</Title2>
       </div>
       <UpdateSkillForm />

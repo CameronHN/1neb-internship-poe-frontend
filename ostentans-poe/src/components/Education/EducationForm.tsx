@@ -237,7 +237,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({
   return (
     <div style={{ margin: "0 auto" }}>
       {fields.map((field, index) => (
-        <React.Fragment key={index}>
+        <div key={index}>
           <div style={fieldStyle}>
             <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
               <Label required>Institution Name:</Label>
@@ -351,7 +351,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({
               }}
             />
           )}
-        </React.Fragment>
+        </div>
       ))}
 
       <div

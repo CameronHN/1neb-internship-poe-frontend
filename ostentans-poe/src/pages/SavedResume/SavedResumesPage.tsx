@@ -5,6 +5,8 @@ import { savedResumeService } from "../../services/savedResumeService";
 import type { SavedResumeItem } from "../../types/savedResumeTypes";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { downloadBlob } from "../../helpers/fileHelpers";
+import { resumeContainer } from "../../styles/constants/pageStyling";
+import { pageTitleStyle } from "../../styles/constants/textStyling";
 
 export const SavedResumesPage: React.FC = () => {
   usePageTitle({ title: "Saved Resumes" });
@@ -86,8 +88,8 @@ export const SavedResumesPage: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: "4rem 2rem", maxWidth: "60vw", margin: "0 auto" }}>
-      <div style={{ marginBottom: "32px", textAlign: "center" }}>
+    <div style={resumeContainer}>
+      <div style={pageTitleStyle}>
         <Title2>Saved Resumes</Title2>
       </div>
 

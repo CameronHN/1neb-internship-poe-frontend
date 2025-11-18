@@ -232,7 +232,7 @@ export const CertificationForm: React.FC<CertificationFormProps> = ({
   return (
     <div style={{ margin: "0 auto" }}>
       {fields.map((field, index) => (
-        <React.Fragment key={index}>
+        <div key={index}>
           <div style={fieldStyle}>
             <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
               <Label required>Certification Name:</Label>
@@ -336,7 +336,7 @@ export const CertificationForm: React.FC<CertificationFormProps> = ({
               }}
             />
           )}
-        </React.Fragment>
+        </div>
       ))}
 
       <div

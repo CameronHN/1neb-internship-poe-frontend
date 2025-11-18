@@ -2,21 +2,15 @@ import { Title2 } from "@fluentui/react-components";
 import React from "react";
 import { AddSkillForm } from "../../components/Skill/AddSkillForm";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import { narrowFormContainer } from "../../styles/constants/pageStyling";
+import { pageTitleStyle } from "../../styles/constants/textStyling";
 
 const AddSkillPage: React.FC = () => {
   usePageTitle({ title: "Add Skills" });
 
   return (
-    <div
-      style={{
-        padding: "4rem 2rem",
-        maxWidth: "80vw",
-        minWidth: "60vw",
-        margin: "0 auto",
-      }}
-    >
-      {" "}
-      <div style={{ marginBottom: "32px", textAlign: "center" }}>
+    <div style={narrowFormContainer}>
+      <div style={pageTitleStyle}>
         <Title2>Add Skills</Title2>
       </div>
       <AddSkillForm />

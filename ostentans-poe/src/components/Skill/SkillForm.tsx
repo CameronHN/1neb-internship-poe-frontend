@@ -93,14 +93,10 @@ export const SkillForm: React.FC<SkillProps> = ({
   };
 
   const handleSave = async () => {
-    const validSkills = fields.filter(
-      (field) =>
-        field.skill.trim().length > 0 &&
-        field.proficiencyLevel.trim().length > 0
-    );
+    const validSkills = fields.filter((field) => field.skill.trim().length > 0);
 
     if (validSkills.length === 0) {
-      setSaveError("Please enter at least one skill with both name and level");
+      setSaveError("Please enter at least one skill with a name");
       return;
     }
 

@@ -188,7 +188,6 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
       .filter(
         (field) =>
           field.jobTitle.trim().length > 0 &&
-          field.companyName.trim().length > 0 &&
           field.startDate.trim().length > 0 &&
           field.endDate.trim().length > 0 &&
           field.responsibilities.filter(
@@ -294,7 +293,7 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
   return (
     <div style={{ margin: "0 auto" }}>
       {fields.map((field, index) => (
-        <React.Fragment key={index}>
+        <div key={index}>
           <div style={fieldStyle}>
             <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
               <Label required>Job Title:</Label>
@@ -309,7 +308,7 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-              <Label required>Company Name:</Label>
+              <Label>Company Name:</Label>
               <Input
                 style={layoutStyle}
                 placeholder={
@@ -413,7 +412,7 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
               }}
             />
           )}
-        </React.Fragment>
+        </div>
       ))}
 
       <div
