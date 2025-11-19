@@ -221,6 +221,7 @@ export const ResumeBuilderPage = () => {
       }
 
       // Arrays with order (order set to 0 for all as ordering not implemented yet)
+      // Hard setting order to descending (2)
       // TODO: Implement ordering feature in UI
       if (selectedData.socialIds.length > 0) {
         requestData.socialMediaIds = {
@@ -231,19 +232,19 @@ export const ResumeBuilderPage = () => {
       if (selectedData.experienceIds.length > 0) {
         requestData.experienceIds = {
           ids: selectedData.experienceIds,
-          order: 0,
+          order: 2,
         };
       }
       if (selectedData.educationIds.length > 0) {
         requestData.educationIds = {
           ids: selectedData.educationIds,
-          order: 0,
+          order: 2,
         };
       }
       if (selectedData.certificationIds.length > 0) {
         requestData.certificationIds = {
           ids: selectedData.certificationIds,
-          order: 0,
+          order: 2,
         };
       }
       if (selectedData.skillIds.length > 0) {
