@@ -2,29 +2,28 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Input, Button } from "@fluentui/react-components";
 import { AddSquareRegular, DismissSquareRegular } from "@fluentui/react-icons";
 import { useNavigate } from "react-router-dom";
-import { socialMediaService } from "../../services/socialMediaService";
+import { professionalLinkService } from "../../services/professionalLinkService";
 import { SaveOverlay } from "../Overlays/SaveOverlay";
-import type { Contact } from "../../types/socialMediaTypes";
+import type {
+  AddProfessionalLink,
+  ProfessionalLink,
+} from "../../types/professionalLinkTypes";
 
-interface SocialMediaField {
-  contactUrl: string;
-}
-
-interface SocialMediaProps {
+interface ProfessionalLinkProps {
   mode: "add" | "update";
   contactId?: string;
-  initialData?: Contact;
+  initialData?: ProfessionalLink;
   onSaveSuccess?: () => void;
 }
 
-export const SocialMediaForm: React.FC<SocialMediaProps> = ({
+export const ProfessionalLinkForm: React.FC<ProfessionalLinkProps> = ({
   mode,
   contactId,
   initialData,
   onSaveSuccess,
 }) => {
-  const [fields, setFields] = useState<SocialMediaField[]>([
-    { contactUrl: "" },
+  const [fields, setFields] = useState<AddProfessionalLink[]>([
+    { linkType: "", link: "" },
   ]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -37,8 +36,15 @@ export const SocialMediaForm: React.FC<SocialMediaProps> = ({
 
     setIsLoading(true);
     try {
-      const contact = await socialMediaService.getContactById(contactId);
-      setFields([{ contactUrl: contact.contactUrl }]);
+      const contact = await professionalLinkService.getProfessionalLinkById(
+        contactId
+      );
+      setFields([
+        {
+          link: contact.link,
+          linkType: contact.linkType,
+        },
+      ]);
     } catch (err) {
       setSaveError(
         err instanceof Error ? err.message : "Failed to load contact"
@@ -54,15 +60,16 @@ export const SocialMediaForm: React.FC<SocialMediaProps> = ({
       loadContactData();
     } else if (mode === "update" && initialData) {
       // Use provided initial data
-      setFields([{ contactUrl: initialData.contactUrl }]);
+      setFields([{ link: initialData.link, linkType: initialData.linkType }]);
     }
   }, [mode, contactId, initialData, loadContactData]);
 
   const addField = () => {
     if (mode === "update") return;
 
-    const newField: SocialMediaField = {
-      contactUrl: "",
+    const newField: AddProfessionalLink = {
+      linkType: "",
+      link: "",
     };
     setFields([...fields, newField]);
   };
@@ -73,21 +80,29 @@ export const SocialMediaForm: React.FC<SocialMediaProps> = ({
     setFields(fields.filter((_, i) => i !== index));
   };
 
-  const updateField = (index: number, value: string) => {
+  const updateLink = (index: number, value: string) => {
     setFields(
       fields.map((field, i) =>
-        i === index ? { ...field, contactUrl: value } : field
+        i === index ? { ...field, link: value } : field
+      )
+    );
+  };
+
+  const updateLinkType = (index: number, value: string) => {
+    setFields(
+      fields.map((field, i) =>
+        i === index ? { ...field, linkType: value } : field
       )
     );
   };
 
   const handleSave = async () => {
     // Filter out empty fields
-    const socialMediaUrls = fields
-      .map((field) => field.contactUrl.trim())
-      .filter((url) => url.length > 0);
+    const validProfessionalLinks = fields.filter(
+      (field) => field.link.trim().length > 0
+    );
 
-    if (socialMediaUrls.length === 0) {
+    if (validProfessionalLinks.length === 0) {
       setSaveError("Please enter at least one social media URL");
       return;
     }
@@ -97,13 +112,16 @@ export const SocialMediaForm: React.FC<SocialMediaProps> = ({
 
     try {
       if (mode === "add") {
-        await socialMediaService.addSocialMedia(socialMediaUrls);
+        await professionalLinkService.addProfessionalLink(
+          validProfessionalLinks
+        );
       } else if (mode === "update" && contactId) {
-        const updateData: Contact = {
+        const updateData: ProfessionalLink = {
           id: contactId,
-          contactUrl: socialMediaUrls[0],
+          link: validProfessionalLinks[0].link,
+          linkType: validProfessionalLinks[0].linkType,
         };
-        await socialMediaService.updateContact(updateData);
+        await professionalLinkService.updateProfessionalLink(updateData);
       }
 
       setSaveSuccess(true);
@@ -131,7 +149,7 @@ export const SocialMediaForm: React.FC<SocialMediaProps> = ({
     if (mode === "update") {
       navigate("/builder");
     } else {
-      setFields([{ contactUrl: "" }]);
+      setFields([{ link: "", linkType: "" }]);
     }
   };
 
@@ -158,12 +176,20 @@ export const SocialMediaForm: React.FC<SocialMediaProps> = ({
             style={layoutStyle}
             placeholder={
               index === 0
-                ? "Enter social media URL (e.g., https://twitter.com/username). Maximum 100 characters."
+                ? "Enter social media URL (e.g., https://twitter.com/username)"
                 : ""
             }
-            value={field.contactUrl}
-            onChange={(_, data) => updateField(index, data.value)}
+            value={field.link}
+            onChange={(_, data) => updateLink(index, data.value)}
             maxLength={100}
+          />
+          <Input
+            style={layoutStyle}
+            placeholder={
+              index === 0 ? "Enter platform type (e.g., LinkedIn, Twitter)" : ""
+            }
+            value={field.linkType}
+            onChange={(_, data) => updateLinkType(index, data.value)}
           />
           {mode === "add" && (
             <>
@@ -199,8 +225,8 @@ export const SocialMediaForm: React.FC<SocialMediaProps> = ({
       >
         <Button
           style={layoutStyle}
-          className="form-submit-button"
           onClick={handleSave}
+          className="form-submit-button"
           disabled={isSaving}
         >
           {mode === "update" ? "Update" : "Save"}

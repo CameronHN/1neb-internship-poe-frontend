@@ -29,7 +29,7 @@ import { experienceService } from "../../services/experienceService";
 import { professionalSummaryService } from "../../services/professionalSummaryService";
 import { skillService } from "../../services/skillService";
 import { titleService } from "../../services/titleService";
-import { socialMediaService } from "../../services/socialMediaService";
+import { professionalLinkService } from "../../services/professionalLinkService";
 import { savedResumeService } from "../../services/savedResumeService";
 import { DeleteOverlay } from "../../components/Overlays/DeleteOverlay";
 import { SaveOverlay } from "../../components/Overlays/SaveOverlay";
@@ -402,7 +402,7 @@ export const ResumeBuilderPage = () => {
     handleDeleteItems(
       "social_",
       "social media",
-      socialMediaService.deleteSocialMedia
+      professionalLinkService.deleteProfessionalLink
     );
 
   const handleUndoSelection = () => {
@@ -677,7 +677,7 @@ export const ResumeBuilderPage = () => {
                           }}
                         >
                           <Checkbox
-                            label={social.socialMediaUrl}
+                            label={`${social.socialMediaUrl} (${social.socialMediaType})`}
                             checked={selectedIds.has(`social_${index}`)}
                             onChange={(_, data) =>
                               handleCheckboxChange(

@@ -1,7 +1,7 @@
 import React from "react";
 import { Title2 } from "@fluentui/react-components";
 import usePageTitle from "../../hooks/usePageTitle";
-import UpdateSocialMediaForm from "../../components/SocialMedia/UpdateSocialMediaForm";
+import UpdateProfessionalLinkForm from "../../components/SocialMedia/UpdateProfessionalLinkForm";
 import { narrowFormContainer } from "../../styles/constants/pageStyling";
 import { pageTitleStyle } from "../../styles/constants/textStyling";
 
@@ -13,7 +13,7 @@ export const UpdateSocialMediaPage: React.FC = () => {
       <div style={pageTitleStyle}>
         <Title2>Update Social Media</Title2>
       </div>
-      <UpdateSocialMediaForm />
+      <UpdateProfessionalLinkForm />
     </div>
   );
 };
