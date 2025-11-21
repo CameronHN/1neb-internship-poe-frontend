@@ -87,6 +87,7 @@ const RegisterForm: React.FC = () => {
             onChange={(_, data) => handleChange("firstName", data.value)}
             required
             disabled={isLoading}
+            maxLength={100}
           />
         </div>
 
@@ -103,6 +104,7 @@ const RegisterForm: React.FC = () => {
             onChange={(_, data) => handleChange("lastName", data.value)}
             required
             disabled={isLoading}
+            maxLength={100}
           />
         </div>
 
@@ -119,6 +121,7 @@ const RegisterForm: React.FC = () => {
             onChange={(_, data) => handleChange("email", data.value)}
             required
             disabled={isLoading}
+            maxLength={256}
           />
         </div>
 
@@ -135,6 +138,7 @@ const RegisterForm: React.FC = () => {
             onChange={(_, data) => handleChange("phone", data.value)}
             required
             disabled={isLoading}
+            maxLength={15}
           />
         </div>
 
@@ -151,6 +155,7 @@ const RegisterForm: React.FC = () => {
             onChange={(_, data) => handleChange("password", data.value)}
             required
             disabled={isLoading}
+            minLength={8}
           />
         </div>
 
@@ -167,6 +172,7 @@ const RegisterForm: React.FC = () => {
             onChange={(_, data) => handleChange("confirmPassword", data.value)}
             required
             disabled={isLoading}
+            minLength={8}
           />
         </div>
       </div>

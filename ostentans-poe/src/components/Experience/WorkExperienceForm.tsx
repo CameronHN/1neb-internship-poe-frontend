@@ -304,6 +304,7 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
                 }
                 value={field.jobTitle}
                 onChange={(_, data) => updateJobTitle(index, data.value)}
+                maxLength={100}
               />
             </div>
 
@@ -318,6 +319,7 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
                 }
                 value={field.companyName}
                 onChange={(_, data) => updateCompanyName(index, data.value)}
+                maxLength={100}
               />
             </div>
           </div>
@@ -375,6 +377,7 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
                     updateResponsibility(index, respIndex, data.value)
                   }
                   rows={2}
+                  maxLength={255}
                 />
               ))}
             </div>

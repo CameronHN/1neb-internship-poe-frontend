@@ -173,6 +173,7 @@ export const SkillForm: React.FC<SkillProps> = ({
             }
             value={field.skill}
             onChange={(_, data) => updateSkillName(index, data.value)}
+            maxLength={100}
           />
           <Input
             style={layoutStyle}
@@ -181,6 +182,7 @@ export const SkillForm: React.FC<SkillProps> = ({
             }
             value={field.proficiencyLevel}
             onChange={(_, data) => updateSkillLevel(index, data.value)}
+            maxLength={100}
           />
           {mode === "add" && (
             <>

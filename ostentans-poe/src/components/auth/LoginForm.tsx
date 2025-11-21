@@ -65,6 +65,7 @@ const LoginForm: React.FC = () => {
         onChange={(_, data) => setEmail(data.value)}
         required
         disabled={isLoading}
+        maxLength={256}
       />
       <Label htmlFor="password" size="large">
         Password:
@@ -78,6 +79,7 @@ const LoginForm: React.FC = () => {
         onChange={(_, data) => setPassword(data.value)}
         required
         disabled={isLoading}
+        minLength={8}
       />
 
       <Checkbox

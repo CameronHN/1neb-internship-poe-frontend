@@ -246,6 +246,7 @@ export const CertificationForm: React.FC<CertificationFormProps> = ({
                 onChange={(_, data) =>
                   updateCertificationName(index, data.value)
                 }
+                maxLength={100}
               />
             </div>
 
@@ -262,6 +263,7 @@ export const CertificationForm: React.FC<CertificationFormProps> = ({
                 onChange={(_, data) =>
                   updateIssuingOrganisation(index, data.value)
                 }
+                maxLength={100}
               />
             </div>
           </div>
@@ -276,6 +278,7 @@ export const CertificationForm: React.FC<CertificationFormProps> = ({
                 }
                 value={field.credentialUrl || ""}
                 onChange={(_, data) => updateCredentialUrl(index, data.value)}
+                maxLength={100}
               />
             </div>
           </div>

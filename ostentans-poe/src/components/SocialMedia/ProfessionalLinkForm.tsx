@@ -190,6 +190,7 @@ export const ProfessionalLinkForm: React.FC<ProfessionalLinkProps> = ({
             }
             value={field.linkType}
             onChange={(_, data) => updateLinkType(index, data.value)}
+            maxLength={100}
           />
           {mode === "add" && (
             <>

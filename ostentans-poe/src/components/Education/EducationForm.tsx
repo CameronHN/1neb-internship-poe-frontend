@@ -250,6 +250,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({
                 }
                 value={field.institutionName}
                 onChange={(_, data) => updateInstitutionName(index, data.value)}
+                maxLength={100}
               />
             </div>
 
@@ -265,6 +266,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({
                 }
                 value={field.qualification}
                 onChange={(_, data) => updateQualification(index, data.value)}
+                maxLength={100}
               />
             </div>
           </div>
@@ -303,6 +305,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({
                 }
                 value={field.major || ""}
                 onChange={(_, data) => updateMajor(index, data.value)}
+                maxLength={100}
               />
             </div>
 
@@ -315,6 +318,7 @@ export const EducationForm: React.FC<EducationFormProps> = ({
                 }
                 value={field.achievement || ""}
                 onChange={(_, data) => updateAchievement(index, data.value)}
+                maxLength={100}
               />
             </div>
 
