@@ -16,8 +16,9 @@ export interface SaveResumeData {
         skill: string;
         skillLevel: string;
     }>;
-    socials: Array<{
-        socialMediaUrl: string;
+    professionalLinks: Array<{
+        link: string;
+        linkType: string;
     }>;
     experience: Array<{
         company: string;

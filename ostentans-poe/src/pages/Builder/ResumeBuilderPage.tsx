@@ -522,8 +522,9 @@ export const ResumeBuilderPage = () => {
             skill: skill.skill,
             skillLevel: skill.skillLevel,
           })),
-          socials: selectedData.socialIds.map((social: any) => ({
-            socialMediaUrl: social.socialMediaUrl,
+          professionalLinks: selectedData.socialIds.map((social: any) => ({
+            link: social.socialMediaUrl,
+            linkType: social.socialMediaType,
           })),
           experience: selectedData.experienceIds.map((exp: any) => ({
             company: exp.company,
