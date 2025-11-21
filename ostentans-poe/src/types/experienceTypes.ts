@@ -27,7 +27,7 @@ export interface UpdateExperience {
     endDate: string;
     responsibilities: Responsibilities[];
 }
-interface Responsibilities {
+export interface Responsibilities {
     id: string;
     responsibility: string;
 }

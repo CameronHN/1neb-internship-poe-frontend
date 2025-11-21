@@ -89,13 +89,3 @@ export interface ResumeSelectionRequest {
     order: number;
   };
 }
-
-export interface ResumeSelectionState {
-  titleSelected: boolean;
-  professionalSummarySelected: boolean;
-  selectedSkills: Set<string>;
-  selectedExperiences: Set<string>;
-  selectedEducation: Set<string>;
-  selectedCertifications: Set<string>;
-  selectedSocialMedia: Set<string>;
-}
