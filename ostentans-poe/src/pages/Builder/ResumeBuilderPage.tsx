@@ -1220,9 +1220,7 @@ export const ResumeBuilderPage = () => {
                                     {edu.institution} • {edu.startDate} -{" "}
                                     {edu.endDate}
                                   </div>
-                                  <div
-                                    style={{ fontSize: "12px", color: "#666" }}
-                                  >
+                                  <div style={subInformationStyle}>
                                     {edu.major && `Major: ${edu.major}`}{" "}
                                     {edu.major && edu.achievement && "•"}{" "}
                                     {edu.achievement &&
@@ -1336,12 +1334,7 @@ export const ResumeBuilderPage = () => {
                                     <div style={subInformationStyle}>
                                       {cert.organisation}
                                     </div>
-                                    <div
-                                      style={{
-                                        fontSize: "12px",
-                                        color: "#666",
-                                      }}
-                                    >
+                                    <div style={subInformationStyle}>
                                       {cert.issuedDate &&
                                         `Issued: ${cert.issuedDate} `}
                                       {cert.expirationDate &&
