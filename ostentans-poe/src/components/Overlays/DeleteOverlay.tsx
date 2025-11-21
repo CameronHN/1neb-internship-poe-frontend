@@ -32,7 +32,7 @@ export const DeleteOverlay: React.FC<DeleteOverlayProps> = ({
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -53,7 +53,7 @@ export const DeleteOverlay: React.FC<DeleteOverlayProps> = ({
             {isDeleting && !deleteSuccess && (
               <>
                 <Spinner size="extra-large" />
-                <Text size={600}>Deleting {itemType}...</Text>
+                <Text size={600} color="#000000">Deleting {itemType}...</Text>
               </>
             )}
             {deleteSuccess && (
@@ -61,7 +61,7 @@ export const DeleteOverlay: React.FC<DeleteOverlayProps> = ({
                 <CheckmarkCircle24Filled
                   style={{ color: "#107c10", fontSize: "48px" }}
                 />
-                <Text size={600}>Successfully deleted!</Text>
+                <Text size={600} color="#000000">Successfully deleted!</Text>
               </>
             )}
           </div>
