@@ -20,8 +20,9 @@ interface Skill {
   skillLevel: string;
 }
 
-interface Social {
-  socialMediaUrl: string;
+interface ProfessionalLink {
+  link: string;
+  linkType: string;
 }
 
 interface Experience {
@@ -56,7 +57,7 @@ interface ResumeData {
   phoneNumber: string;
   summary: string;
   skills: Skill[];
-  socials: Social[];
+  professionalLinks: ProfessionalLink[];
   experience: Experience[];
   education: Education[];
   certification: Certification[];
@@ -93,7 +94,7 @@ export const DemoPage: React.FC = () => {
     phoneNumber: "",
     summary: "",
     skills: Array(4).fill({ skill: "", skillLevel: "" }),
-    socials: Array(2).fill({ socialMediaUrl: "" }),
+    professionalLinks: Array(2).fill({ socialMediaUrl: "" }),
     experience: Array(2).fill({
       company: "",
       jobTitle: "",
@@ -135,11 +136,15 @@ export const DemoPage: React.FC = () => {
     }));
   };
 
-  const handleSocialChange = (index: number, value: string) => {
+  const handleSocialChange = (
+    index: number,
+    field: keyof ProfessionalLink,
+    value: string
+  ) => {
     setFormData((prev) => ({
       ...prev,
-      socials: prev.socials.map((social, i) =>
-        i === index ? { socialMediaUrl: value } : social
+      professionalLinks: prev.professionalLinks.map((social, i) =>
+        i === index ? { ...social, [field]: value } : social
       ),
     }));
   };
@@ -218,6 +223,7 @@ export const DemoPage: React.FC = () => {
     return true;
   };
 
+  // Updated the handleCreatePDF function to format dates as "Month YYYY"
   const handleCreatePDF = async () => {
     if (usageCount >= DEMO_LIMIT) {
       setMessage({
@@ -233,29 +239,44 @@ export const DemoPage: React.FC = () => {
     setMessage(null);
 
     try {
-      // Filter out empty data
+      const formatDate = (date: string): string => {
+        const options: Intl.DateTimeFormatOptions = {
+          year: "numeric",
+          month: "long",
+        };
+        return new Date(date).toLocaleDateString("en-US", options);
+      };
+
       const cleanedData = {
         ...formData,
-        skills: formData.skills.filter(
-          (skill) => skill.skill.trim() && skill.skillLevel.trim()
+        skills: formData.skills.filter((skill) => skill.skill.trim()),
+        socials: formData.professionalLinks.filter((social) =>
+          social.link.trim()
         ),
-        socials: formData.socials.filter((social) =>
-          social.socialMediaUrl.trim()
-        ),
-        experience: formData.experience
-          .filter((exp) => exp.company.trim() && exp.jobTitle.trim())
-          .map((exp) => ({
-            ...exp,
-            responsibilities: exp.responsibilities.filter((resp) =>
-              resp.trim()
-            ),
+        experience: formData.experience.map((exp) => ({
+          ...exp,
+          startDate: formatDate(exp.startDate),
+          endDate: formatDate(exp.endDate),
+          responsibilities: exp.responsibilities.filter((resp) => resp.trim()),
+        })),
+        education: formData.education
+          .filter((edu) => edu.institution.trim() && edu.qualification.trim())
+          .map((edu) => ({
+            ...edu,
+            startDate: formatDate(edu.startDate),
+            endDate: formatDate(edu.endDate),
           })),
-        education: formData.education.filter(
-          (edu) => edu.institution.trim() && edu.qualification.trim()
-        ),
-        certification: formData.certification.filter(
-          (cert) => cert.name.trim() && cert.organisation.trim()
-        ),
+        certifications: formData.certification
+          .filter((cert) => cert.name.trim() && cert.organisation.trim())
+          .map((cert) => ({
+            ...cert,
+            issuedDate: cert.issuedDate.trim()
+              ? formatDate(cert.issuedDate)
+              : "",
+            expirationDate: cert.expirationDate.trim()
+              ? formatDate(cert.expirationDate)
+              : "",
+          })),
       };
 
       const response: Response = await fetch(`${BASE_URL}/resume/create-pdf`, {
@@ -267,16 +288,15 @@ export const DemoPage: React.FC = () => {
       });
 
       if (response.ok) {
-        // Handle file download
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
 
-        // Get filename from backend response headers or use fallback
         const contentDisposition = response.headers.get("Content-Disposition");
-        const backendFilename =
-          contentDisposition?.match(/filename="?([^"]+)"?/)?.[1];
+        const backendFilename = contentDisposition?.match(
+          /filename="?([^";]+)"?/
+        )?.[1];
         a.download = backendFilename || "resume.pdf";
 
         document.body.appendChild(a);
@@ -284,7 +304,6 @@ export const DemoPage: React.FC = () => {
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
 
-        // Update usage count
         const newCount = usageCount + 1;
         setUsageCount(newCount);
         localStorage.setItem("demoUsageCount", newCount.toString());
@@ -309,8 +328,6 @@ export const DemoPage: React.FC = () => {
     }
   };
 
-  const textShadowBlack: string = "1px 1px 2px rgba(0, 0, 0, 0.7)";
-
   return (
     <div
       style={{
@@ -318,7 +335,6 @@ export const DemoPage: React.FC = () => {
         maxWidth: "80vw",
         margin: "0 auto",
         minHeight: "100vh",
-        color: "white",
       }}
     >
       <div
@@ -329,14 +345,13 @@ export const DemoPage: React.FC = () => {
           margin: "0 auto",
         }}
       >
-        <Title1 style={{ marginBottom: "16px", color: "white" }}>
+        <Title1 style={{ marginBottom: "16px" }}>
           Free Resume Creator - Demo
         </Title1>
         <Text
           style={{
             display: "block",
             marginBottom: "8px",
-            color: "rgba(255,255,255,0.8)",
             textAlign: "center",
           }}
         >
@@ -345,7 +360,6 @@ export const DemoPage: React.FC = () => {
         <Text
           style={{
             display: "block",
-            color: "rgba(255,255,255,0.6)",
             fontSize: "14px",
           }}
         >
@@ -355,7 +369,6 @@ export const DemoPage: React.FC = () => {
         <Text
           style={{
             display: "block",
-            color: "rgba(255,255,255,0.6)",
             fontSize: "14px",
             marginBottom: "16px",
           }}
@@ -386,9 +399,7 @@ export const DemoPage: React.FC = () => {
       >
         {/* Basic Information */}
         <div style={{ marginBottom: "32px" }}>
-          <Subtitle1 style={{ color: "white", textShadow: textShadowBlack }}>
-            Basic Information
-          </Subtitle1>
+          <Subtitle1>Basic Information</Subtitle1>
           <div
             style={{
               display: "flex",
@@ -401,21 +412,21 @@ export const DemoPage: React.FC = () => {
             <div>
               <Label
                 style={{
-                  color: "white",
                   display: "block",
                   marginBottom: "8px",
-                  textShadow: textShadowBlack,
                 }}
+                required
               >
-                Full Name *
+                Full Name
               </Label>
               <Input
                 value={formData.name}
                 onChange={(_, data) => handleInputChange("name", data.value)}
                 style={{
-                  backgroundColor: "white",
                   width: "100%",
                 }}
+                required
+                maxLength={60}
               />
             </div>
 
@@ -423,22 +434,22 @@ export const DemoPage: React.FC = () => {
             <div>
               <Label
                 style={{
-                  color: "white",
                   display: "block",
                   marginBottom: "8px",
-                  textShadow: textShadowBlack,
                 }}
+                required
               >
-                Email *
+                Email
               </Label>
               <Input
                 type="email"
                 value={formData.email}
                 onChange={(_, data) => handleInputChange("email", data.value)}
                 style={{
-                  backgroundColor: "white",
                   width: "100%",
                 }}
+                required
+                maxLength={256}
               />
             </div>
 
@@ -446,13 +457,12 @@ export const DemoPage: React.FC = () => {
             <div>
               <Label
                 style={{
-                  color: "white",
                   display: "block",
                   marginBottom: "8px",
-                  textShadow: textShadowBlack,
                 }}
+                required
               >
-                Phone Number *
+                Phone Number
               </Label>
               <Input
                 type="tel"
@@ -461,20 +471,20 @@ export const DemoPage: React.FC = () => {
                   handleInputChange("phoneNumber", data.value)
                 }
                 style={{
-                  backgroundColor: "white",
                   width: "100%",
                 }}
+                required
+                maxLength={15}
               />
             </div>
 
-            {/* Job Title */}
+            {/* Resume Title */}
             <div>
               <Label
+                required
                 style={{
-                  color: "white",
                   display: "block",
                   marginBottom: "8px",
-                  textShadow: textShadowBlack,
                 }}
               >
                 Job Title
@@ -483,20 +493,20 @@ export const DemoPage: React.FC = () => {
                 value={formData.title}
                 onChange={(_, data) => handleInputChange("title", data.value)}
                 style={{
-                  backgroundColor: "white",
                   width: "100%",
                 }}
+                required
+                maxLength={100}
               />
             </div>
 
             {/* Professional Summary */}
             <div>
               <Label
+                required
                 style={{
-                  color: "white",
                   display: "block",
                   marginBottom: "8px",
-                  textShadow: textShadowBlack,
                 }}
               >
                 Professional Summary
@@ -506,9 +516,10 @@ export const DemoPage: React.FC = () => {
                 onChange={(_, data) => handleInputChange("summary", data.value)}
                 rows={5}
                 style={{
-                  backgroundColor: "white",
                   width: "100%",
                 }}
+                required
+                maxLength={200}
               />
             </div>
           </div>
@@ -519,8 +530,6 @@ export const DemoPage: React.FC = () => {
           <Subtitle1
             style={{
               marginBottom: "16px",
-              color: "white",
-              textShadow: textShadowBlack,
             }}
           >
             Skills (Max 4)
@@ -537,14 +546,13 @@ export const DemoPage: React.FC = () => {
             >
               <div style={{ margin: 0, padding: 0 }}>
                 <Label
+                  required
                   style={{
-                    color: "white",
                     display: "block",
                     marginBottom: "4px",
                     fontSize: "12px",
                     opacity: 0.8,
                     margin: 0,
-                    textShadow: "1px 1px 2px black",
                   }}
                 >
                   Skill Name
@@ -555,22 +563,21 @@ export const DemoPage: React.FC = () => {
                     handleSkillChange(index, "skill", data.value)
                   }
                   style={{
-                    backgroundColor: "white",
                     width: "100%",
                     margin: 0,
                   }}
+                  required
+                  maxLength={100}
                 />
               </div>
               <div style={{ margin: 0, padding: 0 }}>
                 <Label
                   style={{
-                    color: "white",
                     display: "block",
                     marginBottom: "4px",
                     fontSize: "12px",
                     opacity: 0.8,
                     margin: 0,
-                    textShadow: "1px 1px 2px black",
                   }}
                 >
                   Skill Level
@@ -581,10 +588,10 @@ export const DemoPage: React.FC = () => {
                     handleSkillChange(index, "skillLevel", data.value)
                   }
                   style={{
-                    backgroundColor: "white",
                     width: "100%",
                     margin: 0,
                   }}
+                  maxLength={100}
                 />
               </div>
             </div>
@@ -596,34 +603,72 @@ export const DemoPage: React.FC = () => {
           <Subtitle1
             style={{
               marginBottom: "16px",
-              color: "white",
-              textShadow: textShadowBlack,
             }}
           >
             Social Media (Max 2)
           </Subtitle1>
-          {formData.socials.map((social, index) => (
-            <div key={index} style={{ marginBottom: "12px" }}>
-              <Label
-                style={{
-                  color: "white",
-                  display: "block",
-                  marginBottom: "4px",
-                  fontSize: "12px",
-                  opacity: 0.8,
-                  textShadow: "1px 1px 2px black",
-                }}
-              >
-                Social Media URL{" "}
-              </Label>
-              <Input
-                value={social.socialMediaUrl}
-                onChange={(_, data) => handleSocialChange(index, data.value)}
-                style={{
-                  backgroundColor: "white",
-                  width: "100%",
-                }}
-              />
+          {formData.professionalLinks.map((social, index) => (
+            <div
+              key={index}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+                gap: "16px",
+                marginBottom: "16px",
+              }}
+            >
+              <div style={{ margin: 0, padding: 0 }}>
+                <Label
+                  required
+                  style={{
+                    display: "block",
+                    marginBottom: "4px",
+                    fontSize: "12px",
+                    opacity: 0.8,
+                    margin: 0,
+                  }}
+                >
+                  Social Media Link
+                </Label>
+                <Input
+                  value={social.link}
+                  onChange={(_, data) =>
+                    handleSocialChange(index, "link", data.value)
+                  }
+                  style={{
+                    width: "100%",
+                    margin: 0,
+                  }}
+                  required
+                  maxLength={100}
+                />
+              </div>
+              <div style={{ margin: 0, padding: 0 }}>
+                <Label
+                  required
+                  style={{
+                    display: "block",
+                    marginBottom: "4px",
+                    fontSize: "12px",
+                    opacity: 0.8,
+                    margin: 0,
+                  }}
+                >
+                  Social Media Type
+                </Label>
+                <Input
+                  value={social.linkType}
+                  onChange={(_, data) =>
+                    handleSocialChange(index, "linkType", data.value)
+                  }
+                  style={{
+                    width: "100%",
+                    margin: 0,
+                  }}
+                  required
+                  maxLength={100}
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -633,9 +678,8 @@ export const DemoPage: React.FC = () => {
           <Subtitle1
             style={{
               marginBottom: "16px",
-              color: "white",
+
               lineHeight: "1.6",
-              textShadow: textShadowBlack,
             }}
           >
             Experience (Max 2)
@@ -658,12 +702,10 @@ export const DemoPage: React.FC = () => {
                 <div>
                   <Label
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Company Name
@@ -674,20 +716,19 @@ export const DemoPage: React.FC = () => {
                       handleExperienceChange(index, "company", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    maxLength={100}
                   />
                 </div>
                 <div>
                   <Label
+                    required
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Job Title
@@ -698,9 +739,10 @@ export const DemoPage: React.FC = () => {
                       handleExperienceChange(index, "jobTitle", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    required
+                    maxLength={100}
                   />
                 </div>
               </div>
@@ -714,13 +756,12 @@ export const DemoPage: React.FC = () => {
               >
                 <div>
                   <Label
+                    required
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Start Date
@@ -732,20 +773,19 @@ export const DemoPage: React.FC = () => {
                       handleExperienceChange(index, "startDate", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    required
                   />
                 </div>
                 <div>
                   <Label
+                    required
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: textShadowBlack,
                     }}
                   >
                     End Date
@@ -757,19 +797,18 @@ export const DemoPage: React.FC = () => {
                       handleExperienceChange(index, "endDate", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    required
                   />
                 </div>
               </div>
               <Label
+                required
                 style={{
-                  color: "white",
                   fontWeight: "bold",
                   marginBottom: "8px",
                   display: "block",
-                  textShadow: textShadowBlack,
                 }}
               >
                 Responsibilities (Max 2)
@@ -785,13 +824,21 @@ export const DemoPage: React.FC = () => {
                       handleResponsibilityChange(index, respIndex, data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
                     rows={2}
+                    required
+                    maxLength={255}
                   />
                 ))}
               </div>
+              <hr
+                style={{
+                  border: "none",
+                  borderTop: "1px solid #0000006c",
+                  margin: "24px 0",
+                }}
+              />
             </div>
           ))}
         </div>
@@ -801,8 +848,6 @@ export const DemoPage: React.FC = () => {
           <Subtitle1
             style={{
               marginBottom: "16px",
-              color: "white",
-              textShadow: textShadowBlack,
             }}
           >
             Education (Max 2)
@@ -824,13 +869,12 @@ export const DemoPage: React.FC = () => {
               >
                 <div>
                   <Label
+                    required
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Institution
@@ -841,20 +885,20 @@ export const DemoPage: React.FC = () => {
                       handleEducationChange(index, "institution", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    required
+                    maxLength={100}
                   />
                 </div>
                 <div>
                   <Label
+                    required
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Qualification
@@ -865,9 +909,10 @@ export const DemoPage: React.FC = () => {
                       handleEducationChange(index, "qualification", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    required
+                    maxLength={100}
                   />
                 </div>
               </div>
@@ -882,12 +927,10 @@ export const DemoPage: React.FC = () => {
                 <div>
                   <Label
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Major
@@ -898,20 +941,18 @@ export const DemoPage: React.FC = () => {
                       handleEducationChange(index, "major", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    maxLength={100}
                   />
                 </div>
                 <div>
                   <Label
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Achievement
@@ -922,9 +963,9 @@ export const DemoPage: React.FC = () => {
                       handleEducationChange(index, "achievement", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    maxLength={100}
                   />
                 </div>
               </div>
@@ -937,13 +978,12 @@ export const DemoPage: React.FC = () => {
               >
                 <div>
                   <Label
+                    required
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Start Date
@@ -955,20 +995,19 @@ export const DemoPage: React.FC = () => {
                       handleEducationChange(index, "startDate", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    required
                   />
                 </div>
                 <div>
                   <Label
+                    required
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     End Date
@@ -980,12 +1019,19 @@ export const DemoPage: React.FC = () => {
                       handleEducationChange(index, "endDate", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    required
                   />
                 </div>
               </div>
+              <hr
+                style={{
+                  border: "none",
+                  borderTop: "1px solid #0000006c",
+                  margin: "24px 0",
+                }}
+              />
             </div>
           ))}
         </div>
@@ -995,8 +1041,6 @@ export const DemoPage: React.FC = () => {
           <Subtitle1
             style={{
               marginBottom: "16px",
-              color: "white",
-              textShadow: textShadowBlack,
             }}
           >
             Certifications (Max 2)
@@ -1018,13 +1062,12 @@ export const DemoPage: React.FC = () => {
               >
                 <div>
                   <Label
+                    required
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Certification Name
@@ -1035,20 +1078,19 @@ export const DemoPage: React.FC = () => {
                       handleCertificationChange(index, "name", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    required
+                    maxLength={100}
                   />
                 </div>
                 <div>
                   <Label
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Issuing Organisation
@@ -1063,21 +1105,19 @@ export const DemoPage: React.FC = () => {
                       )
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
+                    maxLength={100}
                   />
                 </div>
               </div>
               <div style={{ marginBottom: "12px" }}>
                 <Label
                   style={{
-                    color: "white",
                     display: "block",
                     marginBottom: "4px",
                     fontSize: "12px",
                     opacity: 0.8,
-                    textShadow: "1px 1px 2px black",
                   }}
                 >
                   Credential URL
@@ -1092,9 +1132,9 @@ export const DemoPage: React.FC = () => {
                     )
                   }
                   style={{
-                    backgroundColor: "white",
                     width: "100%",
                   }}
+                  maxLength={100}
                 />
               </div>
               <div
@@ -1107,12 +1147,10 @@ export const DemoPage: React.FC = () => {
                 <div>
                   <Label
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
                     Issued Date
@@ -1124,7 +1162,6 @@ export const DemoPage: React.FC = () => {
                       handleCertificationChange(index, "issuedDate", data.value)
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
                   />
@@ -1132,15 +1169,13 @@ export const DemoPage: React.FC = () => {
                 <div>
                   <Label
                     style={{
-                      color: "white",
                       display: "block",
                       marginBottom: "4px",
                       fontSize: "12px",
                       opacity: 0.8,
-                      textShadow: "1px 1px 2px black",
                     }}
                   >
-                    Expiry Date{" "}
+                    Expiry Date
                   </Label>
                   <Input
                     type="date"
@@ -1153,12 +1188,18 @@ export const DemoPage: React.FC = () => {
                       )
                     }
                     style={{
-                      backgroundColor: "white",
                       width: "100%",
                     }}
                   />
                 </div>
               </div>
+              <hr
+                style={{
+                  border: "none",
+                  borderTop: "1px solid #0000006c",
+                  margin: "24px 0",
+                }}
+              />
             </div>
           ))}
         </div>
@@ -1173,7 +1214,7 @@ export const DemoPage: React.FC = () => {
             disabled={isLoading || usageCount >= DEMO_LIMIT}
             style={{
               backgroundColor: usageCount >= DEMO_LIMIT ? "#666" : "#0078D4",
-              color: "white",
+
               padding: "12px 32px",
               fontSize: "16px",
             }}
