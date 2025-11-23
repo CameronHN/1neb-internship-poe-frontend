@@ -79,7 +79,6 @@ const RegisterForm: React.FC = () => {
             First Name:
           </Label>
           <Input
-            className="form-input-field"
             id="first-name"
             type="text"
             value={formData.firstName}
@@ -96,7 +95,6 @@ const RegisterForm: React.FC = () => {
             Last Name:
           </Label>
           <Input
-            className="form-input-field"
             id="last-name"
             type="text"
             value={formData.lastName}
@@ -113,7 +111,6 @@ const RegisterForm: React.FC = () => {
             Email:
           </Label>
           <Input
-            className="form-input-field"
             id="email"
             type="email"
             value={formData.email}
@@ -130,7 +127,6 @@ const RegisterForm: React.FC = () => {
             Contact Number:
           </Label>
           <Input
-            className="form-input-field"
             id="contact-number"
             type="tel"
             value={formData.phone}
@@ -147,7 +143,6 @@ const RegisterForm: React.FC = () => {
             Password:
           </Label>
           <Input
-            className="form-input-field"
             id="password"
             type="password"
             value={formData.password}
@@ -164,7 +159,6 @@ const RegisterForm: React.FC = () => {
             Confirm Password:
           </Label>
           <Input
-            className="form-input-field"
             id="confirm-password"
             type="password"
             value={formData.confirmPassword}

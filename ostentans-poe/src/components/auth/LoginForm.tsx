@@ -57,7 +57,6 @@ const LoginForm: React.FC = () => {
         Email:
       </Label>
       <Input
-        className="form-input-field"
         id="email"
         type="email"
         value={email}
@@ -71,7 +70,6 @@ const LoginForm: React.FC = () => {
         Password:
       </Label>
       <Input
-        className="form-input-field"
         id="password"
         type="password"
         value={password}
