@@ -22,10 +22,7 @@ import {
 } from "@fluentui/react-components";
 import { useState, useEffect } from "react";
 import usePageTitle from "../../hooks/usePageTitle";
-import {
-  resumeApiService,
-  type ResumeSelectionRequest,
-} from "../../services/resumeApiService";
+import { resumeApiService } from "../../services/resumeApiService";
 import { certificationService } from "../../services/certificationService";
 import { educationService } from "../../services/educationService";
 import { experienceService } from "../../services/experienceService";
@@ -33,10 +30,7 @@ import { professionalSummaryService } from "../../services/professionalSummarySe
 import { skillService } from "../../services/skillService";
 import { titleService } from "../../services/titleService";
 import { professionalLinkService } from "../../services/professionalLinkService";
-import {
-  savedResumeService,
-  type SaveResumeRequest,
-} from "../../services/savedResumeService";
+import { savedResumeService } from "../../services/savedResumeService";
 import { DeleteOverlay } from "../../components/Overlays/DeleteOverlay";
 import { SaveOverlay } from "../../components/Overlays/SaveOverlay";
 import { DeleteConfirmationMenu } from "../../components/Shared/DeleteConfirmationMenu";
@@ -50,16 +44,10 @@ import { tooltipStyling } from "../../styles/constants/iconStyling";
 import { useNavigate } from "react-router-dom";
 import { downloadBlob } from "../../helpers/fileHelpers";
 import { resumeContainer } from "../../styles/constants/pageStyling";
-import type { Skill } from "../../types/skillTypes";
-import type { ProfessionalLink } from "../../types/professionalLinkTypes";
-import type { Experience, Responsibilities } from "../../types/experienceTypes";
-import type { Education } from "../../types/educationTypes";
-import type { Certification } from "../../types/certificationTypes";
-import type { ResumeTitle } from "../../types/resumeTitleTypes";
-import type { Summary } from "../../types/professionalSummaryTypes";
 
 const cardHeaderStyle = { display: "flex", gap: "8px" };
 
+// TODO: Update types properly
 export const ResumeBuilderPage = () => {
   usePageTitle({ title: "Create Resume" });
 
@@ -168,20 +156,20 @@ export const ResumeBuilderPage = () => {
     try {
       // Build the request data with resource IDs
       const selectedData = {
-        titleId: Array.from(selectedIds)
+        titleIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("title_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.title?.[index]?.id;
           })
-          .filter(Boolean)[0],
-        professionalSummaryId: Array.from(selectedIds)
+          .filter(Boolean),
+        summaryIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("summary_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.summaries?.[index]?.id;
           })
-          .filter(Boolean)[0],
+          .filter(Boolean),
         skillIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("skill_"))
           .map((id) => {
@@ -220,11 +208,18 @@ export const ResumeBuilderPage = () => {
       };
 
       // Build the request data
-      const requestData: ResumeSelectionRequest = {};
+      const requestData: any = {};
 
       // Single title and summary (take first if multiple selected)
-      requestData.titleId = selectedData.titleId;
-      requestData.professionalSummaryId = selectedData.professionalSummaryId;
+      const titleIds = selectedData.titleIds;
+      const summaryIds = selectedData.summaryIds;
+
+      if (titleIds.length > 0) {
+        requestData.titleId = titleIds[0];
+      }
+      if (summaryIds.length > 0) {
+        requestData.professionalSummaryId = summaryIds[0];
+      }
 
       // Arrays with order (order set to 0 for all as ordering not implemented yet)
       // Hard setting order to descending (2)
@@ -417,39 +412,33 @@ export const ResumeBuilderPage = () => {
 
   const handleSectionToggle = (section: string, allSelected: boolean) => {
     if (section === "title") {
-      resumeData?.title?.forEach((_title: ResumeTitle, index: number) => {
+      resumeData?.title?.forEach((_: any, index: number) => {
         handleCheckboxChange(`title_${index}`, allSelected);
       });
     } else if (section === "summaries") {
-      resumeData?.summaries?.forEach((_summary: Summary, index: number) => {
+      resumeData?.summaries?.forEach((_: any, index: number) => {
         handleCheckboxChange(`summary_${index}`, allSelected);
       });
     } else if (section === "skills") {
-      resumeData?.skills?.forEach((_skill: Skill, index: number) => {
+      resumeData?.skills?.forEach((_: any, index: number) => {
         handleCheckboxChange(`skill_${index}`, allSelected);
       });
     } else if (section === "experience") {
-      resumeData?.experience?.forEach(
-        (_experience: Experience, index: number) => {
-          handleCheckboxChange(`experience_${index}`, allSelected);
-        }
-      );
+      resumeData?.experience?.forEach((_: any, index: number) => {
+        handleCheckboxChange(`experience_${index}`, allSelected);
+      });
     } else if (section === "education") {
-      resumeData?.education?.forEach((_education: Education, index: number) => {
+      resumeData?.education?.forEach((_: any, index: number) => {
         handleCheckboxChange(`education_${index}`, allSelected);
       });
     } else if (section === "certification") {
-      resumeData?.certification?.forEach(
-        (_certification: Certification, index: number) => {
-          handleCheckboxChange(`certification_${index}`, allSelected);
-        }
-      );
+      resumeData?.certification?.forEach((_: any, index: number) => {
+        handleCheckboxChange(`certification_${index}`, allSelected);
+      });
     } else if (section === "socials") {
-      resumeData?.socials?.forEach(
-        (_professionalLink: ProfessionalLink, index: number) => {
-          handleCheckboxChange(`social_${index}`, allSelected);
-        }
-      );
+      resumeData?.socials?.forEach((_: any, index: number) => {
+        handleCheckboxChange(`social_${index}`, allSelected);
+      });
     }
   };
 
@@ -522,53 +511,45 @@ export const ResumeBuilderPage = () => {
       };
 
       // Construct the resume data for saving
-      const saveResumeData: SaveResumeRequest = {
+      const saveResumeData = {
         savedResumeName: savedResumeName.trim(),
         resumeData: {
           name: resumeData.name,
+          title: selectedData.titleIds[0]?.title || "",
           email: resumeData.email,
           phoneNumber: resumeData.phoneNumber,
           summary: selectedData.summaryIds[0]?.summary || "",
-          title: selectedData.titleIds[0]?.title || "",
-          skills: selectedData.skillIds.map((skill: Skill) => ({
-            skill: skill.skillName,
-            skillLevel: skill.proficiencyLevel,
+          skills: selectedData.skillIds.map((skill: any) => ({
+            skill: skill.skill,
+            skillLevel: skill.skillLevel,
           })),
-          professionalLinks: selectedData.socialIds.map(
-            (social: ProfessionalLink) => ({
-              link: social.link,
-              linkType: social.linkType,
-            })
-          ),
-          experience: selectedData.experienceIds.map((exp: Experience) => ({
-            company: exp.companyName,
+          professionalLinks: selectedData.socialIds.map((social: any) => ({
+            link: social.socialMediaUrl,
+            linkType: social.socialMediaType,
+          })),
+          experience: selectedData.experienceIds.map((exp: any) => ({
+            company: exp.company,
             jobTitle: exp.jobTitle,
             startDate: exp.startDate,
             endDate: exp.endDate,
-            responsibilities: exp.responsibilities.map(
-              (resp: Responsibilities | string) =>
-                typeof resp === "string" ? resp : resp.responsibility
-            ),
+            responsibilities: exp.responsibilities,
           })),
-          education: selectedData.educationIds.map((edu: Education) => ({
-            institution: edu.institutionName,
+          education: selectedData.educationIds.map((edu: any) => ({
+            institution: edu.institution,
             qualification: edu.qualification,
             startDate: edu.startDate,
             endDate: edu.endDate,
-            major: edu.major || "",
-            achievement: edu.achievement || "",
+            major: edu.major,
+            achievement: edu.achievement,
           })),
-          certification: selectedData.certificationIds.map(
-            (cert: Certification) => ({
-              name: cert.certificationName,
-              organisation: cert.issuingOrganisation,
-              credentialUrl: cert.credentialUrl || "",
-              issuedDate: cert.issuedDate || "",
-              expirationDate: cert.expiryDate || "",
-            })
-          ),
+          certification: selectedData.certificationIds.map((cert: any) => ({
+            name: cert.name,
+            organisation: cert.organisation,
+            credentialUrl: cert.credentialUrl || "",
+            issuedDate: cert.issuedDate,
+            expirationDate: cert.expirationDate,
+          })),
         },
-        // Template type hardcoded for now
         templateType: "classic",
       };
 
