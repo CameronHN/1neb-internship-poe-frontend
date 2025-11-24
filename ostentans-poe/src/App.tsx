@@ -162,25 +162,59 @@ const AppContent: React.FC<{
           />
           <Route
             path="/update-certification/:id"
-            element={<UpdateCertificationPage />}
+            element={
+              <ProtectedRoute>
+                <UpdateCertificationPage />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/update-social/:id"
-            element={<UpdateSocialMediaPage />}
+            element={
+              <ProtectedRoute>
+                <UpdateSocialMediaPage />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/update-summary/:id"
-            element={<UpdateProfessionalSummaryPage />}
+            element={
+              <ProtectedRoute>
+                <UpdateProfessionalSummaryPage />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/update-title/:id" element={<UpdateResumeTitlePage />} />
-          <Route path="/update-skill/:id" element={<UpdateSkillPage />} />
+          <Route
+            path="/update-title/:id"
+            element={
+              <ProtectedRoute>
+                <UpdateResumeTitlePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/update-skill/:id"
+            element={
+              <ProtectedRoute>
+                <UpdateSkillPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/update-experience/:id"
-            element={<UpdateWorkExperiencePage />}
+            element={
+              <ProtectedRoute>
+                <UpdateWorkExperiencePage />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/update-education/:id"
-            element={<UpdateEducationPage />}
+            element={
+              <ProtectedRoute>
+                <UpdateEducationPage />
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </div>
