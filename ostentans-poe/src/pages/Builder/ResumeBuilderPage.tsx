@@ -1405,7 +1405,8 @@ export const ResumeBuilderPage = () => {
             Array.from(selectedIds).filter((id) => id.startsWith("title_"))
               .length > 1 ||
             Array.from(selectedIds).filter((id) => id.startsWith("education_"))
-              .length > 3
+              .length > 3 ||
+            selectedIds.size > 20
           }
           style={{ padding: "12px 32px" }}
         >
@@ -1415,7 +1416,16 @@ export const ResumeBuilderPage = () => {
               Generating...
             </>
           ) : (
-            `Generate Resume (${selectedIds.size} selected)`
+            <>
+              Generate Resume ({selectedIds.size} selected){" "}
+              <Tooltip
+                content="It's recommended to select up to 20 items for an optimal resume length."
+                relationship="description"
+                positioning={"above-start"}
+              >
+                <QuestionCircle12Regular style={tooltipStyling} />
+              </Tooltip>
+            </>
           )}
         </Button>
       </div>
