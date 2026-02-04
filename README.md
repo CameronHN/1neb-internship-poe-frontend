@@ -1,5 +1,16 @@
 # Ostentans Resume Creator
 
+## Table of Contents
+
+- [Overview](#overview)
+- [What is the project?](#what-is-the-project)
+  - [Prerequisites](#prerequisites)
+  - [Installation Steps](#installation-steps)
+  - [Building for Production](#building-for-production)
+- [How to use the project?](#how-to-use-the-project)
+  - [Getting Started](#getting-started)
+- [Demo](#demo)
+
 ## Overview
 
 Ostentans (Latin for showing off) is a TypeScript-based frontend application for the Ostentans Resume Creator system. This system is a comprehensive resume management platform that allows users to create, manage, and geneerate professional PDF resumes.
@@ -68,12 +79,10 @@ npm run build
 ### Getting Started
 
 1. **Register/Login**
-
    - Create a new account or log in with existing credentials
    - Access the main dashboard after authentication
 
 2. **Add Resume Content**
-
    - **Work Experience**: Add job titles, companies, dates, and responsibilities
    - **Education**: Include institutions, qualifications, and achievements
    - **Skills**: List technical and soft skills with proficiency levels
@@ -83,7 +92,6 @@ npm run build
    - **Title**: Add resume titles/headings
 
 3. **Build Your Resume**
-
    - Use the resume builder interface
    - Select from available templates
    - Organize and structure your information
@@ -92,3 +100,7 @@ npm run build
    - Generate PDF version of your resume
    - Save multiple resume versions
    - Download and share your professional resume
+
+# Demo
+
+See link to Google Drive videos: [Link](https://drive.google.com/drive/folders/1aKkn_Z36sXa2WrnIc-Uq9tExM1R_PW_1?usp=sharing)
