@@ -2,6 +2,7 @@ import {
   Text,
   Title1,
   Button,
+  Field,
   Input,
   Label,
   Textarea,
@@ -12,56 +13,28 @@ import { useState } from "react";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { ArrowDownload24Regular } from "@fluentui/react-icons";
 import { API_URLS } from "../../constants/apiConstants";
+import { readApiError } from "../../helpers/apiError";
+import {
+  blockDemoFor,
+  demoBlockRemainingMs,
+  describeWait,
+  readRetryAfterSeconds,
+} from "../../helpers/demoQuota";
+import { buildDemoRequest, createEmptyDemoForm } from "../../helpers/demoRequest";
+import { normaliseLink } from "../../helpers/linkHelpers";
+import type {
+  Certification,
+  Education,
+  Experience,
+  ProfessionalLink,
+  ResumeData,
+  Skill,
+} from "../../types/demoTypes";
 
 const BASE_URL: string = API_URLS.API_BASE;
 
-interface Skill {
-  skill: string;
-  skillLevel: string;
-}
-
-interface ProfessionalLink {
-  link: string;
-  linkType: string;
-}
-
-interface Experience {
-  company: string;
-  jobTitle: string;
-  startDate: string;
-  endDate: string;
-  responsibilities: string[];
-}
-
-interface Education {
-  institution: string;
-  qualification: string;
-  startDate: string;
-  endDate: string;
-  major: string;
-  achievement: string;
-}
-
-interface Certification {
-  name: string;
-  organisation: string;
-  credentialUrl: string;
-  issuedDate: string;
-  expirationDate: string;
-}
-
-interface ResumeData {
-  name: string;
-  title: string;
-  email: string;
-  phoneNumber: string;
-  summary: string;
-  skills: Skill[];
-  professionalLinks: ProfessionalLink[];
-  experience: Experience[];
-  education: Education[];
-  certification: Certification[];
-}
+const LINK_ERROR =
+  "Enter a web address of up to 100 characters, e.g. https://linkedin.com/in/you";
 
 export const DemoPage: React.FC = () => {
   usePageTitle({ title: "Demo" });
@@ -69,14 +42,27 @@ export const DemoPage: React.FC = () => {
   const DEMO_LIMIT: number = 2;
 
   const [isLoading, setIsLoading] = useState(false);
+  // The server decides the quota: when it refuses, the block is stored so a reload keeps it.
+  const [blockedMs, setBlockedMs] = useState(() => demoBlockRemainingMs());
   const [message, setMessage] = useState<{
     type: "success" | "error" | "warning" | "info";
     text: string;
-  } | null>(null);
+  } | null>(() =>
+    blockedMs > 0
+      ? {
+          type: "error",
+          text: `Demo limit reached. You can try again ${describeWait(blockedMs)}.`,
+        }
+      : null
+  );
   const [usageCount, setUsageCount] = useState(() => {
     const saved = localStorage.getItem("demoUsageCount");
     return saved ? parseInt(saved) : 0;
   });
+  // A message for each link row that could not be turned into a web address.
+  const [linkErrors, setLinkErrors] = useState<(string | null)[]>([]);
+
+  const isLimited = usageCount >= DEMO_LIMIT || blockedMs > 0;
 
   // Function to detect current theme
   const isLightTheme = () => {
@@ -87,37 +73,7 @@ export const DemoPage: React.FC = () => {
     );
   };
 
-  const [formData, setFormData] = useState<ResumeData>({
-    name: "",
-    title: "",
-    email: "",
-    phoneNumber: "",
-    summary: "",
-    skills: Array(4).fill({ skill: "", skillLevel: "" }),
-    professionalLinks: Array(2).fill({ socialMediaUrl: "" }),
-    experience: Array(2).fill({
-      company: "",
-      jobTitle: "",
-      startDate: "",
-      endDate: "",
-      responsibilities: ["", ""],
-    }),
-    education: Array(2).fill({
-      institution: "",
-      qualification: "",
-      startDate: "",
-      endDate: "",
-      major: "",
-      achievement: "",
-    }),
-    certification: Array(2).fill({
-      name: "",
-      organisation: "",
-      credentialUrl: "",
-      issuedDate: "",
-      expirationDate: "",
-    }),
-  });
+  const [formData, setFormData] = useState<ResumeData>(createEmptyDemoForm);
 
   const handleInputChange = (field: keyof ResumeData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -147,6 +103,11 @@ export const DemoPage: React.FC = () => {
         i === index ? { ...social, [field]: value } : social
       ),
     }));
+
+    // Editing a link clears its error; it is checked again on create.
+    if (field === "link") {
+      setLinkErrors((prev) => prev.map((error, i) => (i === index ? null : error)));
+    }
   };
 
   const handleExperienceChange = (
@@ -220,11 +181,34 @@ export const DemoPage: React.FC = () => {
       });
       return false;
     }
+
+    // The PDF only makes http(s) links clickable, so a link that cannot be made one is rejected.
+    const errors = formData.professionalLinks.map((social) =>
+      social.link.trim() && normaliseLink(social.link) === null
+        ? LINK_ERROR
+        : null
+    );
+    setLinkErrors(errors);
+    if (errors.some(Boolean)) {
+      setMessage({
+        type: "error",
+        text: "Please correct the link errors below.",
+      });
+      return false;
+    }
+
     return true;
   };
 
-  // Updated the handleCreatePDF function to format dates as "Month YYYY"
   const handleCreatePDF = async () => {
+    if (blockedMs > 0) {
+      setMessage({
+        type: "error",
+        text: `Demo limit reached. You can try again ${describeWait(blockedMs)}.`,
+      });
+      return;
+    }
+
     if (usageCount >= DEMO_LIMIT) {
       setMessage({
         type: "error",
@@ -239,53 +223,35 @@ export const DemoPage: React.FC = () => {
     setMessage(null);
 
     try {
-      const formatDate = (date: string): string => {
-        const options: Intl.DateTimeFormatOptions = {
-          year: "numeric",
-          month: "long",
-        };
-        return new Date(date).toLocaleDateString("en-US", options);
-      };
-
-      const cleanedData = {
-        ...formData,
-        skills: formData.skills.filter((skill) => skill.skill.trim()),
-        socials: formData.professionalLinks.filter((social) =>
-          social.link.trim()
-        ),
-        experience: formData.experience.map((exp) => ({
-          ...exp,
-          startDate: formatDate(exp.startDate),
-          endDate: formatDate(exp.endDate),
-          responsibilities: exp.responsibilities.filter((resp) => resp.trim()),
-        })),
-        education: formData.education
-          .filter((edu) => edu.institution.trim() && edu.qualification.trim())
-          .map((edu) => ({
-            ...edu,
-            startDate: formatDate(edu.startDate),
-            endDate: formatDate(edu.endDate),
-          })),
-        certifications: formData.certification
-          .filter((cert) => cert.name.trim() && cert.organisation.trim())
-          .map((cert) => ({
-            ...cert,
-            issuedDate: cert.issuedDate.trim()
-              ? formatDate(cert.issuedDate)
-              : "",
-            expirationDate: cert.expirationDate.trim()
-              ? formatDate(cert.expirationDate)
-              : "",
-          })),
-      };
-
       const response: Response = await fetch(`${BASE_URL}/resume/create-pdf`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cleanedData),
+        body: JSON.stringify(buildDemoRequest(formData)),
       });
+
+      // The server enforces the demo quota per client, whatever the local counter says.
+      if (response.status === 429) {
+        const apiMessage = await readApiError(response, "Demo limit reached.");
+        const retryAfterSeconds = readRetryAfterSeconds(response);
+
+        if (retryAfterSeconds !== null) {
+          // Quota used up: block the button until the server allows another try.
+          blockDemoFor(retryAfterSeconds);
+          setBlockedMs(retryAfterSeconds * 1000);
+          setMessage({
+            type: "error",
+            text: `${apiMessage} You can try again ${describeWait(
+              retryAfterSeconds * 1000
+            )}.`,
+          });
+        } else {
+          // No Retry-After: the server was busy. Do not count it as a use.
+          setMessage({ type: "error", text: apiMessage });
+        }
+        return;
+      }
 
       if (response.ok) {
         const blob = await response.blob();
@@ -315,13 +281,18 @@ export const DemoPage: React.FC = () => {
           } demo uses remaining.`,
         });
       } else {
-        throw new Error(`Server responded with ${response.status}`);
+        throw new Error(
+          await readApiError(response, "Failed to create PDF. Please try again.")
+        );
       }
     } catch (error) {
       console.error("Error creating PDF:", error);
       setMessage({
         type: "error",
-        text: "Failed to create PDF. Please try again.",
+        text:
+          error instanceof Error
+            ? error.message
+            : "Failed to create PDF. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -630,18 +601,23 @@ export const DemoPage: React.FC = () => {
                 >
                   Social Media Link
                 </Label>
-                <Input
-                  value={social.link}
-                  onChange={(_, data) =>
-                    handleSocialChange(index, "link", data.value)
-                  }
-                  style={{
-                    width: "100%",
-                    margin: 0,
-                  }}
-                  required
-                  maxLength={100}
-                />
+                <Field
+                  validationState={linkErrors[index] ? "error" : "none"}
+                  validationMessage={linkErrors[index] ?? undefined}
+                >
+                  <Input
+                    value={social.link}
+                    onChange={(_, data) =>
+                      handleSocialChange(index, "link", data.value)
+                    }
+                    style={{
+                      width: "100%",
+                      margin: 0,
+                    }}
+                    required
+                    maxLength={100}
+                  />
+                </Field>
               </div>
               <div style={{ margin: 0, padding: 0 }}>
                 <Label
@@ -1211,9 +1187,9 @@ export const DemoPage: React.FC = () => {
             size="large"
             icon={<ArrowDownload24Regular />}
             onClick={handleCreatePDF}
-            disabled={isLoading || usageCount >= DEMO_LIMIT}
+            disabled={isLoading || isLimited}
             style={{
-              backgroundColor: usageCount >= DEMO_LIMIT ? "#666" : "#0078D4",
+              backgroundColor: isLimited ? "#666" : "#0078D4",
 
               padding: "12px 32px",
               fontSize: "16px",
@@ -1221,7 +1197,7 @@ export const DemoPage: React.FC = () => {
           >
             {isLoading
               ? "Creating Resume..."
-              : usageCount >= DEMO_LIMIT
+              : isLimited
               ? "Demo Limit Reached"
               : `Create Resume (${DEMO_LIMIT - usageCount} uses left)`}
           </Button>

@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import { readApiError } from "../helpers/apiError";
 import type { AddEducation, Education } from "../types/educationTypes";
 
 class EducationService {
@@ -25,7 +26,7 @@ class EducationService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to delete education entries");
+            throw new Error(await readApiError(response, "Failed to delete education entries"));
         }
     }
 
@@ -57,7 +58,7 @@ class EducationService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to add educations");
+            throw new Error(await readApiError(response, "Failed to add educations"));
         }
     }
 
@@ -78,7 +79,7 @@ class EducationService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to fetch education");
+            throw new Error(await readApiError(response, "Failed to fetch education"));
         }
 
         return await response.json();
@@ -102,7 +103,7 @@ class EducationService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to update education");
+            throw new Error(await readApiError(response, "Failed to update education"));
         }
     }
 }

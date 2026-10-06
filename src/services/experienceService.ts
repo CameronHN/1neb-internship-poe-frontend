@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import { readApiError } from "../helpers/apiError";
 import type { AddExperience, Experience, UpdateExperience } from "../types/experienceTypes";
 
 class ExperienceService {
@@ -25,7 +26,7 @@ class ExperienceService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to delete experience entries");
+            throw new Error(await readApiError(response, "Failed to delete experience entries"));
         }
     }
 
@@ -56,7 +57,7 @@ class ExperienceService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to add experiences");
+            throw new Error(await readApiError(response, "Failed to add experiences"));
         }
     }
 
@@ -77,7 +78,7 @@ class ExperienceService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to fetch experience");
+            throw new Error(await readApiError(response, "Failed to fetch experience"));
         }
 
         return await response.json();
@@ -101,7 +102,7 @@ class ExperienceService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to update experience");
+            throw new Error(await readApiError(response, "Failed to update experience"));
         }
     }
 }

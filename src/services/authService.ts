@@ -1,4 +1,5 @@
 import { API_URLS } from '../constants/apiConstants';
+import { readApiError } from '../helpers/apiError';
 import type { User } from '../types/userTypes';
 
 interface RegisterRequest {
@@ -40,29 +41,7 @@ class AuthService {
         });
 
         if (!response.ok) {
-            let errorMessage = 'Registration failed';
-
-            try {
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    const error = await response.json();
-                    errorMessage = error.message || errorMessage;
-                } else {
-                    // Handle non-JSON responses
-                    const textResponse = await response.text();
-                    if (textResponse && textResponse.trim()) {
-                        errorMessage = textResponse.length > 200
-                            ? `Server error (${response.status}): ${response.statusText}`
-                            : textResponse;
-                    } else {
-                        errorMessage = `Server error (${response.status}): ${response.statusText}`;
-                    }
-                }
-            } catch {
-                errorMessage = `Server error (${response.status}): ${response.statusText}`;
-            }
-
-            throw new Error(errorMessage);
+            throw new Error(await readApiError(response, 'Registration failed'));
         }
 
         return response.json();
@@ -79,38 +58,21 @@ class AuthService {
         });
 
         if (!response.ok) {
-            let errorMessage = 'Login failed';
-
-            try {
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    const error = await response.json();
-                    errorMessage = error.message || errorMessage;
-                } else {
-                    // Handle non-JSON responses
-                    const textResponse = await response.text();
-                    if (textResponse && textResponse.trim()) {
-                        errorMessage = textResponse.length > 200
-                            ? `Server error (${response.status}): ${response.statusText}`
-                            : textResponse;
-                    } else {
-                        errorMessage = `Server error (${response.status}): ${response.statusText}`;
-                    }
-                }
-            } catch {
-                errorMessage = `Server error (${response.status}): ${response.statusText}`;
-            }
-
-            throw new Error(errorMessage);
+            throw new Error(await readApiError(response, 'Login failed'));
         }
 
         return response.json();
     }
 
     async logout(): Promise<AuthResponse> {
+        // The API only accepts logout with a JSON body, so another site cannot log users out.
         const response = await fetch(`${this.baseUrl}/logout`, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             credentials: 'include',
+            body: JSON.stringify({}),
         });
 
         if (!response.ok) {
@@ -131,8 +93,7 @@ class AuthService {
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Password change failed');
+            throw new Error(await readApiError(response, 'Password change failed'));
         }
 
         return response.json();

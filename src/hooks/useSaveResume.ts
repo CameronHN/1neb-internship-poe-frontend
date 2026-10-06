@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { buildSaveResumeRequest } from "../helpers/resumeSelectionHelpers";
+import {
+  buildSaveResumeRequest,
+  getResponsibilityLimitError,
+} from "../helpers/resumeSelectionHelpers";
 import { savedResumeService } from "../services/savedResumeService";
 import type { UserResumeDetailsResponse } from "../types/resumeApiTypes";
 
@@ -31,6 +34,16 @@ export const useSaveResume = (
 
     if (!resumeData) {
       setSaveError("Resume details have not loaded yet");
+      return;
+    }
+
+    // Checked here so the user gets a clear message instead of the API's 400.
+    const responsibilityError = getResponsibilityLimitError(
+      selectedIds,
+      resumeData
+    );
+    if (responsibilityError) {
+      setSaveError(responsibilityError);
       return;
     }
 
