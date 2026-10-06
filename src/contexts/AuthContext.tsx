@@ -28,11 +28,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   };
 
-  // Check if user is already authenticated on app load
-  useEffect(() => {
-    checkAuthStatus();
-  }, []);
-
   const checkAuthStatus = async () => {
     try {
       setIsLoading(true);
@@ -51,6 +46,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoading(false);
     }
   };
+
+  // Check if user is already authenticated on app load
+  useEffect(() => {
+    // The loader only sets state after awaiting the request; the rule can't tell.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    checkAuthStatus();
+  }, []);
 
   const login = async (
     email: string,

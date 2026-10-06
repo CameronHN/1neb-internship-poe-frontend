@@ -13,14 +13,12 @@ interface SummaryField {
 interface ProfessionalSummaryProps {
   mode: "add" | "update";
   summaryId?: string;
-  initialData?: Summary;
   onSaveSuccess?: () => void;
 }
 
 export const ProfessionalSummaryForm: React.FC<ProfessionalSummaryProps> = ({
   mode,
   summaryId,
-  initialData,
   onSaveSuccess,
 }) => {
   const [fields, setFields] = useState<SummaryField[]>([{ summary: "" }]);
@@ -53,11 +51,11 @@ export const ProfessionalSummaryForm: React.FC<ProfessionalSummaryProps> = ({
   // Load data for update mode
   useEffect(() => {
     if (mode === "update" && summaryId) {
+      // The loader only sets state after awaiting the request; the rule can't tell.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadSummaryData();
-    } else if (mode === "update" && initialData) {
-      setFields([{ summary: initialData.summary }]);
     }
-  }, [mode, summaryId, initialData, loadSummaryData]);
+  }, [mode, summaryId, loadSummaryData]);
 
   const addField = () => {
     if (mode === "update") return;

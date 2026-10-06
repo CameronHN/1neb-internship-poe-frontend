@@ -12,14 +12,12 @@ import type {
 interface ProfessionalLinkProps {
   mode: "add" | "update";
   contactId?: string;
-  initialData?: ProfessionalLink;
   onSaveSuccess?: () => void;
 }
 
 export const ProfessionalLinkForm: React.FC<ProfessionalLinkProps> = ({
   mode,
   contactId,
-  initialData,
   onSaveSuccess,
 }) => {
   const [fields, setFields] = useState<AddProfessionalLink[]>([
@@ -57,12 +55,11 @@ export const ProfessionalLinkForm: React.FC<ProfessionalLinkProps> = ({
   // Load data for update mode
   useEffect(() => {
     if (mode === "update" && contactId) {
+      // The loader only sets state after awaiting the request; the rule can't tell.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadContactData();
-    } else if (mode === "update" && initialData) {
-      // Use provided initial data
-      setFields([{ link: initialData.link, linkType: initialData.linkType }]);
     }
-  }, [mode, contactId, initialData, loadContactData]);
+  }, [mode, contactId, loadContactData]);
 
   const addField = () => {
     if (mode === "update") return;

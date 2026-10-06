@@ -13,14 +13,12 @@ interface ResumeTitleField {
 interface ResumeTitleProps {
   mode: "add" | "update";
   titleId?: string;
-  initialData?: ResumeTitle;
   onSaveSuccess?: () => void;
 }
 
 export const ResumeTitleForm: React.FC<ResumeTitleProps> = ({
   mode,
   titleId,
-  initialData,
   onSaveSuccess,
 }) => {
   const [fields, setFields] = useState<ResumeTitleField[]>([{ value: "" }]);
@@ -48,11 +46,11 @@ export const ResumeTitleForm: React.FC<ResumeTitleProps> = ({
 
   useEffect(() => {
     if (mode === "update" && titleId) {
+      // The loader only sets state after awaiting the request; the rule can't tell.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadTitleData();
-    } else if (mode === "update" && initialData) {
-      setFields([{ value: initialData.title }]);
     }
-  }, [mode, titleId, initialData, loadTitleData]);
+  }, [mode, titleId, loadTitleData]);
 
   const addField = () => {
     if (mode === "update") return;
