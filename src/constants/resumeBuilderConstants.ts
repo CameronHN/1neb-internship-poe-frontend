@@ -138,3 +138,6 @@ export const SELECTION_LIMITS: {
 
 // Above this many selected items Generate is disabled (the tooltip calls it a recommendation).
 export const MAX_SELECTED_ITEMS = 20;
+
+// The API rejects a saved resume with more responsibilities than this in any one experience.
+export const MAX_RESPONSIBILITIES_PER_EXPERIENCE = 20;

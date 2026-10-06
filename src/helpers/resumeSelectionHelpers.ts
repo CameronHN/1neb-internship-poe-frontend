@@ -1,4 +1,5 @@
 import {
+  MAX_RESPONSIBILITIES_PER_EXPERIENCE,
   MAX_SELECTED_ITEMS,
   SELECTION_LIMITS,
   type SectionKey,
@@ -42,6 +43,22 @@ export const getSelectionLimitError = (
   SELECTION_LIMITS.find(
     ({ section, max }) => countSelected(selectedIds, section, resumeData) > max
   )?.message ?? null;
+
+// A message for the first selected experience with too many responsibilities to save, or null.
+export const getResponsibilityLimitError = (
+  selectedIds: Set<string>,
+  resumeData: UserResumeDetailsResponse | null
+) => {
+  const tooMany = getSelectedItems(selectedIds, "experience", resumeData).find(
+    (exp) => exp.responsibilities.length > MAX_RESPONSIBILITIES_PER_EXPERIENCE
+  );
+
+  return tooMany
+    ? `A saved resume allows at most ${MAX_RESPONSIBILITIES_PER_EXPERIENCE} responsibilities per work experience, ` +
+        `but "${tooMany.jobTitle}" has ${tooMany.responsibilities.length}. ` +
+        "Remove some of them or deselect it, then try again."
+    : null;
+};
 
 export const canGenerate = (
   selectedIds: Set<string>,

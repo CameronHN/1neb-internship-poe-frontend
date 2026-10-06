@@ -1,4 +1,5 @@
 import { API_URLS } from '../constants/apiConstants';
+import { readApiError } from '../helpers/apiError';
 import type { UserResumeDetailsResponse, ResumeSelectionRequest } from '../types/resumeApiTypes';
 
 class ResumeApiService {
@@ -14,8 +15,7 @@ class ResumeApiService {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Failed to fetch resume details' }));
-      throw new Error(error.message || 'Failed to fetch resume details');
+      throw new Error(await readApiError(response, 'Failed to fetch resume details'));
     }
 
     return response.json();
@@ -32,8 +32,7 @@ class ResumeApiService {
     });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: 'Failed to generate resume' }));
-      throw new Error(error.message || 'Failed to generate resume');
+      throw new Error(await readApiError(response, 'Failed to generate resume'));
     }
 
     return response.blob();

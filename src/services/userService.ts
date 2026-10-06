@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import { readApiError } from "../helpers/apiError";
 import type { User } from "../types/userTypes";
 
 
@@ -14,7 +15,7 @@ class UserService {
         });
 
         if (!response.ok) {
-            throw new Error("Failed to fetch user");
+            throw new Error(await readApiError(response, "Failed to fetch user"));
         }
 
         return await response.json();

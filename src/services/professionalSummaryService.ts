@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import { readApiError } from "../helpers/apiError";
 import type { Summary } from "../types/professionalSummaryTypes";
 
 class ProfessionalSummaryService {
@@ -25,7 +26,7 @@ class ProfessionalSummaryService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to delete professional summaries");
+            throw new Error(await readApiError(response, "Failed to delete professional summaries"));
         }
     }
 
@@ -54,7 +55,7 @@ class ProfessionalSummaryService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to add professional summary entries");
+            throw new Error(await readApiError(response, "Failed to add professional summary entries"));
         }
     }
 
@@ -75,7 +76,7 @@ class ProfessionalSummaryService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to fetch summary");
+            throw new Error(await readApiError(response, "Failed to fetch summary"));
         }
 
         return await response.text();
@@ -99,7 +100,7 @@ class ProfessionalSummaryService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to update summary");
+            throw new Error(await readApiError(response, "Failed to update summary"));
         }
     }
 }

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button } from "@fluentui/react-components";
+import { Button, MessageBar, Tooltip } from "@fluentui/react-components";
 import {
   Navigation20Regular,
   Dismiss20Regular,
+  DismissFilled,
   DocumentBulletList20Regular,
   DocumentMultiple20Regular,
   PersonAccounts20Regular,
@@ -25,6 +26,7 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [logoutError, setLogoutError] = useState<string | null>(null);
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,8 +44,14 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
   }, []);
 
   const handleLogout = async () => {
-    await logout();
-    navigate("/");
+    setLogoutError(null);
+    try {
+      await logout();
+      navigate("/");
+    } catch {
+      // The session is still active on the server, so stay logged in.
+      setLogoutError("Logout failed. Please try again.");
+    }
   };
 
   const navigationItems = [
@@ -64,6 +72,7 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
             path: "#logout",
             icon: SignOut20Regular,
             action: handleLogout,
+            tooltip: "Signs you out everywhere",
           },
         ]
       : [
@@ -166,7 +175,7 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
               >
                 {navigationItems.map((item) => {
                   const isActive = location.pathname === item.path;
-                  return (
+                  const button = (
                     <Button
                       key={item.path}
                       appearance="transparent"
@@ -181,6 +190,18 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
                     >
                       {item.label}
                     </Button>
+                  );
+
+                  return item.tooltip ? (
+                    <Tooltip
+                      key={item.path}
+                      content={item.tooltip}
+                      relationship="description"
+                    >
+                      {button}
+                    </Tooltip>
+                  ) : (
+                    button
                   );
                 })}
               </div>
@@ -215,6 +236,29 @@ export const StickyHeader: React.FC<StickyHeaderProps> = ({
           </div>
         )}
       </header>
+
+      {logoutError && (
+        <MessageBar
+          intent="error"
+          style={{
+            position: "fixed",
+            top: "76px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 1001,
+          }}
+        >
+          {logoutError}
+          <Button
+            size="small"
+            appearance="transparent"
+            onClick={() => setLogoutError(null)}
+            style={{ marginLeft: "auto" }}
+          >
+            <DismissFilled />
+          </Button>
+        </MessageBar>
+      )}
 
       {showNavigation && (
         <div style={mobileMenuOverlayStyle}>

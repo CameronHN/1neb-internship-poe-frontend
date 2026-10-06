@@ -112,13 +112,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = async () => {
-    try {
-      await authService.logout();
-      setUser(null);
-    } catch (error) {
-      setUser(null);
-      throw error;
-    }
+    // Throws if the session was not ended, so the user is only cleared once the server has ended it.
+    await authService.logout();
+    setUser(null);
   };
 
   const changePassword = async (

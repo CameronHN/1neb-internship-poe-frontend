@@ -1,4 +1,5 @@
 import { API_URLS } from '../constants/apiConstants';
+import { readApiError } from '../helpers/apiError';
 import type { SavedResumeListResponse, SaveResumeRequest } from '../types/savedResumeTypes';
 
 class SavedResumeService {
@@ -14,8 +15,7 @@ class SavedResumeService {
         });
 
         if (!response.ok) {
-            const error = await response.json().catch(() => ({ message: 'Failed to fetch saved resumes' }));
-            throw new Error(error.message || 'Failed to fetch saved resumes');
+            throw new Error(await readApiError(response, 'Failed to fetch saved resumes'));
         }
 
         return response.json();
@@ -31,8 +31,7 @@ class SavedResumeService {
         });
 
         if (!response.ok) {
-            const error = await response.json().catch(() => ({ message: 'Failed to delete resume' }));
-            throw new Error(error.message || 'Failed to delete resume');
+            throw new Error(await readApiError(response, 'Failed to delete resume'));
         }
     }
 
@@ -47,8 +46,7 @@ class SavedResumeService {
         });
 
         if (!response.ok) {
-            const error = await response.json().catch(() => ({ message: 'Failed to save resume' }));
-            throw new Error(error.message || 'Failed to save resume');
+            throw new Error(await readApiError(response, 'Failed to save resume'));
         }
     }
 
@@ -62,8 +60,7 @@ class SavedResumeService {
         });
 
         if (!response.ok) {
-            const error = await response.json().catch(() => ({ message: 'Failed to fetch saved resume' }));
-            throw new Error(error.message || 'Failed to fetch saved resume');
+            throw new Error(await readApiError(response, 'Failed to fetch saved resume'));
         }
 
         return response.blob();

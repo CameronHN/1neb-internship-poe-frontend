@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import { readApiError } from "../helpers/apiError";
 import type { AddCertification, Certification } from "../types/certificationTypes";
 
 class CertificationService {
@@ -25,7 +26,7 @@ class CertificationService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to delete certifications");
+            throw new Error(await readApiError(response, "Failed to delete certifications"));
         }
     }
 
@@ -56,7 +57,7 @@ class CertificationService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to add certifications");
+            throw new Error(await readApiError(response, "Failed to add certifications"));
         }
     }
 
@@ -77,7 +78,7 @@ class CertificationService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to fetch certification");
+            throw new Error(await readApiError(response, "Failed to fetch certification"));
         }
 
         return await response.json();
@@ -101,7 +102,7 @@ class CertificationService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to update certification");
+            throw new Error(await readApiError(response, "Failed to update certification"));
         }
     }
 }

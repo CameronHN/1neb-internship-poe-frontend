@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import { readApiError } from "../helpers/apiError";
 import type { ResumeTitle } from "../types/resumeTitleTypes";
 
 class TitleService {
@@ -25,7 +26,7 @@ class TitleService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to delete titles");
+            throw new Error(await readApiError(response, "Failed to delete titles"));
         }
     }
 
@@ -54,7 +55,7 @@ class TitleService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to add resume title entries");
+            throw new Error(await readApiError(response, "Failed to add resume title entries"));
         }
     }
 
@@ -75,7 +76,7 @@ class TitleService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to fetch title");
+            throw new Error(await readApiError(response, "Failed to fetch title"));
         }
 
         return await response.text();
@@ -99,7 +100,7 @@ class TitleService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to update title");
+            throw new Error(await readApiError(response, "Failed to update title"));
         }
     }
 }

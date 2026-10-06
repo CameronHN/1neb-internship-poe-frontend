@@ -11,6 +11,9 @@ import { useAuth } from "../../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
 import "../../styles/form.css";
 
+// What the API answers for a wrong password, an unknown email and a locked account alike.
+const INVALID_LOGIN_MESSAGE = "Invalid login attempt";
+
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -50,6 +53,12 @@ const LoginForm: React.FC = () => {
       {error && (
         <MessageBar intent="error" style={{ width: "100%" }}>
           {error}
+          {error === INVALID_LOGIN_MESSAGE && (
+            <>
+              <br />
+              After 5 failed attempts, sign-in is paused for 5 minutes.
+            </>
+          )}
         </MessageBar>
       )}
 

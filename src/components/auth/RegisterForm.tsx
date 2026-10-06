@@ -1,8 +1,12 @@
 import { Input, Label, MessageBar } from "@fluentui/react-components";
 import { useState } from "react";
 import { useAuth } from "../../contexts/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomProceedButton from "../Shared/CustomProceedButton";
+
+// What the API answers when the email already has an account.
+const EMAIL_TAKEN_MESSAGE =
+  "Registration could not be completed with these details.";
 
 const RegisterForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -64,6 +68,12 @@ const RegisterForm: React.FC = () => {
       {error && (
         <MessageBar intent="error" style={{ width: "100%" }}>
           {error}
+          {error === EMAIL_TAKEN_MESSAGE && (
+            <>
+              <br />
+              <Link to="/login">Already have an account? Log in.</Link>
+            </>
+          )}
         </MessageBar>
       )}
 

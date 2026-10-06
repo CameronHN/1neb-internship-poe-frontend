@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import { readApiError } from "../helpers/apiError";
 import type { AddProfessionalLink, ProfessionalLink } from "../types/professionalLinkTypes";
 
 class ProfessionalLinkService {
@@ -25,7 +26,7 @@ class ProfessionalLinkService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to delete professional links entries");
+            throw new Error(await readApiError(response, "Failed to delete professional links entries"));
         }
     }
 
@@ -57,7 +58,7 @@ class ProfessionalLinkService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to add professional links entries");
+            throw new Error(await readApiError(response, "Failed to add professional links entries"));
         }
     }
 
@@ -78,7 +79,7 @@ class ProfessionalLinkService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to fetch professional link");
+            throw new Error(await readApiError(response, "Failed to fetch professional link"));
         }
 
         return await response.json();
@@ -102,7 +103,7 @@ class ProfessionalLinkService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to update professional link");
+            throw new Error(await readApiError(response, "Failed to update professional link"));
         }
     }
 }

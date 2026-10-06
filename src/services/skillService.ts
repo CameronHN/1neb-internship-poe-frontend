@@ -1,4 +1,5 @@
 import { API_URLS } from "../constants/apiConstants";
+import { readApiError } from "../helpers/apiError";
 import type { AddSkill, Skill } from "../types/skillTypes";
 
 class SkillService {
@@ -25,7 +26,7 @@ class SkillService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to delete skills");
+            throw new Error(await readApiError(response, "Failed to delete skills"));
         }
     }
 
@@ -53,7 +54,7 @@ class SkillService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to add skills");
+            throw new Error(await readApiError(response, "Failed to add skills"));
         }
     }
 
@@ -74,7 +75,7 @@ class SkillService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to fetch skill");
+            throw new Error(await readApiError(response, "Failed to fetch skill"));
         }
 
         return await response.json();
@@ -105,7 +106,7 @@ class SkillService {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to update skill");
+            throw new Error(await readApiError(response, "Failed to update skill"));
         }
     }
 }
