@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-lint:
-    name: Build and lint
+  build-lint-and-test:
+    name: Build, lint and test
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
