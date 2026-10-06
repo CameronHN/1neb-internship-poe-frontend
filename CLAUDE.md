@@ -6,13 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Ostentans Resume Creator frontend (portfolio-of-evidence project for the 1Nebula internship). A React 18 + TypeScript + Vite SPA using Fluent UI React components. It talks to a separate C# .NET 8 Web API (repo: `CameronHN/1neb-internship-poe`) that stores resume data and generates PDFs. The backend must be running for anything beyond static pages.
 
-## Layout
-
-The git root only holds `README.md`; the actual app is in `ostentans-poe/`. Run all npm commands from there.
-
 ## Commands
 
-Run from `ostentans-poe/`:
+Run from the repo root:
 
 - `npm install`
 - `npm run dev`: Vite dev server on `http://localhost:5173`
