@@ -1,6 +1,6 @@
 import { Input, Label, MessageBar } from "@fluentui/react-components";
 import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
 import CustomProceedButton from "../Shared/CustomProceedButton";
 
