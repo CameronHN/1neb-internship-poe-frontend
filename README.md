@@ -33,7 +33,7 @@ The system enables users to:
 
 ### Prerequisites
 
-- **Node.js** [(v16 or higher)](https://nodejs.org/en/download)
+- **Node.js** [(v22 or higher)](https://nodejs.org/en/download)
 - **npm**
 
 ```bash
