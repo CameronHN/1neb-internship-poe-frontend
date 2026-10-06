@@ -49,7 +49,7 @@ npm install -g npm
 
    ```bash
    git clone https://github.com/CameronHN/1neb-internship-poe-frontend.git
-   cd 1neb-internship-poe-frontend/ostentans-poe
+   cd 1neb-internship-poe-frontend
    ```
 
 2. **Install dependencies:**
