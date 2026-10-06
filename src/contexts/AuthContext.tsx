@@ -1,54 +1,8 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  type ReactNode,
-} from "react";
+import React, { useState, useEffect, type ReactNode } from "react";
 import { authService } from "../services/authService";
 import type { User } from "../types/userTypes";
 import { userService } from "../services/userService";
-
-interface AuthError {
-  message: string;
-  code?: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  error: AuthError | null;
-  login: (
-    email: string,
-    password: string,
-    rememberMe?: boolean
-  ) => Promise<void>;
-  register: (userData: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    password: string;
-    confirmPassword: string;
-  }) => Promise<void>;
-  logout: () => Promise<void>;
-  changePassword: (
-    currentPassword: string,
-    newPassword: string
-  ) => Promise<void>;
-  clearError: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
+import { AuthContext, type AuthContextType, type AuthError } from "./useAuth";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -63,19 +17,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Helper function to fetch user details
   const fetchUserDetails = async (userId: string): Promise<User> => {
-    try {
-      const userData = await userService.getUserById(userId);
+    const userData = await userService.getUserById(userId);
 
-      return {
-        id: userId,
-        email: userData.email,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        phoneNumber: userData.phoneNumber,
-      };
-    } catch (error) {
-      throw error;
-    }
+    return {
+      id: userId,
+      email: userData.email,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      phoneNumber: userData.phoneNumber,
+    };
   };
 
   // Check if user is already authenticated on app load
@@ -90,7 +40,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         const userData = await authService.checkAuth();
         setUser(userData);
-      } catch (error) {
+      } catch {
         setUser(null);
       }
 
@@ -173,11 +123,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     currentPassword: string,
     newPassword: string
   ) => {
-    try {
-      await authService.changePassword({ currentPassword, newPassword });
-    } catch (error) {
-      throw error;
-    }
+    await authService.changePassword({ currentPassword, newPassword });
   };
 
   const clearError = () => {

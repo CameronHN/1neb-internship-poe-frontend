@@ -1,91 +1,79 @@
-export interface UserResumeDetail {
+// Mirrors Portfolio.Core.DTOs.Resume.GetAllResumeDetails in the backend API.
+export interface TitleItem {
   id: string;
-  title?: string;
-  content?: string;
+  title: string;
 }
 
-export interface SkillDetail extends UserResumeDetail {
-  name: string;
-  level: string;
+export interface SummaryItem {
+  id: string;
+  summary: string;
 }
 
-export interface ExperienceDetail extends UserResumeDetail {
+export interface SocialMediaItem {
+  id: string;
+  socialMediaType: string;
+  socialMediaUrl: string;
+}
+
+export interface SkillItem {
+  id: string;
+  skill: string;
+  skillLevel: string;
+}
+
+export interface ExperienceItem {
+  id: string;
+  company: string;
   jobTitle: string;
-  companyName: string;
   startDate: string;
   endDate: string;
-  isCurrentJob: boolean;
   responsibilities: string[];
 }
 
-export interface EducationDetail extends UserResumeDetail {
+export interface EducationItem {
+  id: string;
   institution: string;
-  degree: string;
-  fieldOfStudy: string;
+  qualification: string;
   startDate: string;
   endDate: string;
-  isCurrentEducation: boolean;
-  gpa?: string;
-  achievements?: string[];
+  major: string;
+  achievement: string;
 }
 
-export interface CertificationDetail extends UserResumeDetail {
+export interface CertificationItem {
+  id: string;
   name: string;
-  issuingOrganization: string;
-  dateIssued: string;
-  expirationDate?: string;
-  credentialId?: string;
-}
-
-export interface SocialMediaDetail extends UserResumeDetail {
-  url: string;
-  platform?: string;
+  organisation: string;
+  credentialUrl: string;
+  issuedDate: string;
+  expirationDate: string;
 }
 
 export interface UserResumeDetailsResponse {
-  basicInfo: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-  };
-  professionalSummary: {
-    id: string;
-    content: string;
-  };
-  title: {
-    id: string;
-    content: string;
-  };
-  skills: SkillDetail[];
-  experiences: ExperienceDetail[];
-  education: EducationDetail[];
-  certifications: CertificationDetail[];
-  socialMedia: SocialMediaDetail[];
+  name: string;
+  email: string;
+  phoneNumber: string;
+  title: TitleItem[];
+  summaries: SummaryItem[];
+  skills: SkillItem[];
+  socials: SocialMediaItem[];
+  experience: ExperienceItem[];
+  education: EducationItem[];
+  certification: CertificationItem[];
 }
 
+export interface ItemListRequest {
+  ids: string[];
+  order: number;
+}
+
+// Mirrors Portfolio.Core.DTOs.Resume.ResumeRequest in the backend API.
 export interface ResumeSelectionRequest {
   titleId?: string;
   professionalSummaryId?: string;
-  socialMediaIds?: {
-    ids: string[];
-    order: number;
-  };
-  experienceIds?: {
-    ids: string[];
-    order: number;
-  };
-  educationIds?: {
-    ids: string[];
-    order: number;
-  };
-  certificationIds?: {
-    ids: string[];
-    order: number;
-  };
-  skillsIds?: {
-    ids: string[];
-    order: number;
-  };
+  socialMediaIds?: ItemListRequest;
+  experienceIds?: ItemListRequest;
+  educationIds?: ItemListRequest;
+  certificationIds?: ItemListRequest;
+  skillsIds?: ItemListRequest;
 }

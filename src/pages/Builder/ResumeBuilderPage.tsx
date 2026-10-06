@@ -44,16 +44,22 @@ import { tooltipStyling } from "../../styles/constants/iconStyling";
 import { useNavigate } from "react-router-dom";
 import { downloadBlob } from "../../helpers/fileHelpers";
 import { resumeContainer } from "../../styles/constants/pageStyling";
+import type {
+  ResumeSelectionRequest,
+  UserResumeDetailsResponse,
+} from "../../types/resumeApiTypes";
 
 const cardHeaderStyle = { display: "flex", gap: "8px" };
 
-// TODO: Update types properly
+const isDefined = <T,>(value: T | undefined): value is T =>
+  value !== undefined;
+
 export const ResumeBuilderPage = () => {
   usePageTitle({ title: "Create Resume" });
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [resumeData, setResumeData] = useState<any>(null);
+  const [resumeData, setResumeData] = useState<UserResumeDetailsResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -162,53 +168,53 @@ export const ResumeBuilderPage = () => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.title?.[index]?.id;
           })
-          .filter(Boolean),
+          .filter(isDefined),
         summaryIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("summary_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.summaries?.[index]?.id;
           })
-          .filter(Boolean),
+          .filter(isDefined),
         skillIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("skill_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.skills?.[index]?.id;
           })
-          .filter(Boolean),
+          .filter(isDefined),
         experienceIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("experience_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.experience?.[index]?.id;
           })
-          .filter(Boolean),
+          .filter(isDefined),
         educationIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("education_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.education?.[index]?.id;
           })
-          .filter(Boolean),
+          .filter(isDefined),
         certificationIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("certification_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.certification?.[index]?.id;
           })
-          .filter(Boolean),
+          .filter(isDefined),
         socialIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("social_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.socials?.[index]?.id;
           })
-          .filter(Boolean),
+          .filter(isDefined),
       };
 
       // Build the request data
-      const requestData: any = {};
+      const requestData: ResumeSelectionRequest = {};
 
       // Single title and summary (take first if multiple selected)
       const titleIds = selectedData.titleIds;
@@ -334,7 +340,7 @@ export const ResumeBuilderPage = () => {
 
         return sectionData?.[index]?.id;
       })
-      .filter(Boolean);
+      .filter(isDefined);
 
     if (itemIds.length === 0) return;
 
@@ -412,31 +418,31 @@ export const ResumeBuilderPage = () => {
 
   const handleSectionToggle = (section: string, allSelected: boolean) => {
     if (section === "title") {
-      resumeData?.title?.forEach((_: any, index: number) => {
+      resumeData?.title?.forEach((_, index) => {
         handleCheckboxChange(`title_${index}`, allSelected);
       });
     } else if (section === "summaries") {
-      resumeData?.summaries?.forEach((_: any, index: number) => {
+      resumeData?.summaries?.forEach((_, index) => {
         handleCheckboxChange(`summary_${index}`, allSelected);
       });
     } else if (section === "skills") {
-      resumeData?.skills?.forEach((_: any, index: number) => {
+      resumeData?.skills?.forEach((_, index) => {
         handleCheckboxChange(`skill_${index}`, allSelected);
       });
     } else if (section === "experience") {
-      resumeData?.experience?.forEach((_: any, index: number) => {
+      resumeData?.experience?.forEach((_, index) => {
         handleCheckboxChange(`experience_${index}`, allSelected);
       });
     } else if (section === "education") {
-      resumeData?.education?.forEach((_: any, index: number) => {
+      resumeData?.education?.forEach((_, index) => {
         handleCheckboxChange(`education_${index}`, allSelected);
       });
     } else if (section === "certification") {
-      resumeData?.certification?.forEach((_: any, index: number) => {
+      resumeData?.certification?.forEach((_, index) => {
         handleCheckboxChange(`certification_${index}`, allSelected);
       });
     } else if (section === "socials") {
-      resumeData?.socials?.forEach((_: any, index: number) => {
+      resumeData?.socials?.forEach((_, index) => {
         handleCheckboxChange(`social_${index}`, allSelected);
       });
     }
@@ -453,6 +459,11 @@ export const ResumeBuilderPage = () => {
       return;
     }
 
+    if (!resumeData) {
+      setSaveError("Resume details have not loaded yet");
+      return;
+    }
+
     setIsSaving(true);
     setSaveError(null);
 
@@ -465,49 +476,49 @@ export const ResumeBuilderPage = () => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.title?.[index];
           })
-          .filter(Boolean),
+          .filter(isDefined),
         summaryIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("summary_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.summaries?.[index];
           })
-          .filter(Boolean),
+          .filter(isDefined),
         skillIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("skill_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.skills?.[index];
           })
-          .filter(Boolean),
+          .filter(isDefined),
         experienceIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("experience_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.experience?.[index];
           })
-          .filter(Boolean),
+          .filter(isDefined),
         educationIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("education_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.education?.[index];
           })
-          .filter(Boolean),
+          .filter(isDefined),
         certificationIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("certification_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.certification?.[index];
           })
-          .filter(Boolean),
+          .filter(isDefined),
         socialIds: Array.from(selectedIds)
           .filter((id) => id.startsWith("social_"))
           .map((id) => {
             const index = parseInt(id.split("_")[1]);
             return resumeData?.socials?.[index];
           })
-          .filter(Boolean),
+          .filter(isDefined),
       };
 
       // Construct the resume data for saving
@@ -519,22 +530,22 @@ export const ResumeBuilderPage = () => {
           email: resumeData.email,
           phoneNumber: resumeData.phoneNumber,
           summary: selectedData.summaryIds[0]?.summary || "",
-          skills: selectedData.skillIds.map((skill: any) => ({
+          skills: selectedData.skillIds.map((skill) => ({
             skill: skill.skill,
             skillLevel: skill.skillLevel,
           })),
-          professionalLinks: selectedData.socialIds.map((social: any) => ({
+          professionalLinks: selectedData.socialIds.map((social) => ({
             link: social.socialMediaUrl,
             linkType: social.socialMediaType,
           })),
-          experience: selectedData.experienceIds.map((exp: any) => ({
+          experience: selectedData.experienceIds.map((exp) => ({
             company: exp.company,
             jobTitle: exp.jobTitle,
             startDate: exp.startDate,
             endDate: exp.endDate,
             responsibilities: exp.responsibilities,
           })),
-          education: selectedData.educationIds.map((edu: any) => ({
+          education: selectedData.educationIds.map((edu) => ({
             institution: edu.institution,
             qualification: edu.qualification,
             startDate: edu.startDate,
@@ -542,7 +553,7 @@ export const ResumeBuilderPage = () => {
             major: edu.major,
             achievement: edu.achievement,
           })),
-          certification: selectedData.certificationIds.map((cert: any) => ({
+          certification: selectedData.certificationIds.map((cert) => ({
             name: cert.name,
             organisation: cert.organisation,
             credentialUrl: cert.credentialUrl || "",
@@ -669,7 +680,7 @@ export const ResumeBuilderPage = () => {
                         gap: "12px",
                       }}
                     >
-                      {resumeData.socials.map((social: any, index: number) => (
+                      {resumeData.socials.map((social, index) => (
                         <div
                           key={social.id}
                           style={{
@@ -753,7 +764,7 @@ export const ResumeBuilderPage = () => {
                         gap: "12px",
                       }}
                     >
-                      {resumeData.title.map((titleObj: any, index: number) => (
+                      {resumeData.title.map((titleObj, index) => (
                         <div
                           key={titleObj.id}
                           style={{
@@ -843,7 +854,7 @@ export const ResumeBuilderPage = () => {
                       }}
                     >
                       {resumeData.summaries.map(
-                        (summaryObj: any, index: number) => (
+                        (summaryObj, index) => (
                           <div key={summaryObj.id}>
                             <div
                               style={{
@@ -941,7 +952,7 @@ export const ResumeBuilderPage = () => {
                         gap: "12px",
                       }}
                     >
-                      {resumeData.skills.map((skill: any, index: number) => (
+                      {resumeData.skills.map((skill, index) => (
                         <div
                           key={skill.id}
                           style={{
@@ -1031,7 +1042,7 @@ export const ResumeBuilderPage = () => {
                         gap: "16px",
                       }}
                     >
-                      {resumeData.experience.map((exp: any, index: number) => (
+                      {resumeData.experience.map((exp, index) => (
                         <div
                           key={exp.id}
                           style={{
@@ -1196,7 +1207,7 @@ export const ResumeBuilderPage = () => {
                         gap: "16px",
                       }}
                     >
-                      {resumeData.education.map((edu: any, index: number) => (
+                      {resumeData.education.map((edu, index) => (
                         <div
                           key={edu.id}
                           style={{
@@ -1311,7 +1322,7 @@ export const ResumeBuilderPage = () => {
                       }}
                     >
                       {resumeData.certification.map(
-                        (cert: any, index: number) => (
+                        (cert, index) => (
                           <div
                             key={cert.id}
                             style={{

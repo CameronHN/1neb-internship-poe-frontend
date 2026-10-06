@@ -7,7 +7,7 @@ import {
   MessageBar,
 } from "@fluentui/react-components";
 import { ArrowRight12Regular } from "@fluentui/react-icons";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/useAuth";
 import { useNavigate } from "react-router-dom";
 import "../../styles/form.css";
 
