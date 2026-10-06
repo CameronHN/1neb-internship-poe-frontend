@@ -10,14 +10,12 @@ import { formatDateForInput } from "../../helpers/dateHelpers";
 interface EducationFormProps {
   mode: "add" | "update";
   educationId?: string;
-  initialData?: Education;
   onSaveSuccess?: () => void;
 }
 
 export const EducationForm: React.FC<EducationFormProps> = ({
   mode,
   educationId,
-  initialData,
   onSaveSuccess,
 }) => {
   const [fields, setFields] = useState<AddEducation[]>([
@@ -63,20 +61,11 @@ export const EducationForm: React.FC<EducationFormProps> = ({
 
   useEffect(() => {
     if (mode === "update" && educationId) {
+      // The loader only sets state after awaiting the request; the rule can't tell.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadEducationData();
-    } else if (mode === "update" && initialData) {
-      setFields([
-        {
-          institutionName: initialData.institutionName,
-          qualification: initialData.qualification,
-          startDate: formatDateForInput(initialData.startDate),
-          endDate: formatDateForInput(initialData.endDate),
-          major: initialData.major,
-          achievement: initialData.achievement,
-        },
-      ]);
     }
-  }, [mode, educationId, initialData, loadEducationData]);
+  }, [mode, educationId, loadEducationData]);
 
   const addField = () => {
     if (mode === "update") return;

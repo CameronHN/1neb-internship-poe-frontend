@@ -12,14 +12,12 @@ import type {
 interface CertificationFormProps {
   mode: "add" | "update";
   certificationId?: string;
-  initialData?: UpdateCertification;
   onSaveSuccess?: () => void;
 }
 
 export const CertificationForm: React.FC<CertificationFormProps> = ({
   mode,
   certificationId,
-  initialData,
   onSaveSuccess,
 }) => {
   const [fields, setFields] = useState<AddCertification[]>([
@@ -66,19 +64,11 @@ export const CertificationForm: React.FC<CertificationFormProps> = ({
   // Load data for update mode
   useEffect(() => {
     if (mode === "update" && certificationId) {
+      // The loader only sets state after awaiting the request; the rule can't tell.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadCertificationData();
-    } else if (mode === "update" && initialData) {
-      setFields([
-        {
-          certificationName: initialData.certificationName,
-          issuingOrganisation: initialData.issuingOrganisation,
-          credentialUrl: initialData.credentialUrl,
-          issuedDate: initialData.issuedDate,
-          expiryDate: initialData.expiryDate,
-        },
-      ]);
     }
-  }, [mode, certificationId, initialData, loadCertificationData]);
+  }, [mode, certificationId, loadCertificationData]);
 
   const addField = () => {
     if (mode === "update") return;

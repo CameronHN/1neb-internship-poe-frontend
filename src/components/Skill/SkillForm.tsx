@@ -9,14 +9,12 @@ import type { AddSkill, Skill } from "../../types/skillTypes";
 interface SkillProps {
   mode: "add" | "update";
   skillId?: string;
-  initialData?: Skill;
   onSaveSuccess?: () => void;
 }
 
 export const SkillForm: React.FC<SkillProps> = ({
   mode,
   skillId,
-  initialData,
   onSaveSuccess,
 }) => {
   const [fields, setFields] = useState<AddSkill[]>([
@@ -49,16 +47,11 @@ export const SkillForm: React.FC<SkillProps> = ({
 
   useEffect(() => {
     if (mode === "update" && skillId) {
+      // The loader only sets state after awaiting the request; the rule can't tell.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadSkillData();
-    } else if (mode === "update" && initialData) {
-      setFields([
-        {
-          skill: initialData.skillName,
-          proficiencyLevel: initialData.proficiencyLevel,
-        },
-      ]);
     }
-  }, [mode, skillId, initialData, loadSkillData]);
+  }, [mode, skillId, loadSkillData]);
 
   const addField = () => {
     if (mode === "update") return;

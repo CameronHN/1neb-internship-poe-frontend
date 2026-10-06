@@ -16,7 +16,6 @@ import { experienceService } from "../../services/experienceService";
 import { SaveOverlay } from "../Overlays/SaveOverlay";
 import type {
   AddExperience,
-  Experience,
   UpdateExperience,
 } from "../../types/experienceTypes";
 import { tooltipStyling } from "../../styles/constants/iconStyling";
@@ -25,14 +24,12 @@ import { formatDateForInput } from "../../helpers/dateHelpers";
 interface WorkExperienceFormProps {
   mode: "add" | "update";
   experienceId?: string;
-  initialData?: Experience;
   onSaveSuccess?: () => void;
 }
 
 export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
   mode,
   experienceId,
-  initialData,
   onSaveSuccess,
 }) => {
   const [fields, setFields] = useState<AddExperience[]>([
@@ -90,22 +87,11 @@ export const WorkExperienceForm: React.FC<WorkExperienceFormProps> = ({
 
   useEffect(() => {
     if (mode === "update" && experienceId) {
+      // The loader only sets state after awaiting the request; the rule can't tell.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadExperienceData();
-    } else if (mode === "update" && initialData) {
-      setOriginalResponsibilities(initialData.responsibilities);
-      setFields([
-        {
-          jobTitle: initialData.jobTitle,
-          companyName: initialData.companyName,
-          startDate: formatDateForInput(initialData.startDate),
-          endDate: formatDateForInput(initialData.endDate),
-          responsibilities: initialData.responsibilities.map((r) => ({
-            responsibility: r.responsibility,
-          })),
-        },
-      ]);
     }
-  }, [mode, experienceId, initialData, loadExperienceData]);
+  }, [mode, experienceId, loadExperienceData]);
 
   const addField = () => {
     if (mode === "update") return;

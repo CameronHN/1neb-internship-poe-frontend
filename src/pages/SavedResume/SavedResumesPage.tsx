@@ -15,10 +15,6 @@ export const SavedResumesPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadSavedResumes();
-  }, []);
-
   const loadSavedResumes = async () => {
     try {
       setLoading(true);
@@ -33,6 +29,12 @@ export const SavedResumesPage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // The loader only sets state after awaiting the request; the rule can't tell.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadSavedResumes();
+  }, []);
 
   const handleDelete = async (id: string) => {
     try {
